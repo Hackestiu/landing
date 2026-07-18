@@ -1,0 +1,277 @@
+---
+import Layout from '../layouts/Layout.astro';
+import TrencadisRow from '../components/TrencadisRow.astro';
+import CatenaryDivider from '../components/CatenaryDivider.astro';
+
+const pipeline = [
+  {
+    n: '01',
+    title: 'Imatge de context',
+    detail: 'La càmera capta el monument o el detall arquitectònic cap on apuntes.',
+    tone: 'blue',
+  },
+  {
+    n: '02',
+    title: 'Downsampler',
+    detail: 'La imatge es redimensiona i comprimeix per encaixar en la memòria limitada del dispositiu.',
+    tone: 'green',
+  },
+  {
+    n: '03',
+    title: 'Model de visió',
+    detail: 'Un classificador lleuger, entrenat amb Edge Impulse, identifica l’element i li posa nom: «Drac, Parc Güell».',
+    tone: 'ochre',
+  },
+  {
+    n: '04',
+    title: 'Veu a text',
+    detail: 'El micròfon escolta la teva pregunta oral —«De què està fet?»— i la converteix en text net.',
+    tone: 'blue',
+  },
+  {
+    n: '05',
+    title: 'Model de llenguatge + RAG',
+    detail: 'El SLM local encreua l’etiqueta visual i la pregunta, i consulta una base de coneixement vectorial perquè la resposta sigui rigorosa i sense al·lucinacions.',
+    tone: 'green',
+  },
+  {
+    n: '06',
+    title: 'Text a veu',
+    detail: 'La resposta —«Amb trencadís...»— es converteix en àudio i surt per l’altaveu o els auriculars.',
+    tone: 'ochre',
+  },
+];
+
+const hardware = [
+  {
+    name: 'Mòdul de descodificació d’àudio',
+    qty: '1 u.',
+    detail: 'Emmagatzema i reprodueix els fitxers .mp3 de l’audioguia des d’una targeta MicroSD.',
+  },
+  {
+    name: 'Altaveu o jack',
+    qty: '1 u.',
+    detail: 'Sortida física per als auriculars de l’usuari o per a reproducció oberta.',
+  },
+  {
+    name: 'Mòdul Bluetooth o pantalla',
+    qty: '1 u.',
+    detail: 'Opcional: connecta auriculars sense fils o mostra text breu d’ajuda.',
+  },
+  {
+    name: 'Powerbank portàtil',
+    qty: '1 u.',
+    detail: 'Garanteix l’autonomia i la mobilitat del prototip en entorns exteriors reals.',
+  },
+];
+
+const team = [
+  { name: 'Mar Dijort', role: 'GCED · FIB / ETSETB / FME, UPC', email: 'mar.dijort@estudiantat.upc.edu' },
+  { name: 'Lucia Giménez', role: 'GCED · FIB / ETSETB / FME, UPC', email: 'lucia.gimenez@estudiantat.upc.edu' },
+  { name: 'Josep Rodríguez', role: 'GIA · FIB, UPC', email: 'josep.rodriguez@estudiantat.upc.edu' },
+  { name: 'Laia Mogas', role: 'GCED · FIB / ETSETB / FME, UPC', email: 'laia.mogas.pladevall@estudiantat.upc.edu' },
+];
+
+const toneMap = {
+  blue: { bg: 'bg-blue-soft', text: 'text-blue-deep', chip: 'bg-blue' },
+  green: { bg: 'bg-green-soft', text: 'text-green-deep', chip: 'bg-green' },
+  ochre: { bg: 'bg-ochre-soft', text: 'text-ochre-deep', chip: 'bg-ochre' },
+};
+---
+<Layout
+  title="Cultura Viva — El patrimoni que parla"
+  description="Cultura Viva converteix les audioguies estàtiques del patrimoni català en una conversa real, amb IA local, sense núvol, per a l'Any Gaudí 2026."
+>
+  <header class="fixed top-0 inset-x-0 z-40 bg-paper/85 backdrop-blur-sm border-b border-ink/5">
+    <nav class="max-w-6xl mx-auto flex items-center justify-between px-6 py-4" aria-label="Navegació principal">
+      <a href="#top" class="font-display font-semibold text-lg tracking-tight text-ink">
+        Cultura <span class="text-blue">Viva</span>
+      </a>
+      <ul class="hidden md:flex items-center gap-8 font-mono text-xs uppercase tracking-widest2 text-ink/70">
+        <li><a href="#funcionament" class="hover:text-blue transition-colors">Funcionament</a></li>
+        <li><a href="#maquinari" class="hover:text-blue transition-colors">Maquinari</a></li>
+        <li><a href="#impacte" class="hover:text-blue transition-colors">Impacte</a></li>
+        <li><a href="#equip" class="hover:text-blue transition-colors">Equip</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="top">
+    <!-- HERO -->
+    <section class="relative pt-40 pb-28 px-6 overflow-hidden">
+      <div aria-hidden="true" class="pointer-events-none absolute -top-24 -right-24 w-[420px] h-[420px] rounded-full bg-blue-soft blur-3xl opacity-70"></div>
+      <div aria-hidden="true" class="pointer-events-none absolute top-40 -left-32 w-[320px] h-[320px] rounded-full bg-ochre-soft blur-3xl opacity-60"></div>
+
+      <div class="relative max-w-4xl mx-auto text-center">
+        <p class="eyebrow mb-6">Any Gaudí 2026 · Hackestiu</p>
+        <h1 class="text-5xl md:text-7xl leading-[1.05] text-ink mb-6">
+          El patrimoni<br class="hidden md:block" /> que <em class="not-italic text-blue">parla</em>
+        </h1>
+        <p class="max-w-xl mx-auto text-lg text-ink/70 mb-10 leading-relaxed">
+          Cultura Viva transforma l'audioguia estàtica en una conversa real amb el patrimoni
+          d'Antoni Gaudí. Tota la intel·ligència artificial viu al dispositiu: sense núvol,
+          sense connexions costoses, a l'abast de qualsevol museu.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <a
+            href="#funcionament"
+            class="inline-flex items-center justify-center rounded-full bg-ink text-paper px-8 py-4 font-medium hover:bg-blue-deep transition-colors"
+          >
+            Descobreix el projecte
+          </a>
+        </div>
+        <TrencadisRow class="justify-center mt-14" />
+      </div>
+    </section>
+
+    <CatenaryDivider />
+
+    <!-- FUNCIONAMENT -->
+    <section id="funcionament" class="px-6 py-24 max-w-6xl mx-auto">
+      <div class="max-w-2xl mb-16">
+        <p class="eyebrow mb-4">Funcionament tècnic i abast</p>
+        <h2 class="text-3xl md:text-4xl text-ink mb-5">Apunta, pregunta, escolta</h2>
+        <p class="text-ink/70 leading-relaxed">
+          Per garantir una latència mínima durant el període del concurs, el reconeixement
+          inicial es limita a l'obra d'Antoni Gaudí —la Sagrada Família, el Parc Güell, la Casa
+          Batlló— amb un conjunt de dades optimitzat i essencial.
+        </p>
+      </div>
+
+      <ol class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6" aria-label="Passos del flux de treball del dispositiu">
+        {pipeline.map((step) => {
+          const t = toneMap[step.tone];
+          return (
+            <li class={`rounded-2xl p-6 ${t.bg} border border-ink/5`}>
+              <div class="flex items-center gap-3 mb-4">
+                <span class={`w-8 h-8 rounded-full ${t.chip} text-paper text-xs font-mono flex items-center justify-center`}>
+                  {step.n}
+                </span>
+                <h3 class={`font-display text-lg ${t.text}`}>{step.title}</h3>
+              </div>
+              <p class="text-sm text-ink/70 leading-relaxed">{step.detail}</p>
+            </li>
+          );
+        })}
+      </ol>
+
+      <div class="mt-16 rounded-2xl border border-ink/10 bg-white/50 p-8 grid md:grid-cols-2 gap-8">
+        <div>
+          <p class="eyebrow mb-3">Optimitzacions previstes</p>
+          <p class="text-ink/70 leading-relaxed text-sm">
+            Si la RAM o la CPU de l'entorn local resulten insuficients, s'injecta context
+            addicional al model de visió per acotar les classes a predir, i s'apliquen tècniques
+            de <em>pruning</em> específiques sobre el SLM per alleugerir-lo sense perdre'n la
+            capacitat de comprensió.
+          </p>
+        </div>
+        <div>
+          <p class="eyebrow mb-3">Per què local i no núvol</p>
+          <p class="text-ink/70 leading-relaxed text-sm">
+            Tot el pipeline —visió, llenguatge, RAG i veu— s'executa a bord del propi
+            dispositiu. Això elimina la dependència de grans servidors i de connexions de dades
+            costoses, i manté el projecte assequible i replicable.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <CatenaryDivider flip />
+
+    <!-- MAQUINARI -->
+    <section id="maquinari" class="px-6 py-24 bg-blue-soft/40">
+      <div class="max-w-6xl mx-auto">
+        <div class="max-w-2xl mb-14">
+          <p class="eyebrow mb-4">Maquinari addicional requerit</p>
+          <h2 class="text-3xl md:text-4xl text-ink">La interfície física de l'audioguia</h2>
+        </div>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {hardware.map((h) => (
+            <div class="bg-paper rounded-2xl p-6 border border-ink/10">
+              <p class="font-mono text-xs text-ochre-deep mb-3">{h.qty}</p>
+              <h3 class="font-display text-lg text-ink mb-2">{h.name}</h3>
+              <p class="text-sm text-ink/60 leading-relaxed">{h.detail}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- IMPACTE -->
+    <section id="impacte" class="px-6 py-28 bg-ink text-paper relative overflow-hidden">
+      <div aria-hidden="true" class="pointer-events-none absolute inset-0 opacity-[0.06]">
+        <TrencadisRow class="scale-[6] origin-top-left" />
+      </div>
+      <div class="relative max-w-5xl mx-auto">
+        <p class="eyebrow text-ochre mb-4">Impacte i democratització de la IA</p>
+        <h2 class="text-3xl md:text-4xl mb-6 max-w-2xl">
+          La IA no necessita grans infraestructures per ser útil el dia a dia
+        </h2>
+        <p class="text-paper/70 max-w-2xl leading-relaxed mb-14">
+          En traslladar la inferència directament a maquinari de baix cost, Cultura Viva es
+          converteix en una eina de divulgació de la identitat i la cultura catalanes a l'abast
+          de qualsevol espai patrimonial.
+        </p>
+        <div class="grid sm:grid-cols-3 gap-8">
+          <div class="border-t border-paper/20 pt-6">
+            <h3 class="font-display text-xl mb-2">Portàtil</h3>
+            <p class="text-sm text-paper/60 leading-relaxed">
+              Un dispositiu autònom, alimentat amb powerbank, pensat per moure's per l'exterior
+              amb l'usuari.
+            </p>
+          </div>
+          <div class="border-t border-paper/20 pt-6">
+            <h3 class="font-display text-xl mb-2">Inclusiu</h3>
+            <p class="text-sm text-paper/60 leading-relaxed">
+              L'àudio interactiu obre el patrimoni a persones amb dificultats visuals, sense
+              dependre de pantalles.
+            </p>
+          </div>
+          <div class="border-t border-paper/20 pt-6">
+            <h3 class="font-display text-xl mb-2">Assequible</h3>
+            <p class="text-sm text-paper/60 leading-relaxed">
+              Fàcilment replicable per museus i espais culturals locals amb pressupostos
+              reduïts.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <CatenaryDivider tone="dark" />
+
+    <!-- EQUIP -->
+    <section id="equip" class="px-6 py-24 max-w-6xl mx-auto">
+      <div class="max-w-2xl mb-14">
+        <p class="eyebrow mb-4">Equip participant</p>
+        <h2 class="text-3xl md:text-4xl text-ink">Qui hi ha darrere de Cultura Viva</h2>
+      </div>
+      <ul class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6" aria-label="Membres de l'equip">
+        {team.map((m) => (
+          <li class="rounded-2xl border border-ink/10 p-6 hover:border-blue/40 transition-colors">
+            <div class="w-10 h-10 rounded-full bg-blue-soft text-blue-deep font-display flex items-center justify-center mb-4" aria-hidden="true">
+              {m.name.charAt(0)}
+            </div>
+            <h3 class="font-display text-lg text-ink mb-1">{m.name}</h3>
+            <p class="text-xs font-mono text-ink/50 mb-3">{m.role}</p>
+            <a href={`mailto:${m.email}`} class="text-sm text-blue hover:text-blue-deep break-all">
+              {m.email}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  </main>
+
+  <footer class="px-6 py-12 border-t border-ink/10">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+      <div class="flex items-center gap-3">
+        <TrencadisRow />
+        <span class="font-display text-ink/80">Cultura Viva — El patrimoni que parla</span>
+      </div>
+      <p class="text-xs text-ink/40 font-mono text-center md:text-right">
+        Càtedra Chip UPC d'arquitectures avançades i sistemes fotònics · Qualcomm · Proposta Hackestiu 2026
+      </p>
+    </div>
+  </footer>
+</Layout>

@@ -1,0 +1,19 @@
+---
+export interface Props {
+  class?: string;
+}
+const { class: className = '' } = Astro.props;
+const tiles = [
+  '#2A6F97', '#3F8362', '#E2954A', '#D4A72C', '#1D4E6E',
+  '#2C5F47', '#B96F2C', '#2A6F97', '#3F8362', '#E2954A',
+  '#D4A72C', '#2A6F97',
+];
+---
+<div class={`flex items-end gap-[3px] ${className}`} role="presentation" aria-hidden="true">
+  {tiles.map((c, i) => (
+    <span
+      class="tile-dot"
+      style={`background:${c}; width:${6 + ((i * 7) % 9)}px; height:${6 + ((i * 5) % 11)}px; transform: rotate(${(i % 2 === 0 ? -1 : 1) * (i * 3 % 8)}deg);`}
+    />
+  ))}
+</div>

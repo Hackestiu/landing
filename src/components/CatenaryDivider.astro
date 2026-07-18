@@ -1,0 +1,24 @@
+---
+export interface Props {
+  flip?: boolean;
+  tone?: 'light' | 'dark';
+  class?: string;
+}
+const { flip = false, tone = 'light', class: className = '' } = Astro.props;
+const stroke = tone === 'dark' ? '#FBF8F2' : '#1C2B30';
+---
+<div class={`w-full overflow-hidden leading-[0] ${className}`} role="presentation" aria-hidden="true">
+  <svg
+    viewBox="0 0 1200 90"
+    preserveAspectRatio="none"
+    class={`w-full h-[60px] md:h-[90px] ${flip ? 'rotate-180' : ''}`}
+  >
+    <path
+      d="M0,10 C 150,90 300,90 450,20 C 550,-20 650,-20 750,20 C 900,90 1050,90 1200,10"
+      fill="none"
+      stroke={stroke}
+      stroke-width="1.5"
+      opacity="0.35"
+    />
+  </svg>
+</div>
