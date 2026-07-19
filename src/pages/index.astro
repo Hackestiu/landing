@@ -6,70 +6,22 @@ import CatenaryDivider from '../components/CatenaryDivider.astro';
 const pipeline = [
   {
     n: '01',
-    title: 'Imatge de context',
-    detail: 'La càmera capta el monument o el detall arquitectònic cap on apuntes.',
+    title: 'Fes una foto',
+    detail: 'Apunta amb la càmera cap a l’element de Gaudí que vulguis conèixer.',
     tone: 'blue',
   },
   {
     n: '02',
-    title: 'Downsampler',
-    detail: 'La imatge es redimensiona i comprimeix per encaixar en la memòria limitada del dispositiu.',
+    title: 'Fes una pregunta',
+    detail: 'Parla-hi com si tinguessis un guia al costat: «De què està fet?»',
     tone: 'green',
   },
   {
     n: '03',
-    title: 'Model de visió',
-    detail: 'Un classificador lleuger, entrenat amb Edge Impulse, identifica l’element i li posa nom: «Drac, Parc Güell».',
+    title: 'Rep la resposta',
+    detail: 'Cultura Viva respon a l’instant, en veu, feta a mida per a aquell racó de Gaudí.',
     tone: 'ochre',
   },
-  {
-    n: '04',
-    title: 'Veu a text',
-    detail: 'El micròfon escolta la teva pregunta oral —«De què està fet?»— i la converteix en text net.',
-    tone: 'blue',
-  },
-  {
-    n: '05',
-    title: 'Model de llenguatge + RAG',
-    detail: 'El SLM local encreua l’etiqueta visual i la pregunta, i consulta una base de coneixement vectorial perquè la resposta sigui rigorosa i sense al·lucinacions.',
-    tone: 'green',
-  },
-  {
-    n: '06',
-    title: 'Text a veu',
-    detail: 'La resposta —«Amb trencadís...»— es converteix en àudio i surt per l’altaveu o els auriculars.',
-    tone: 'ochre',
-  },
-];
-
-const hardware = [
-  {
-    name: 'Mòdul de descodificació d’àudio',
-    qty: '1 u.',
-    detail: 'Emmagatzema i reprodueix els fitxers .mp3 de l’audioguia des d’una targeta MicroSD.',
-  },
-  {
-    name: 'Altaveu o jack',
-    qty: '1 u.',
-    detail: 'Sortida física per als auriculars de l’usuari o per a reproducció oberta.',
-  },
-  {
-    name: 'Mòdul Bluetooth o pantalla',
-    qty: '1 u.',
-    detail: 'Opcional: connecta auriculars sense fils o mostra text breu d’ajuda.',
-  },
-  {
-    name: 'Powerbank portàtil',
-    qty: '1 u.',
-    detail: 'Garanteix l’autonomia i la mobilitat del prototip en entorns exteriors reals.',
-  },
-];
-
-const team = [
-  { name: 'Mar Dijort', role: 'GCED · FIB / ETSETB / FME, UPC', email: 'mar.dijort@estudiantat.upc.edu' },
-  { name: 'Lucia Giménez', role: 'GCED · FIB / ETSETB / FME, UPC', email: 'lucia.gimenez@estudiantat.upc.edu' },
-  { name: 'Josep Rodríguez', role: 'GIA · FIB, UPC', email: 'josep.rodriguez@estudiantat.upc.edu' },
-  { name: 'Laia Mogas', role: 'GCED · FIB / ETSETB / FME, UPC', email: 'laia.mogas.pladevall@estudiantat.upc.edu' },
 ];
 
 const toneMap = {
@@ -89,9 +41,8 @@ const toneMap = {
       </a>
       <ul class="hidden md:flex items-center gap-8 font-mono text-xs uppercase tracking-widest2 text-ink/70">
         <li><a href="#funcionament" class="hover:text-blue transition-colors">Funcionament</a></li>
-        <li><a href="#maquinari" class="hover:text-blue transition-colors">Maquinari</a></li>
+        <li><a href="#demo" class="hover:text-blue transition-colors">Demo</a></li>
         <li><a href="#impacte" class="hover:text-blue transition-colors">Impacte</a></li>
-        <li><a href="#equip" class="hover:text-blue transition-colors">Equip</a></li>
       </ul>
     </nav>
   </header>
@@ -103,7 +54,7 @@ const toneMap = {
       <div aria-hidden="true" class="pointer-events-none absolute top-40 -left-32 w-[320px] h-[320px] rounded-full bg-ochre-soft blur-3xl opacity-60"></div>
 
       <div class="relative max-w-4xl mx-auto text-center">
-        <p class="eyebrow mb-6">Any Gaudí 2026 · Hackestiu</p>
+        <p class="eyebrow mb-6">Any Gaudí 2026</p>
         <h1 class="text-5xl md:text-7xl leading-[1.05] text-ink mb-6">
           El patrimoni<br class="hidden md:block" /> que <em class="not-italic text-blue">parla</em>
         </h1>
@@ -129,16 +80,11 @@ const toneMap = {
     <!-- FUNCIONAMENT -->
     <section id="funcionament" class="px-6 py-24 max-w-6xl mx-auto">
       <div class="max-w-2xl mb-16">
-        <p class="eyebrow mb-4">Funcionament tècnic i abast</p>
+        <p class="eyebrow mb-4">Com funciona</p>
         <h2 class="text-3xl md:text-4xl text-ink mb-5">Apunta, pregunta, escolta</h2>
-        <p class="text-ink/70 leading-relaxed">
-          Per garantir una latència mínima durant el període del concurs, el reconeixement
-          inicial es limita a l'obra d'Antoni Gaudí —la Sagrada Família, el Parc Güell, la Casa
-          Batlló— amb un conjunt de dades optimitzat i essencial.
-        </p>
       </div>
 
-      <ol class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6" aria-label="Passos del flux de treball del dispositiu">
+      <ol class="grid sm:grid-cols-3 gap-6" aria-label="Passos per fer servir Cultura Viva">
         {pipeline.map((step) => {
           const t = toneMap[step.tone];
           return (
@@ -154,48 +100,32 @@ const toneMap = {
           );
         })}
       </ol>
-
-      <div class="mt-16 rounded-2xl border border-ink/10 bg-white/50 p-8 grid md:grid-cols-2 gap-8">
-        <div>
-          <p class="eyebrow mb-3">Optimitzacions previstes</p>
-          <p class="text-ink/70 leading-relaxed text-sm">
-            Si la RAM o la CPU de l'entorn local resulten insuficients, s'injecta context
-            addicional al model de visió per acotar les classes a predir, i s'apliquen tècniques
-            de <em>pruning</em> específiques sobre el SLM per alleugerir-lo sense perdre'n la
-            capacitat de comprensió.
-          </p>
-        </div>
-        <div>
-          <p class="eyebrow mb-3">Per què local i no núvol</p>
-          <p class="text-ink/70 leading-relaxed text-sm">
-            Tot el pipeline —visió, llenguatge, RAG i veu— s'executa a bord del propi
-            dispositiu. Això elimina la dependència de grans servidors i de connexions de dades
-            costoses, i manté el projecte assequible i replicable.
-          </p>
-        </div>
-      </div>
     </section>
 
     <CatenaryDivider flip />
 
-    <!-- MAQUINARI -->
-    <section id="maquinari" class="px-6 py-24 bg-blue-soft/40">
-      <div class="max-w-6xl mx-auto">
-        <div class="max-w-2xl mb-14">
-          <p class="eyebrow mb-4">Maquinari addicional requerit</p>
-          <h2 class="text-3xl md:text-4xl text-ink">La interfície física de l'audioguia</h2>
+    <!-- DEMO -->
+    <section id="demo" class="px-6 py-24 max-w-5xl mx-auto">
+      <div class="max-w-2xl mb-10">
+        <p class="eyebrow mb-4">Demo</p>
+        <h2 class="text-3xl md:text-4xl text-ink">Cultura Viva en acció</h2>
+      </div>
+      <div class="relative aspect-video rounded-2xl bg-ink flex items-center justify-center overflow-hidden">
+        <div aria-hidden="true" class="pointer-events-none absolute inset-0 opacity-[0.06]">
+          <TrencadisRow class="scale-[8] origin-top-left" />
         </div>
-        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {hardware.map((h) => (
-            <div class="bg-paper rounded-2xl p-6 border border-ink/10">
-              <p class="font-mono text-xs text-ochre-deep mb-3">{h.qty}</p>
-              <h3 class="font-display text-lg text-ink mb-2">{h.name}</h3>
-              <p class="text-sm text-ink/60 leading-relaxed">{h.detail}</p>
-            </div>
-          ))}
+        <div class="relative flex flex-col items-center gap-4">
+          <div class="w-16 h-16 rounded-full bg-paper/10 border border-paper/20 flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" class="w-6 h-6 text-paper/70 translate-x-0.5">
+              <path d="M8 5v14l11-7-11-7z" fill="currentColor" />
+            </svg>
+          </div>
+          <p class="font-mono text-xs uppercase tracking-widest2 text-paper/60">Properament</p>
         </div>
       </div>
     </section>
+
+    <CatenaryDivider />
 
     <!-- IMPACTE -->
     <section id="impacte" class="px-6 py-28 bg-ink text-paper relative overflow-hidden">
@@ -238,29 +168,6 @@ const toneMap = {
       </div>
     </section>
 
-    <CatenaryDivider tone="dark" />
-
-    <!-- EQUIP -->
-    <section id="equip" class="px-6 py-24 max-w-6xl mx-auto">
-      <div class="max-w-2xl mb-14">
-        <p class="eyebrow mb-4">Equip participant</p>
-        <h2 class="text-3xl md:text-4xl text-ink">Qui hi ha darrere de Cultura Viva</h2>
-      </div>
-      <ul class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6" aria-label="Membres de l'equip">
-        {team.map((m) => (
-          <li class="rounded-2xl border border-ink/10 p-6 hover:border-blue/40 transition-colors">
-            <div class="w-10 h-10 rounded-full bg-blue-soft text-blue-deep font-display flex items-center justify-center mb-4" aria-hidden="true">
-              {m.name.charAt(0)}
-            </div>
-            <h3 class="font-display text-lg text-ink mb-1">{m.name}</h3>
-            <p class="text-xs font-mono text-ink/50 mb-3">{m.role}</p>
-            <a href={`mailto:${m.email}`} class="text-sm text-blue hover:text-blue-deep break-all">
-              {m.email}
-            </a>
-          </li>
-        ))}
-      </ul>
-    </section>
   </main>
 
   <footer class="px-6 py-12 border-t border-ink/10">
@@ -270,7 +177,7 @@ const toneMap = {
         <span class="font-display text-ink/80">Cultura Viva — El patrimoni que parla</span>
       </div>
       <p class="text-xs text-ink/40 font-mono text-center md:text-right">
-        Càtedra Chip UPC d'arquitectures avançades i sistemes fotònics · Qualcomm · Proposta Hackestiu 2026
+        2026
       </p>
     </div>
   </footer>
