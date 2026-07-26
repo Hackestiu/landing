@@ -1,0 +1,144 @@
+---
+import type { GraphData } from "../graph/types";
+
+interface Props {
+	id?: string;
+	theme?: "dark" | "light";
+}
+
+const { id = "graf-coneixement", theme = "dark" } = Astro.props;
+const isLight = theme === "light";
+
+// A small, hand-picked graph for this landing page — intentionally not the
+// full research dataset from g2-rag, just enough to illustrate the idea.
+const demoGraph: GraphData = {
+	nodes: [
+		{ id: "sagrada_familia", name: "Sagrada Família", type: "monument" },
+		{ id: "casa_batllo", name: "Casa Batlló", type: "monument" },
+		{ id: "park_guell", name: "Park Güell", type: "monument" },
+		{ id: "antoni_gaudi", name: "Antoni Gaudí", type: "person" },
+		{ id: "natural_forms", name: "Formes naturals", type: "inspiration" },
+		{ id: "modernisme", name: "Modernisme català", type: "style" },
+	],
+	edges: [
+		{ subject: "sagrada_familia", relation: "designed_by", object: "antoni_gaudi" },
+		{ subject: "casa_batllo", relation: "designed_by", object: "antoni_gaudi" },
+		{ subject: "park_guell", relation: "designed_by", object: "antoni_gaudi" },
+		{ subject: "antoni_gaudi", relation: "inspired_by", object: "natural_forms" },
+		{ subject: "sagrada_familia", relation: "has_style", object: "modernisme" },
+		{ subject: "casa_batllo", relation: "has_style", object: "modernisme" },
+		{ subject: "park_guell", relation: "has_style", object: "modernisme" },
+	],
+};
+
+const legend: Array<[string, string]> = [
+	["monument", "#e07a5f"],
+	["person", "#3d5a80"],
+	["style", "#e63946"],
+	["inspiration", "#457b9d"],
+];
+---
+
+<div id={id} class="relative w-full h-full flex items-center justify-center" data-graph-root>
+	<button type="button" data-graph-open class="relative z-10 flex flex-col items-center gap-4 group" aria-haspopup="dialog">
+		<span
+			class={`w-16 h-16 rounded-full border flex items-center justify-center transition-colors ${
+				isLight ? "bg-ink/5 border-ink/10 group-hover:bg-ink/10" : "bg-paper/10 border-paper/20 group-hover:bg-paper/20"
+			}`}
+		>
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				class={`w-6 h-6 ${isLight ? "text-ink/60" : "text-paper/70"}`}
+			>
+				<path d="M6 4 18 6 20 15 11 20 3 13Z" stroke-width="1.3" opacity="0.5" stroke-linejoin="round" />
+				<circle cx="6" cy="4" r="1.5" fill="currentColor" stroke="none" />
+				<circle cx="18" cy="6" r="1.5" fill="currentColor" stroke="none" />
+				<circle cx="20" cy="15" r="1.5" fill="currentColor" stroke="none" />
+				<circle cx="11" cy="20" r="2" fill="currentColor" stroke="none" />
+				<circle cx="3" cy="13" r="1.5" fill="currentColor" stroke="none" />
+			</svg>
+		</span>
+		<span class={`font-mono text-xs uppercase tracking-widest2 ${isLight ? "text-ink/60" : "text-paper/60"}`} data-en="Explore the knowledge graph">
+			Explora el graf de coneixement
+		</span>
+	</button>
+
+	<div
+		data-graph-overlay
+		class="hidden fixed inset-0 z-50 items-center justify-center p-6"
+		role="dialog"
+		aria-modal="true"
+		aria-label="Graf de coneixement"
+	>
+		<button type="button" data-graph-close-bg class="absolute inset-0 bg-ink/60 backdrop-blur-sm" aria-label="Tanca"></button>
+
+		<div class="relative w-full max-w-4xl h-[70vh] rounded-3xl bg-paper border border-ink/10 shadow-2xl overflow-hidden">
+			<button
+				type="button"
+				data-graph-close
+				class="absolute top-4 right-4 z-20 w-9 h-9 rounded-full bg-ink/5 hover:bg-ink/10 flex items-center justify-center text-ink/60 transition-colors"
+				aria-label="Tanca el graf"
+			>
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4">
+					<path d="M6 6l12 12M18 6L6 18" stroke-width="1.8" stroke-linecap="round" />
+				</svg>
+			</button>
+			<div class="absolute top-4 left-4 z-10 flex flex-wrap gap-3 font-mono text-[11px] text-ink/60">
+				{
+					legend.map(([type, color]) => (
+						<span class="inline-flex items-center gap-1.5 capitalize">
+							<span class="inline-block w-2 h-2 rounded-full" style={`background:${color}`} />
+							{type}
+						</span>
+					))
+				}
+			</div>
+			<div data-graph-mount class="w-full h-full"></div>
+		</div>
+	</div>
+
+	<script type="application/json" data-graph-json set:html={JSON.stringify(demoGraph)} />
+</div>
+
+<script>
+	document.querySelectorAll<HTMLElement>("[data-graph-root]").forEach((root) => {
+		const openBtn = root.querySelector<HTMLButtonElement>("[data-graph-open]");
+		const overlay = root.querySelector<HTMLElement>("[data-graph-overlay]");
+		const closeBtn = root.querySelector<HTMLButtonElement>("[data-graph-close]");
+		const closeBg = root.querySelector<HTMLButtonElement>("[data-graph-close-bg]");
+		const mount = root.querySelector<HTMLElement>("[data-graph-mount]");
+		const jsonScript = root.querySelector<HTMLScriptElement>("[data-graph-json]");
+		if (!openBtn || !overlay || !closeBtn || !closeBg || !mount || !jsonScript) return;
+
+		let rendered = false;
+
+		function open() {
+			overlay!.classList.remove("hidden");
+			overlay!.classList.add("flex");
+			document.body.classList.add("overflow-hidden");
+			if (!rendered) {
+				rendered = true;
+				const data = JSON.parse(jsonScript!.textContent ?? "{}");
+				import("../graph/ForceGraph").then(({ renderKnowledgeGraph }) => {
+					renderKnowledgeGraph(mount!, data);
+				});
+			}
+		}
+
+		function close() {
+			overlay!.classList.add("hidden");
+			overlay!.classList.remove("flex");
+			document.body.classList.remove("overflow-hidden");
+		}
+
+		openBtn.addEventListener("click", open);
+		closeBtn.addEventListener("click", close);
+		closeBg.addEventListener("click", close);
+		document.addEventListener("keydown", (event) => {
+			if (event.key === "Escape" && !overlay!.classList.contains("hidden")) close();
+		});
+	});
+</script>
