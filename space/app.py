@@ -242,7 +242,24 @@ def _trencadis_html() -> str:
     return f'<div class="cv-trencadis" role="presentation" aria-hidden="true">{tiles}</div>'
 
 
-FAVICON = APP_DIR / "assets" / "favicon.png"
+# The trencadís "C" — the same mark the landing serves as its favicon, used
+# here both in the browser tab and in the header lockup.
+MARK = APP_DIR / "assets" / "favicon.png"
+
+
+def _mark_data_uri() -> str:
+    """Returns the mark as a data: URI, or "" if the file is missing.
+
+    Inlined rather than served as a static file: the mark is ~9 KB, and this
+    keeps it out of Gradio's static-file allowlist, which otherwise has to be
+    configured for anything the app serves from disk.
+    """
+    if not MARK.exists():
+        logger.warning("Brand mark not found at {} — header will omit it.", MARK)
+        return ""
+    import base64
+
+    return "data:image/png;base64," + base64.b64encode(MARK.read_bytes()).decode()
 
 FONT_LINKS = """
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -374,7 +391,17 @@ body, gradio-app {{
   margin-bottom: 1.6rem;
 }}
 
+.cv-mark {{
+  width: 34px;
+  height: 34px;
+  display: block;
+  border-radius: 4px;
+}}
+
 .cv-trencadis {{ display: flex; align-items: flex-end; gap: 3px; }}
+/* In its second role the row is a divider under the header, so it needs the
+   breathing room the gradient rule it replaced used to provide. */
+.cv-head + .cv-trencadis {{ margin: 1.4rem 0 .4rem; }}
 .cv-trencadis span {{ display: inline-block; border-radius: 2px; }}
 
 .cv-wordmark {{
@@ -386,12 +413,6 @@ body, gradio-app {{
 }}
 /* The landing sets "Viva" in blue; <em> carries that without italics. */
 .cv-wordmark em {{ color: {BLUE}; font-style: normal; }}
-
-.cv-rule {{
-  height: 1px;
-  background: linear-gradient(90deg, rgba(28,43,48,.16), rgba(28,43,48,0));
-  margin: .5rem 0 1.25rem;
-}}
 
 .cv-note {{ font-size: .8rem; color: rgba(28, 43, 48, 0.55); line-height: 1.6; }}
 .cv-note b {{ color: {OCHRE}; font-weight: 600; }}
@@ -413,7 +434,7 @@ with gr.Blocks(
         gr.HTML(
             f"""
             <div class="cv-brand">
-              {_trencadis_html()}
+              <img class="cv-mark" src="{_mark_data_uri()}" alt="Cultura Viva">
               <span class="cv-wordmark">Cultura <em>Viva</em></span>
             </div>
             <div class="cv-head">
@@ -425,7 +446,7 @@ with gr.Blocks(
               al monument; només la càmera, el micròfon, el GPS i els auriculars
               els fa el navegador.</p>
             </div>
-            <div class="cv-rule"></div>
+            {_trencadis_html()}
             """
         )
 
@@ -556,7 +577,7 @@ if __name__ == "__main__":
     demo.queue(max_size=12).launch(
         server_name="0.0.0.0",
         server_port=7860,
-        favicon_path=str(FAVICON) if FAVICON.exists() else None,
+        favicon_path=str(MARK) if MARK.exists() else None,
         auth=_credentials(),
         auth_message=(
             "Cultura Viva — the Arduino UNO Q pipeline, running live. "
