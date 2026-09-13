@@ -38,10 +38,9 @@ const pipeline = [
 ];
 
 // Live demo running the board's own pipeline — the container in space/, on
-// Fly.io (see space/DEPLOY.md). Fly serves it over HTTPS on <app>.fly.dev with
-// no DNS setup; swap this for https://demo.culturaviva.tech after running
-// `fly certs add` and adding the record Fly prints to Netlify DNS.
-const DEMO_URL = 'https://cultura-viva-demo.fly.dev';
+// Fly.io (see space/DEPLOY.md). cultura-viva-demo.fly.dev also serves it, and
+// is the fallback if the custom domain is ever in doubt.
+const DEMO_URL = 'https://demo.culturaviva.tech';
 
 const toneMap = {
   blue: { bg: 'bg-blue-soft', text: 'text-blue-deep', chip: 'bg-blue' },

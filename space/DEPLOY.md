@@ -110,19 +110,36 @@ No rebuild, no redeploy — it restarts on a 4 GB machine. That raises the bill 
 roughly $25/month, at which point Hetzner at $4.59 is worth the verification
 wait.
 
-## 5. Custom domain (optional, later)
+## 5. Custom domain
 
-`demo.culturaviva.tech` is nicer than `cultura-viva-demo.fly.dev`, but nothing
-depends on it:
+The demo is served from `demo.culturaviva.tech`, so the page and the demo share
+one domain. `cultura-viva-demo.fly.dev` keeps working either way.
 
 ```bash
 fly certs add demo.culturaviva.tech
+fly certs setup demo.culturaviva.tech      # prints the DNS options
 ```
 
-Fly prints the DNS record to create. Add it in Netlify (**Domains →
-culturaviva.tech → DNS records**), wait for `fly certs show
-demo.culturaviva.tech` to report the certificate as issued, then update
-`DEMO_URL` in `src/pages/index.astro`.
+In Netlify (**Domains → culturaviva.tech → DNS records**), add:
+
+```
+CNAME   demo   peg15zk.cultura-viva-demo.fly.dev
+```
+
+Fly marks A+AAAA as recommended, but prefer the CNAME: the IPv4 Fly assigns is
+*shared*, so an A record hardcodes an address that is not exclusively ours and
+breaks silently if the app moves. The CNAME target is app-specific and follows
+Fly's changes. `demo` is a subdomain, so there is no apex-CNAME restriction.
+
+Then:
+
+```bash
+dig +short demo.culturaviva.tech
+fly certs check demo.culturaviva.tech      # wait for "Certificate is issued"
+```
+
+Only merge to the deployed branch once that reports issued — Netlify publishes
+on push, and `DEMO_URL` in `src/pages/index.astro` already points here.
 
 ## Operating it
 
