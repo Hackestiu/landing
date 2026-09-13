@@ -34,12 +34,21 @@ is the whole gate — there is no approval queue to sit in.
 From this directory (`space/`):
 
 ```bash
-fly launch --no-deploy --copy-config --name cultura-viva-demo --region mad
+fly launch --no-deploy --copy-config --name cultura-viva-demo --region cdg
 ```
 
 `--no-deploy` matters: the volume and the token have to exist *before* the first
 boot, or the app starts, finds no weights and no credentials, and downloads
 ~700 MB into a filesystem it will throw away.
+
+Region `cdg` is Paris — **Fly has no Madrid or Barcelona region**, and passing
+`--region mad` silently falls back to `cdg` while rewriting `fly.toml`. The
+volume must be created in the same region as `primary_region`; a machine cannot
+attach a volume from another region.
+
+`fly launch` rewrites `fly.toml` and strips its comments. Check `git diff`
+afterwards and restore anything it dropped — the settings that matter here are
+the mount, `soft_limit = 1`, the 20-minute `grace_period` and `memory = '2gb'`.
 
 If the name is taken, pick another and update `app` in `fly.toml` — the
 hostname becomes `<app>.fly.dev`, which the landing page has to match.
@@ -47,7 +56,11 @@ hostname becomes `<app>.fly.dev`, which the landing page has to match.
 ```bash
 # 5 GB holds the weights (~700 MB) and the Hub cache with room to spare.
 # Fly includes the first 10 GB of volume storage.
-fly volume create cv_models --size 5 --region mad
+#
+# `fly volume create` warns that a single volume is pinned to one host and
+# suggests creating two. Ignore it here: a second volume means a second machine,
+# which doubles the cost to serve a demo that handles one visitor at a time.
+fly volume create cv_models --size 5 --region cdg
 
 # Read token for culturaviva/park_guell-vit and culturaviva/sagrada_familia-vit.
 # Stored encrypted; never goes in fly.toml or git.
