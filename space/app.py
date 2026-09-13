@@ -45,9 +45,9 @@ SITES = {
 }
 
 PERSONALITY_BLURB = {
-    "artistic": "Beauty, symbolism and organic form — evocative, metaphor-led.",
-    "technical": "Construction, materials and structure — precise, figures first.",
-    "child": "Simple analogies and curious facts, for ages 6–12.",
+    "artistic": "Bellesa, simbolisme i forma orgànica — evocador, ple de metàfores.",
+    "technical": "Construcció, materials i estructura — precís, amb xifres.",
+    "child": "Analogies senzilles i curiositats, per a nens de 6 a 12 anys.",
 }
 
 
@@ -195,16 +195,191 @@ def describe_personality(button_id: str) -> str:
 # UI
 # ---------------------------------------------------------------------------
 
-# No custom CSS: Gradio 6 moved the Blocks `css=` argument to launch(), and this
-# page has to build identically under the 5.x pinned in README.md and under 6.x.
-with gr.Blocks(title="Cultura Viva — live pipeline") as demo:
+# ---------------------------------------------------------------------------
+# Styling — carries the landing page's design system across, so the embedded
+# demo does not read as a third-party widget dropped into the page.
+#
+# Tokens are taken from tailwind.config.mjs and src/styles/global.css at the
+# repo root: paper/ink, the blue-green-ochre accents, Fraunces for headings,
+# Inter for body, JetBrains Mono for the uppercase eyebrow labels, and the
+# grain overlay. Change them there and mirror the change here.
+# ---------------------------------------------------------------------------
+
+PAPER = "#FBF8F2"
+INK = "#1C2B30"
+BLUE = "#2A6F97"
+BLUE_DEEP = "#1D4E6E"
+BLUE_SOFT = "#D9E9F2"
+OCHRE = "#E2954A"
+
+# Same fractalNoise overlay as the landing's `bg-grain` utility.
+GRAIN = (
+    "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' "
+    "width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence "
+    "type='fractalNoise' baseFrequency='0.9' numOctaves='2' "
+    "stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' "
+    "height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E\")"
+)
+
+FONT_LINKS = """
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;600&display=swap">
+"""
+
+# Every token below is set for both light and dark: the landing commits to one
+# light palette, and a visitor whose OS prefers dark should still see the same
+# page rather than a half-inverted version of it.
+# The first entry of each stack has to be a gr.themes.Font, not a bare string:
+# Blocks() compares this theme against every built-in one, and those lead with a
+# GoogleFont, so a str in slot 0 makes Font.__eq__ read .name off a str and the
+# app dies at import with AttributeError. The families themselves are already
+# fetched by FONT_LINKS, so plain Font (not GoogleFont) keeps the request count
+# unchanged.
+THEME = gr.themes.Base(
+    font=[gr.themes.Font("Inter"), "ui-sans-serif", "system-ui", "sans-serif"],
+    font_mono=[gr.themes.Font("JetBrains Mono"), "ui-monospace", "monospace"],
+).set(
+    body_background_fill=PAPER,
+    body_background_fill_dark=PAPER,
+    body_text_color=INK,
+    body_text_color_dark=INK,
+    body_text_color_subdued="rgba(28, 43, 48, 0.62)",
+    body_text_color_subdued_dark="rgba(28, 43, 48, 0.62)",
+    background_fill_primary=PAPER,
+    background_fill_primary_dark=PAPER,
+    background_fill_secondary="rgba(28, 43, 48, 0.02)",
+    background_fill_secondary_dark="rgba(28, 43, 48, 0.02)",
+    block_background_fill="#FFFFFF",
+    block_background_fill_dark="#FFFFFF",
+    block_border_color="rgba(28, 43, 48, 0.10)",
+    block_border_color_dark="rgba(28, 43, 48, 0.10)",
+    block_label_text_color=BLUE_DEEP,
+    block_label_text_color_dark=BLUE_DEEP,
+    block_title_text_color=BLUE_DEEP,
+    block_title_text_color_dark=BLUE_DEEP,
+    block_radius="16px",
+    border_color_primary="rgba(28, 43, 48, 0.10)",
+    border_color_primary_dark="rgba(28, 43, 48, 0.10)",
+    input_background_fill="#FFFFFF",
+    input_background_fill_dark="#FFFFFF",
+    input_border_color="rgba(28, 43, 48, 0.14)",
+    input_border_color_dark="rgba(28, 43, 48, 0.14)",
+    input_radius="12px",
+    button_large_radius="9999px",
+    button_small_radius="9999px",
+    button_primary_background_fill=INK,
+    button_primary_background_fill_dark=INK,
+    button_primary_background_fill_hover=BLUE_DEEP,
+    button_primary_background_fill_hover_dark=BLUE_DEEP,
+    button_primary_text_color=PAPER,
+    button_primary_text_color_dark=PAPER,
+    button_secondary_background_fill="rgba(28, 43, 48, 0.04)",
+    button_secondary_background_fill_dark="rgba(28, 43, 48, 0.04)",
+    button_secondary_text_color=INK,
+    button_secondary_text_color_dark=INK,
+    link_text_color=BLUE,
+    link_text_color_dark=BLUE,
+    color_accent=BLUE,
+    color_accent_soft=BLUE_SOFT,
+    color_accent_soft_dark=BLUE_SOFT,
+)
+
+CSS = f"""
+body, gradio-app {{
+  background-color: {PAPER} !important;
+  background-image: {GRAIN};
+}}
+
+.gradio-container {{
+  max-width: 1040px !important;
+  margin: 0 auto !important;
+  background: transparent !important;
+}}
+
+/* Fraunces for headings, matching the landing's h1-h4 rule. */
+.cv-head h1, .cv-head h2, .gradio-container h1, .gradio-container h2, .gradio-container h3 {{
+  font-family: Fraunces, ui-serif, Georgia, serif !important;
+  font-weight: 500;
+  color: {INK};
+  letter-spacing: -0.01em;
+}}
+
+.cv-head h1 {{ font-size: 2rem; line-height: 1.15; margin: 0 0 .6rem; }}
+.cv-head p {{ color: rgba(28, 43, 48, 0.72); max-width: 60ch; line-height: 1.65; }}
+
+/* The landing's .eyebrow: mono, uppercase, very wide tracking. */
+.cv-eyebrow {{
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  text-transform: uppercase;
+  font-size: .72rem;
+  letter-spacing: .28em;
+  color: rgba(29, 78, 110, 0.8);
+  margin-bottom: .9rem;
+}}
+
+/* Component labels get the same eyebrow treatment. */
+.gradio-container .block > label > span,
+.gradio-container span[data-testid="block-info"] {{
+  font-family: "JetBrains Mono", ui-monospace, monospace !important;
+  text-transform: uppercase;
+  font-size: .66rem !important;
+  letter-spacing: .16em;
+}}
+
+.gradio-container .block {{
+  box-shadow: 0 12px 30px -14px rgba(28, 43, 48, 0.28);
+}}
+
+.gradio-container button.primary {{
+  font-family: "JetBrains Mono", ui-monospace, monospace !important;
+  text-transform: uppercase;
+  letter-spacing: .16em;
+  font-size: .72rem !important;
+}}
+
+/* Matches global.css's focus ring, which the landing sets for accessibility. */
+.gradio-container :focus-visible {{
+  outline: 3px solid {BLUE} !important;
+  outline-offset: 3px;
+}}
+
+.cv-rule {{
+  height: 1px;
+  background: linear-gradient(90deg, rgba(28,43,48,.16), rgba(28,43,48,0));
+  margin: .5rem 0 1.25rem;
+}}
+
+.cv-note {{ font-size: .8rem; color: rgba(28, 43, 48, 0.55); line-height: 1.6; }}
+.cv-note b {{ color: {OCHRE}; font-weight: 600; }}
+
+footer {{ display: none !important; }}
+
+@media (prefers-reduced-motion: reduce) {{
+  .gradio-container *, .gradio-container *::before, .gradio-container *::after {{
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+  }}
+}}
+"""
+
+with gr.Blocks(
+    title="Cultura Viva — live pipeline", theme=THEME, css=CSS, head=FONT_LINKS
+) as demo:
     with gr.Column():
-        gr.Markdown(
-            "# Cultura Viva — the UNO Q pipeline, in your browser\n"
-            "Photograph a Gaudí element, ask a question, hear the answer. "
-            "The vision, speech, language and voice models below are the same "
-            "files the Arduino UNO Q runs offline at the monument; only the "
-            "camera, microphone, GPS and headphones are replaced by the browser."
+        gr.HTML(
+            """
+            <div class="cv-head">
+              <p class="cv-eyebrow">Demo en directe</p>
+              <h1>El mateix pipeline, al teu navegador</h1>
+              <p>Fes una foto d'un element de Gaudí, pregunta-li el que vulguis i
+              escolta la resposta. Els models de visió, veu, llenguatge i síntesi
+              són els mateixos fitxers que l'Arduino UNO Q executa sense connexió
+              al monument; només la càmera, el micròfon, el GPS i els auriculars
+              els fa el navegador.</p>
+            </div>
+            <div class="cv-rule"></div>
+            """
         )
 
         with gr.Row():
@@ -212,11 +387,11 @@ with gr.Blocks(title="Cultura Viva — live pipeline") as demo:
                 site = gr.Dropdown(
                     choices=list(SITES),
                     value="Sagrada Família",
-                    label="Site",
-                    info="On the device this comes from the GPS module.",
+                    label="Lloc",
+                    info="Al dispositiu, això ve del mòdul GPS.",
                 )
                 photo = gr.Image(
-                    label="Photo",
+                    label="Fotografia",
                     type="filepath",
                     sources=["upload", "webcam"],
                     height=300,
@@ -224,50 +399,56 @@ with gr.Blocks(title="Cultura Viva — live pipeline") as demo:
                 button = gr.Radio(
                     choices=list(BUTTON_IDS),
                     value="A",
-                    label="Guide personality",
-                    info="The three Modulino buttons on the device.",
+                    label="Personalitat del guia",
+                    info="Els tres botons Modulino del dispositiu.",
                 )
                 personality_note = gr.Markdown(describe_personality("A"))
 
             with gr.Column():
                 voice_question = gr.Audio(
-                    label="Your question",
+                    label="La teva pregunta",
                     sources=["microphone", "upload"],
                     type="filepath",
                 )
                 typed = gr.Textbox(
-                    label="…or type it",
-                    placeholder="Why is this façade so different from the other one?",
-                    info="Only used when no recording is given.",
+                    label="…o escriu-la",
+                    placeholder="Why is this facade so different from the other one?",
+                    info="Només s'utilitza si no hi ha cap gravació.",
                 )
-                run = gr.Button("Ask the guide", variant="primary")
+                gr.HTML(
+                    '<p class="cv-note">Pregunta <b>en anglès</b>: el model de '
+                    "transcripció del dispositiu és <code>faster-whisper "
+                    "base.en</code>, que només entén anglès. És una limitació "
+                    "real del maquinari, no de la demo.</p>"
+                )
+                run = gr.Button("Pregunta al guia", variant="primary")
                 answer_audio = gr.Audio(
-                    label="Spoken answer", autoplay=True, type="filepath"
+                    label="Resposta en veu", autoplay=True, type="filepath"
                 )
 
-        element_box = gr.Textbox(label="Element detected", interactive=False)
-        question_box = gr.Textbox(label="Transcribed question", interactive=False)
-        answer_box = gr.Textbox(label="Answer", interactive=False, lines=4)
+        element_box = gr.Textbox(label="Element detectat", interactive=False)
+        question_box = gr.Textbox(label="Pregunta transcrita", interactive=False)
+        answer_box = gr.Textbox(label="Resposta", interactive=False, lines=4)
 
-        with gr.Accordion("What the model was given", open=False):
+        with gr.Accordion("Què ha rebut el model", open=False):
             context_box = gr.Textbox(
-                label="Knowledge-graph context",
+                label="Context del graf de coneixement",
                 interactive=False,
                 lines=12,
-                info="Retrieved from element_sheets.json, filtered by personality.",
+                info="Extret d'element_sheets.json, filtrat per personalitat.",
             )
             timing_box = gr.Textbox(
-                label="Stage latency on this server",
+                label="Latència per etapa en aquest servidor",
                 interactive=False,
                 lines=5,
                 info=(
-                    "Server timings, not device timings. The UNO Q's four "
-                    "Cortex-A53 cores are considerably slower — see the "
-                    "benchmark in the device repo for its real figures."
+                    "Temps del servidor, no del dispositiu. Els quatre nuclis "
+                    "Cortex-A53 de l'UNO Q són força més lents — les xifres "
+                    "reals són al benchmark del repositori del dispositiu."
                 ),
             )
 
-        with gr.Accordion("Pipeline status", open=False):
+        with gr.Accordion("Estat del pipeline", open=False):
             gr.Markdown(_readiness_markdown())
 
     button.change(describe_personality, inputs=button, outputs=personality_note)
