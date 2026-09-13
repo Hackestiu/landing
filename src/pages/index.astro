@@ -2,7 +2,6 @@
 import Layout from '../layouts/Layout.astro';
 import TrencadisRow from '../components/TrencadisRow.astro';
 import CatenaryDivider from '../components/CatenaryDivider.astro';
-import KnowledgeGraphDemo from '../components/KnowledgeGraphDemo.astro';
 
 const pipeline = [
   {
@@ -19,8 +18,8 @@ const pipeline = [
     n: '02',
     title: 'Fes una pregunta',
     titleEn: 'Ask a question',
-    detail: 'Parla-hi com si tinguessis un guia al costat',
-    detailEn: 'Talk to it like you would a guide at your side',
+    detail: 'Parla-hi com si tinguessis un guia al costat.',
+    detailEn: 'Talk to it like you would a guide at your side.',
     example: '«De què està fet aquest trencadís?»',
     exampleEn: '“What is this mosaic made of?”',
     tone: 'green',
@@ -62,7 +61,6 @@ const toneMap = {
           <li><a href="#funcionament" data-en="How it works" class="hover:text-blue transition-colors">Funcionament</a></li>
           <li><a href="#demo" data-en="Video" class="hover:text-blue transition-colors">Vídeo</a></li>
           <li><a href="#prova" data-en="Try it" class="hover:text-blue transition-colors">Prova-ho</a></li>
-          <li><a href="#graf" data-en="Knowledge graph" class="hover:text-blue transition-colors">Graf</a></li>
           <li><a href="#impacte" data-en="Impact" class="hover:text-blue transition-colors">Impacte</a></li>
         </ul>
         <div
@@ -270,21 +268,6 @@ const toneMap = {
         els quatre nuclis Cortex-A53 de la placa: la demo demostra que el
         pipeline funciona, no a quina velocitat corre sobre el maquinari.
       </p>
-    </section>
-
-    <CatenaryDivider />
-
-    <!-- GRAF DE CONEIXEMENT -->
-    <section id="graf" class="px-6 py-24 max-w-5xl mx-auto">
-      <div class="max-w-2xl mb-10 mx-auto text-center">
-        <p class="eyebrow mb-4" data-en="Knowledge graph">Graf de coneixement</p>
-        <h2 class="text-3xl md:text-4xl text-ink" data-en="Gaudí's work in a graph">L'obra de Gaudí en un graf</h2>
-        <p class="mt-4 text-ink/70 leading-relaxed" data-en="The language model consults a graph of entities and relations about Gaudí's work so every answer stays grounded and verifiable.">
-          El model de llenguatge consulta un graf d'entitats i relacions
-          sobre l'obra de Gaudí perquè cada resposta sigui fonamentada i verificable.
-        </p>
-      </div>
-      <KnowledgeGraphDemo theme="light" />
     </section>
 
     <CatenaryDivider />
