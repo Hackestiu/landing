@@ -108,7 +108,9 @@ const toneMap = {
             Descobreix el projecte
           </a>
           <a
-            href="http://demo.culturaviva.tech"
+            href={DEMO_URL}
+            target="_blank"
+            rel="noopener"
             data-en="Try the demo"
             class="inline-flex items-center justify-center rounded-full border border-ink/15 bg-paper text-ink px-8 py-4 font-medium hover:border-blue hover:text-blue transition-colors"
           >
@@ -244,29 +246,23 @@ const toneMap = {
         </p>
       </div>
 
-      <div
-        id="prova-frame"
-        class="relative rounded-2xl border border-ink/10 bg-ink/[0.02] overflow-hidden"
-        data-demo-url={DEMO_URL}
-      >
-        <div class="aspect-[4/3] md:aspect-[16/10] flex items-center justify-center px-6">
-          <div class="text-center max-w-md">
-            <p class="font-display text-xl text-ink mb-3" data-en="Wake the demo">Desperta la demo</p>
-            <p class="text-sm text-ink/60 leading-relaxed mb-6" data-en="It runs on a free CPU server and sleeps when idle, so the first load takes about a minute while the models are read back into memory.">
-              S'executa en un servidor de CPU gratuït i s'adorm quan no s'usa,
-              així que la primera càrrega triga aproximadament un minut mentre
-              els models es tornen a carregar a memòria.
-            </p>
-            <button
-              type="button"
-              id="prova-load"
-              class="inline-flex items-center gap-2 rounded-full bg-ink text-paper px-5 py-2.5 font-mono text-xs uppercase tracking-widest2 hover:bg-blue-deep transition-colors"
-              data-en="Load the demo"
-            >
-              Carrega la demo
-            </button>
-          </div>
-        </div>
+      <div class="rounded-2xl border border-ink/10 bg-ink/[0.02] px-6 py-14 text-center">
+        <p class="font-display text-xl text-ink mb-3" data-en="It opens in its own tab">S'obre en una pestanya pròpia</p>
+        <p class="mx-auto max-w-md text-sm text-ink/60 leading-relaxed mb-7" data-en="It runs on a CPU server, so the first load takes about a minute while the models are read back into memory. The demo needs the camera and the microphone, which it can only ask you for on its own page.">
+          S'executa en un servidor de CPU, així que la primera càrrega triga
+          aproximadament un minut mentre els models es tornen a carregar a
+          memòria. La demo necessita la càmera i el micròfon, i només te'ls pot
+          demanar des de la seva pàgina.
+        </p>
+        <a
+          href={DEMO_URL}
+          target="_blank"
+          rel="noopener"
+          class="inline-flex items-center gap-2 rounded-full bg-ink text-paper px-6 py-3 font-mono text-xs uppercase tracking-widest2 hover:bg-blue-deep transition-colors"
+          data-en="Open the demo"
+        >
+          Obre la demo
+        </a>
       </div>
 
       <p class="mt-5 text-xs text-ink/50 leading-relaxed max-w-2xl" data-en="The browser stands in for the camera, the microphone, the GPS and the buttons; everything else is the device's own code. Note that this server is faster than the board's four Cortex-A53 cores, so it shows that the pipeline works, not how fast it runs on the hardware.">
@@ -385,24 +381,5 @@ const toneMap = {
       localStorage.setItem(LANG_KEY, lang);
       applyLang(lang);
     });
-  });
-
-  // The Space sleeps when idle and takes a while to wake, so it is only
-  // embedded on demand: no visitor pays for it just by scrolling past.
-  const provaFrame = document.getElementById('prova-frame');
-  const provaButton = document.getElementById('prova-load');
-
-  provaButton?.addEventListener('click', () => {
-    const url = provaFrame?.dataset.demoUrl;
-    if (!url || !provaFrame) return;
-
-    const iframe = document.createElement('iframe');
-    iframe.src = url;
-    iframe.title = 'Cultura Viva — demo';
-    iframe.className = 'w-full h-[80vh] min-h-[640px] border-0';
-    iframe.allow = 'camera; microphone; autoplay; clipboard-write';
-    iframe.referrerPolicy = 'no-referrer-when-downgrade';
-
-    provaFrame.replaceChildren(iframe);
   });
 </script>
