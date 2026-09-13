@@ -1,0 +1,22 @@
+# Same runtime dependencies as the board (python/pyproject.toml), minus the
+# hardware ones: no sounddevice, no soxr — the browser does capture and playback.
+pillow>=10.0.0
+numpy>=1.24.0
+onnxruntime>=1.16.0
+faster-whisper>=1.0.0
+# Built from source. The project's prebuilt CPU wheel index
+# (abetlen.github.io/llama-cpp-python/whl/cpu) is musl-linked despite its
+# linux_x86_64 tag, so its libllama.so cannot load on any glibc image —
+# python:*-slim, or a Hugging Face Gradio Space. Verified: the import dies with
+# "libc.musl-x86_64.so.1: cannot open shared object file". The Dockerfile
+# compiles it in a builder stage so the runtime image carries no toolchain.
+llama-cpp-python==0.3.19
+piper-tts>=1.2.0
+loguru>=0.7.0
+
+# The UI. On Hugging Face Spaces the SDK would install this from the README's
+# sdk_version; pinning it here keeps the Docker image and the Space identical.
+gradio==5.49.1
+
+# Pulls the weights at startup (bootstrap.py).
+huggingface-hub>=0.23.0

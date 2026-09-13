@@ -1,0 +1,36 @@
+# Production stack for the server: the demo behind Caddy, which terminates
+# HTTPS. Nothing but Caddy is published on the host — the app is reachable only
+# over the internal network, so port 7860 is never exposed to the internet.
+services:
+  app:
+    build: .
+    restart: unless-stopped
+    env_file: .env          # HF_TOKEN lives here; never commit it
+    volumes:
+      # Weights and the Hub cache survive rebuilds. Without this every
+      # `docker compose up --build` re-downloads ~700 MB.
+      - models:/app/models
+    expose:
+      - "7860"
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      # Set DEMO_DOMAIN in .env. Caddy requests the certificate for this name,
+      # so it must already resolve to this server or issuance fails.
+      DEMO_DOMAIN: ${DEMO_DOMAIN}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data      # issued certificates — losing this re-issues them,
+      - caddy_config:/config  # and Let's Encrypt rate-limits repeat issuance
+    depends_on:
+      - app
+
+volumes:
+  models:
+  caddy_data:
+  caddy_config:

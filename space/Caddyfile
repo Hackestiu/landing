@@ -1,0 +1,11 @@
+# Terminates HTTPS and forwards to Gradio. Caddy obtains and renews the
+# Let's Encrypt certificate itself — there is no certbot and no renewal cron.
+{$DEMO_DOMAIN} {
+	reverse_proxy app:7860
+
+	# Gradio streams each pipeline stage as it completes, and a cold answer can
+	# take well over a minute. The defaults would cut the connection mid-answer.
+	timeouts {
+		read_body 5m
+	}
+}

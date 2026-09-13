@@ -1,0 +1,13 @@
+# Weights are fetched at startup by bootstrap.py — never commit them.
+models/slm/*.gguf
+models/stt/faster-whisper-base.en/
+models/tts/*.onnx
+models/vision/*/model.onnx
+
+# Runtime output
+data/
+__pycache__/
+*.pyc
+
+# Local deploy secrets
+.env

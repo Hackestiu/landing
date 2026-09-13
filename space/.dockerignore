@@ -1,0 +1,10 @@
+data/
+models/slm/*.gguf
+models/stt/faster-whisper-base.en/
+models/tts/*.onnx
+models/vision/*/model.onnx
+models/.hf-cache/
+__pycache__/
+**/__pycache__/
+*.pyc
+scripts/

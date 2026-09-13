@@ -1,0 +1,23 @@
+{
+  "id2label": {
+    "0": "3_viaductes",
+    "1": "casa_museu",
+    "2": "escalinata_drac",
+    "3": "pavellons_consergeria",
+    "4": "placa_natura",
+    "5": "sala_hipostila",
+    "6": "turo_3_creus",
+    "7": "unknown"
+  },
+  "image_size": 224,
+  "image_mean": [
+    0.5,
+    0.5,
+    0.5
+  ],
+  "image_std": [
+    0.5,
+    0.5,
+    0.5
+  ]
+}

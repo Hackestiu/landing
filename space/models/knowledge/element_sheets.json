@@ -1,0 +1,885 @@
+{
+    "sheets": [
+        {
+            "id": "park_guell",
+            "type": "monument",
+            "name": "Park Güell",
+            "aliases": [
+                "Parc Güell",
+                "Park Güell"
+            ],
+            "creator": "Antoni Gaudí, commissioned by Eusebi Güell",
+            "timeline": "Commissioned 1900 as a private residential development; built 1900-1914 (works abandoned with only 2 of 60 planned houses built); sold by Güell's heirs to Barcelona City Council in 1922; opened as a municipal park in 1926; declared an artistic monument in 1969; UNESCO World Heritage Site in 1984.",
+            "technical_figures": {},
+            "inspiration": "Inspired by the English garden-city movement (hence the English word 'Park' in its name); marks Gaudí's 'naturalist period', in which his study of nature and organic forms drove both ornament and underlying structural geometry. Symbolic references throughout include political Catalanism (entrance stairway) and Catholicism (the Calvary, originally conceived as a chapel).",
+            "materials": [
+                "local stone (viaducts and columns)",
+                "trencadís (broken tile/ceramic mosaic)"
+            ],
+            "construction_process": "Built 1900-1914 as a failed private residential estate (60 triangular plots planned, only 2 houses built) before being abandoned and later purchased by the City Council.",
+            "technical_facts": [
+                "Uses inverted catenary arches for its viaducts and elevated pathways, the same load-bearing-compression method Gaudí used earlier at Colònia Güell.",
+                "Entry to the Monumental Zone (main terrace, mosaics, viaducts, gate area) has required a paid ticket since October 2013; Barcelona residents enter free."
+            ],
+            "artistic_facts": [
+                "UNESCO's 1984 inscription describes the park's architecture as combining the Arts and Crafts movement, Symbolism, Expressionism, and Rationalism, and as having presaged techniques of 20th-century Modernism.",
+                "Introduced curved, undulating benches at Park Güell -- a precursor to the style Gaudí later fully realized at the Sagrada Família."
+            ],
+            "general_knowledge_facts": [],
+            "similarities": [
+                "Same architect (Antoni Gaudí) and same 1984 UNESCO 'Works of Antoni Gaudí' listing as la_pedrera.",
+                "Catenary/compression structural logic shared with catenaria_pedrera, though executed in stone viaducts here versus brick vaulting there."
+            ],
+            "sources": [
+                "wikipedia_park_guell",
+                "official_park_guell"
+            ]
+        },
+        {
+            "id": "drac_park_guell",
+            "type": "element",
+            "name": "El Drac (Dragon / Salamander)",
+            "aliases": [
+                "escalinata_drac",
+                "the dragon",
+                "the salamander",
+                "drac",
+                "escalinata del drac"
+            ],
+            "parent": "park_guell",
+            "creator": "Antoni Gaudí",
+            "timeline": "Built as part of the main terrace/entrance works, documented as complete by the January 1903 Anuari de l'Associació d'Arquitectes description of the site.",
+            "technical_figures": {},
+            "inspiration": "Popularly associated with mythological guardian-dragon imagery, though sources disagree on whether the figure represents a dragon or a salamander -- the official park site itself uses both terms.",
+            "materials": [
+                "trencadís (tile-shard mosaic)",
+                "masonry/mortar core"
+            ],
+            "construction_process": "A curved masonry/mortar core was built up first, then clad in small, irregular ceramic trencadís fragments (rather than flat tiles) so the mosaic skin could conform to the compound curvature without cracking.",
+            "technical_facts": [
+                "Functions as the overflow spout of the park's rainwater system: water falling on the Greek Theatre/Nature Square above is collected by a conduit inside the Hypostyle Room's colonnade and channeled to an underground cistern, with the dragon's mouth as that system's overflow outlet."
+            ],
+            "artistic_facts": [
+                "Covered in trencadís (tile-shard mosaic); the official park site calls it 'the most popular image of the park.'",
+                "Sits on the Dragon Stairway, a twin flight of steps divided into three landings: goblin-like shapes on the first landing, the emblem of Catalonia on the second, and the dragon/salamander further up."
+            ],
+            "general_knowledge_facts": [
+                "Popularly associated with mythological guardian-dragon imagery (e.g. the dragon of the Garden of the Hesperides) -- a widely repeated interpretation, not confirmed by any Gaudí-authored source."
+            ],
+            "similarities": [
+                "Trencadís cladding technique shared with caps_pedrera (La Pedrera's chimneys) and banc_serpentejant (the serpentine bench, same park)."
+            ],
+            "sources": [
+                "official_park_guell",
+                "wikipedia_park_guell"
+            ]
+        },
+        {
+            "id": "porxada_bugaderia",
+            "type": "element",
+            "name": "Pòrtic de la Bugaderia (Laundry Room Portico / Washerwoman's Portico)",
+            "aliases": [
+                "Laundry Room Portico",
+                "inclined columns portico",
+                "arcs inclinats"
+            ],
+            "parent": "park_guell",
+            "creator": "Antoni Gaudí",
+            "timeline": "Part of the original park infrastructure built 1900-1914.",
+            "technical_figures": {},
+            "inspiration": "Described by the park's own site as taking 'the shape of a great wave atop slanting columns' -- called one of the finest examples of Gaudí's organic architecture; the slanted double colonnade evokes a stone forest, echoing how the park's viaduct columns and vaults elsewhere mimic tree trunks and natural forms.",
+            "materials": [
+                "unworked (rough-cut) hillside stone"
+            ],
+            "construction_process": "Built from unworked stone taken from the same hillside it stands on, so the structure visually grows out of the mountain rather than sitting on top of it.",
+            "technical_facts": [
+                "The double colonnade of slanting columns acts as a structural buttress against the retaining wall behind it -- the tilt is load-bearing, not decorative.",
+                "Uses the same structural logic as the park's viaducts: inclined stone columns form a parabola/inverted-catenary profile so the columns work in pure compression along the line of thrust, without needing external buttressing."
+            ],
+            "artistic_facts": [],
+            "general_knowledge_facts": [],
+            "similarities": [
+                "Shares its inclined-column, inverted-catenary compression logic with viaductes_park_guell (same park) and, in brick-vault form, with catenaria_pedrera (La Pedrera's attic).",
+                "NOTA DE COMPROBACIÓN: no hay carpeta de imágenes propia en la lista de landmarks proporcionada para este elemento -- revisar si existe o si está repartida entre otras carpetas."
+            ],
+            "sources": [
+                "official_park_guell",
+                "wikipedia_park_guell"
+            ]
+        },
+        {
+            "id": "porters_lodge_park_guell",
+            "type": "element",
+            "name": "Porter's Lodge (entrance gatehouses)",
+            "aliases": [
+                "pavellons_consergeria",
+                "Pavellons de la Portería",
+                "gatehouses",
+                "entrance pavilions",
+                "porter's lodge"
+            ],
+            "parent": "park_guell",
+            "creator": "Antoni Gaudí",
+            "timeline": "Built early in the 1900-1914 construction phase; documented as already constructed by the January 1903 Anuari de l'Associació d'Arquitectes description.",
+            "technical_figures": {},
+            "inspiration": "Whimsical, fairy-tale-like pavilion forms marking the park's main entrance, reflecting Güell's ambition to recreate an English residential-park model.",
+            "materials": [],
+            "construction_process": "",
+            "technical_facts": [
+                "One of the two pavilions originally housed a phone booth; the other now contains a permanent exhibit of the Barcelona City History Museum."
+            ],
+            "artistic_facts": [
+                "Forms a pair of gatehouses flanking the park's main entrance, among the first structures built on site."
+            ],
+            "general_knowledge_facts": [],
+            "similarities": [],
+            "sources": [
+                "wikipedia_park_guell"
+            ]
+        },
+        {
+            "id": "banc_serpentejant",
+            "type": "element",
+            "name": "Serpentine Bench (Banc de trencadís)",
+            "aliases": [
+                "placa_natura",
+                "the sea-serpent bench",
+                "undulating bench",
+                "banc ondulat",
+                "plaça de la natura"
+            ],
+            "parent": "park_guell",
+            "creator": "Josep Maria Jujol (design of the trencadís bench, under Gaudí's overall project)",
+            "timeline": "Built as part of the main terrace works during the 1900-1914 construction phase; the terrace and its hypostyle support were already in use for events by 1907.",
+            "technical_figures": {},
+            "inspiration": "Its ergonomic, curving form creates enclaves along its length that encourage social interaction rather than facing visitors outward in a straight line.",
+            "materials": [
+                "trencadís (broken tile/ceramic/glass mosaic)"
+            ],
+            "construction_process": "Long, curving bench shaped like a sea serpent, bordering the terrace above the Hypostyle Room, clad in trencadís mosaic.",
+            "technical_facts": [
+                "Sits directly atop the Hypostyle Room's vaulted terrace, following the ergonomic curve designed to double as a shared social space rather than a simple boundary wall."
+            ],
+            "artistic_facts": [
+                "One of Gaudí's introductions of curved, undulating bench forms at Park Güell, a precursor to the style he later fully realized at the Sagrada Família."
+            ],
+            "general_knowledge_facts": [],
+            "similarities": [
+                "Trencadís technique shared with drac_park_guell (same park) and caps_pedrera (La Pedrera's chimneys).",
+                "Design attributed to Jujol, like the interior wrought-iron gate at patis_pedrera (La Pedrera)."
+            ],
+            "sources": [
+                "wikipedia_park_guell"
+            ]
+        },
+        {
+            "id": "sala_hipostila",
+            "type": "element",
+            "name": "Hypostyle Room (Room of a Hundred Columns)",
+            "aliases": [
+                "Sala Hipòstila",
+                "Room of a Hundred Columns"
+            ],
+            "parent": "park_guell",
+            "creator": "Antoni Gaudí",
+            "timeline": "Documented as fully covered/completed by 1907, when events were already being held in the great square above it; the tiled bench that borders the terrace above was completed in 1914.",
+            "technical_figures": {},
+            "inspiration": "The vaulted colonnade's mosaic-decorated ceiling recalls grotesque motifs inspired by Roman architecture, particularly the Domus Aurea.",
+            "materials": [
+                "stone columns",
+                "mosaic ceiling decoration"
+            ],
+            "construction_process": "A forest of columns forming a vaulted space that structurally supports the great terrace and serpentine bench above it.",
+            "technical_facts": [
+                "Functions as part of the park's rainwater collection system: a conduit inside the colonnade gathers water falling on the terrace above and channels it to an underground cistern, ultimately overflowing through the dragon's mouth (see drac_park_guell)."
+            ],
+            "artistic_facts": [
+                "Ceiling mosaics recall grotesque motifs inspired by Roman architecture, particularly the Domus Aurea."
+            ],
+            "general_knowledge_facts": [],
+            "similarities": [
+                "Structurally supports banc_serpentejant (the terrace bench above) and feeds the water system that exits through drac_park_guell."
+            ],
+            "sources": [
+                "wikipedia_park_guell"
+            ]
+        },
+        {
+            "id": "viaductes_park_guell",
+            "type": "element",
+            "name": "Viaducts / elevated pathways",
+            "aliases": [
+                "3_viaductes",
+                "tres viaductes",
+                "viaducts",
+                "elevated carriage paths"
+            ],
+            "parent": "park_guell",
+            "creator": "Antoni Gaudí",
+            "timeline": "Built during the 1900-1914 construction phase; documented as partly complete (viaducts and part of the great esplanade) by the January 1903 Anuari de l'Associació d'Arquitectes description.",
+            "technical_figures": {},
+            "inspiration": "Columns and vaulted supports mimic tree trunks and natural forms, blending the paths seamlessly with the surrounding landscape.",
+            "materials": [
+                "local stone"
+            ],
+            "construction_process": "A system of elevated pathways, originally intended for carriages, built from local stone using inclined columns and vaulted supports that follow the natural lie of the land.",
+            "technical_facts": [
+                "As with Gaudí's earlier work at Colònia Güell, the viaducts use inverted catenary arches to achieve optimal load-bearing compression, so the stone columns work in pure compression without needing external buttressing."
+            ],
+            "artistic_facts": [
+                "Columns and vaulted supports mimic tree trunks and natural forms, part of Gaudí's naturalist-period design language for the park."
+            ],
+            "general_knowledge_facts": [],
+            "similarities": [
+                "Shares its inclined-column, inverted-catenary compression logic with porxada_bugaderia (same park) and, in brick-vault form, with catenaria_pedrera (La Pedrera's attic)."
+            ],
+            "sources": [
+                "wikipedia_park_guell"
+            ]
+        },
+        {
+            "id": "casa_museu_park_guell",
+            "type": "element",
+            "name": "Casa-Museu Gaudí (antigua casa piloto)",
+            "aliases": [
+                "casa_museu",
+                "Gaudí House Museum",
+                "Larrard House show home"
+            ],
+            "parent": "park_guell",
+            "creator": "Francesc Berenguer i Mestres (arquitecto de la casa); habitada por Antoni Gaudí",
+            "timeline": "Construida en 1904 como casa piloto ('show home') del fallido desarrollo residencial de 60 parcelas; quedó sin vender; Gaudí la compró con sus ahorros y se mudó en 1906 con su padre y su sobrina; convertida en Gaudí House Museum en 1963; declarada monumento nacional en 1969.",
+            "technical_figures": {},
+            "inspiration": "Pensada originalmente como muestra del modelo de 'ciudad-jardín' inglesa que Eusebi Güell quería vender a la alta burguesía barcelonesa.",
+            "materials": [],
+            "construction_process": "Fue una de las dos únicas viviendas construidas de las sesenta parcelas triangulares planificadas; al no venderse, Güell convenció a Gaudí de comprarla.",
+            "technical_facts": [],
+            "artistic_facts": [],
+            "general_knowledge_facts": [
+                "Es la única de las 'casas piloto' del proyecto que no fue diseñada por el propio Gaudí, sino por su colaborador Francesc Berenguer i Mestres."
+            ],
+            "similarities": [
+                "Comparte el origen fallido del proyecto residencial de park_guell con el resto de infraestructuras del parque (viaductes_park_guell, porxada_bugaderia)."
+            ],
+            "sources": [
+                "wikipedia_park_guell"
+            ]
+        },
+        {
+            "id": "turo_3_creus",
+            "type": "element",
+            "name": "El Turó de les Tres Creus (Calvario)",
+            "aliases": [
+                "turo_3_creus",
+                "Hill of the Three Crosses",
+                "Monumento al Calvario"
+            ],
+            "parent": "park_guell",
+            "creator": "Antoni Gaudí",
+            "timeline": "Construido durante la fase de obras de 1900-1914, en el punto más alto del parque.",
+            "technical_figures": {},
+            "inspiration": "Referencia católica del proyecto, concebida originalmente como capilla; simboliza el Calvario cristiano.",
+            "materials": [
+                "piedra"
+            ],
+            "construction_process": "Escalinata que asciende hasta la cima de la colina, coronada por tres cruces de piedra.",
+            "technical_facts": [],
+            "artistic_facts": [
+                "Una de las tres cruces apunta al cielo; las otras dos marcan puntos cardinales.",
+                "Desde este punto se puede ver la Sagrada Família, la Torre Glòries, Montjuïc y el Mediterráneo."
+            ],
+            "general_knowledge_facts": [],
+            "similarities": [
+                "Referencia religiosa católica del parque, en paralelo a la simbología del catalanismo político presente en la escalinata de entrada del mismo parque."
+            ],
+            "sources": [
+                "wikipedia_park_guell"
+            ]
+        },
+        {
+            "id": "la_pedrera",
+            "type": "monument",
+            "name": "Casa Milà (La Pedrera)",
+            "aliases": [
+                "La Pedrera",
+                "Casa Milà"
+            ],
+            "creator": "Antoni Gaudí, commissioned by Pere Milà and Roser Segimon",
+            "timeline": "Commissioned September 1905; presented to Barcelona City Council February 1906; pre-existing building demolished and construction begun 1906; completed December 1910; certificate of completion issued October 1912; declared a historic/artistic monument in 1969; UNESCO World Heritage Site in 1984; headquarters of Fundació Catalunya La Pedrera since 2013.",
+            "technical_figures": {
+                "floor_area": "1,323 m² per floor",
+                "plot_area": "1,620 m²",
+                "stories": "9 (basement, ground floor, mezzanine, main/noble floor, four upper floors, attic)"
+            },
+            "inspiration": "Gaudí designed the house as 'a constant curve, both outside and inside,' combining ruled geometry with naturalistic form. There is no agreement on which mountain inspired the facade -- candidates proposed by different contemporaries include the rocks of Fray Guerau in the Prades mountains, St. Miquel del Fai, the Torrent de Pareis cliffs in Menorca, Uçhisar in Cappadocia, and Mola Gallifa.",
+            "materials": [
+                "limestone (Garraf Massif, lower floor; Villefranche quarry, upper floors)",
+                "wrought iron",
+                "curved iron floor beams"
+            ],
+            "construction_process": "Gaudí's last private residence commission; the pre-existing building on the plot was demolished (unlike the Casa Batlló renovation) and the new self-supporting stone facade, connected to curved iron floor beams, was built 1906-1910.",
+            "technical_facts": [
+                "Self-supporting stone facade with no load-bearing walls, connected to curved iron beams surrounding the perimeter of each floor -- allowing interior walls to be added or removed without affecting the building's stability.",
+                "In August 1908 the City Council fined the project for exceeding its permitted height and site boundaries; the dispute was resolved in December 1909 when the building was certified as monumental and exempted from strict bylaw compliance."
+            ],
+            "artistic_facts": [
+                "Nicknamed 'La Pedrera' ('the stone quarry') by residents who disliked its rough-hewn, undulating stone facade -- an insult that became its popular name.",
+                "Considered a predecessor of later biomorphic buildings such as the 1921 Einstein Tower (Erich Mendelsohn), the Guggenheim Museum (Frank Wright), and Frank Gehry's Disney Concert Hall."
+            ],
+            "general_knowledge_facts": [],
+            "similarities": [
+                "Same architect (Antoni Gaudí) and same 1984 UNESCO 'Works of Antoni Gaudí' listing as park_guell.",
+                "Catenary/compression structural logic shared with park_guell's viaducts and pòrtic, though executed as brick vaulting here (see catenaria_pedrera) versus stone columns there."
+            ],
+            "sources": [
+                "wikipedia_casa_mila"
+            ]
+        },
+        {
+            "id": "catenaria_pedrera",
+            "type": "element",
+            "name": "Espai Gaudí attic (catenary/parabolic brick arches)",
+            "aliases": [
+                "La Pedrera attic",
+                "catenary arches of La Pedrera",
+                "loft arches"
+            ],
+            "parent": "la_pedrera",
+            "creator": "Antoni Gaudí (arches marked on site by builder Bayó and foreman Canaleta)",
+            "timeline": "Built during the main 1906-1910 construction phase, as the attic laundry/drying space beneath the roof.",
+            "technical_figures": {
+                "arch_count": "270 parabolic brick arches",
+                "arch_spacing": "about 80 cm apart"
+            },
+            "inspiration": "The rippling roofline is widely compared to the ribs of a huge animal or the fronds of a palm; the space, now called Espai Gaudí, is often described as feeling like walking through the inside of a whale's ribcage.",
+            "materials": [
+                "brick (volta catalana / timbrel vaulting)"
+            ],
+            "construction_process": "Each arch's profile was set on site with a hanging-chain (catenary) model: nails were driven at the two spring points of the arch, a chain hung between them so its lowest point matched the desired deflection, and that traced curve became the template for the brick vault -- the same method Gaudí used at Casa Batlló and, earlier, on the roof of the Mataró workers' cooperative ('L'Obrera Mataronense').",
+            "technical_facts": [
+                "Built using volta catalana (Catalan/timbrel vault) technique -- thin layered brick vaulting imported from Italy in the 14th century, laid without a full wooden centering framework.",
+                "Arch height and spacing directly follow the courtyards' footprint below: arches rise higher where the plan narrows and drop lower where it widens, so the roof structure encloses the irregular figure-8 courtyard shape beneath it."
+            ],
+            "artistic_facts": [
+                "270 parabolic brick arches of varying height, spaced about 80 cm apart, give the roofline a rippling, organic silhouette."
+            ],
+            "general_knowledge_facts": [],
+            "similarities": [
+                "Same catenary/inverted-arch compression principle as park_guell's viaductes_park_guell and porxada_bugaderia, executed here in brick vaulting rather than stone columns.",
+                "Same catenary-model construction method (hanging chain traced into a template) as facana_pedrera relates to, and directly comparable to the construction logic behind pla_frontal_casa_batllo's loft, also built by Gaudí with catenary brick arches."
+            ],
+            "sources": [
+                "wikipedia_casa_mila"
+            ]
+        },
+        {
+            "id": "caps_pedrera",
+            "type": "element",
+            "name": "Chimneys and rooftop sculptures ('caps')",
+            "aliases": [
+                "La Pedrera chimneys",
+                "rooftop warriors",
+                "garden of warriors"
+            ],
+            "parent": "la_pedrera",
+            "creator": "Antoni Gaudí",
+            "timeline": "Built as part of the roof during the main 1906-1910 construction phase; later restored to remove post-Gaudí chimneys, TV antennas, and other later additions.",
+            "technical_figures": {
+                "chimneys": "28, in several groupings",
+                "skylight_staircase_exits": 6,
+                "vents": 2,
+                "discharge_domes": 4
+            },
+            "inspiration": "Nicknamed the 'garden of warriors' by poet Pere Gimferrer, since the grouped chimneys look like helmeted sentinels standing guard over the skylight/staircase exits; their helmet-like silhouettes are sometimes linked to Gaudí's interest in medieval fortress architecture.",
+            "materials": [
+                "brick",
+                "lime coating",
+                "broken marble",
+                "broken Valencia tiles",
+                "glass (one chimney)"
+            ],
+            "construction_process": "Built from brick and coated with lime, broken marble, or glass; all pieces are functional (smoke extraction, ventilation, drainage) rather than purely decorative, despite their sculptural appearance.",
+            "technical_facts": [
+                "The roof holds 28 chimneys in several groupings, 6 skylight/staircase exits, 2 half-hidden vents that renew air inside the building, and 4 discharge domes -- all functional rather than purely decorative.",
+                "Some staircase-exit towers double as housings for the building's water tanks, a few of which are snail-shaped.",
+                "The rooftop underwent a later restoration that removed chimneys added after Gaudí's death, TV antennas, and other additions, to return the roofscape closer to its originally designed functional layout."
+            ],
+            "artistic_facts": [
+                "One chimney is topped with glass -- reportedly added by Gaudí the day after the building's inauguration party using empty champagne bottles, later restored with early-20th-century champagne-bottle bases."
+            ],
+            "general_knowledge_facts": [],
+            "similarities": [
+                "Trencadís-style broken-tile cladding shared with drac_park_guell and banc_serpentejant (Park Güell)."
+            ],
+            "sources": [
+                "wikipedia_casa_mila"
+            ]
+        },
+        {
+            "id": "facana_pedrera",
+            "type": "element",
+            "name": "Self-supporting stone facade",
+            "aliases": [
+                "facana_1",
+                "facana_2",
+                "facana_3",
+                "La Pedrera facade",
+                "stone facade"
+            ],
+            "parent": "la_pedrera",
+            "creator": "Antoni Gaudí",
+            "timeline": "Built during the main 1906-1910 construction phase; restored from 1987 onward, including rejoining fallen stone pieces sourced from the Villefranche quarry.",
+            "technical_figures": {},
+            "inspiration": "Viewed from outside, the building reads in three parts: the main six-storey block with winding stone floors, two set-back floors with a smoother, whiter, wave-like curve, and the body of the roof.",
+            "materials": [
+                "limestone (Garraf Massif, first floor)",
+                "limestone (Villefranche quarry, higher levels)",
+                "wrought iron (balconies)"
+            ],
+            "construction_process": "Large limestone blocks were cut to follow the projection of Gaudí's model, then raised into place and adjusted to align in a continuous curve with the surrounding pieces; the facade connects to curved iron floor beams rather than load-bearing walls.",
+            "technical_facts": [
+                "Self-supporting: free of load-bearing walls, with the facade connected to curved iron beams around the perimeter of each floor, allowing large window openings and free interior layouts.",
+                "Original lower-level wrought ironwork was removed in 1928 when a tailor's shop opened in the building; one surviving balcony grille was later donated to MoMA, where it is on display."
+            ],
+            "artistic_facts": [
+                "The undulating, rough-hewn stone facade and twisting wrought-iron balconies were controversial when built, giving rise to the 'La Pedrera' (stone quarry) nickname."
+            ],
+            "general_knowledge_facts": [],
+            "similarities": [
+                "Structural principle (self-supporting facade, non-load-bearing) distinct from but complementary to catenaria_pedrera's compression-arch roof structure in the same building.",
+                "NOTA DE COMPROBACIÓN: las tres carpetas de landmarks facana_1/facana_2/facana_3 de la_pedrera se han asignado todas a esta única ficha, al ser tres vistas de la misma fachada."
+            ],
+            "sources": [
+                "wikipedia_casa_mila"
+            ]
+        },
+        {
+            "id": "patis_pedrera",
+            "type": "element",
+            "name": "Courtyards and interior gate",
+            "aliases": [
+                "Casa Milà patios",
+                "interior courtyards",
+                "wrought-iron entrance gate"
+            ],
+            "parent": "la_pedrera",
+            "creator": "Antoni Gaudí (courtyard structure); wrought-iron gate design attributed to Josep Maria Jujol",
+            "timeline": "Built during the main 1906-1910 construction phase.",
+            "technical_figures": {
+                "courtyard_beam_diameter": "12 feet"
+            },
+            "inspiration": "The floor-support beam structure was interpreted by Josep Maria Carandell, who built the centerpiece at a shipyard, as representing the helm of a ship -- 'the soul of the building,' with a resemblance to Gothic crypts. The iron entrance gate's non-symmetrical structure evokes soap bubbles formed between the hands, or the structure of a plant cell.",
+            "materials": [
+                "cast iron (pillars, beams)",
+                "wrought iron (gate)"
+            ],
+            "construction_process": "Two courtyards (facing Passeig de Gràcia and Carrer de Provença) provide light to the building's nine stories; their floors are supported by cast-iron pillars, with two concentric cylindrical beams and stretched radial beams (like bicycle spokes) forming a central girder that works in tension and compression simultaneously.",
+            "technical_facts": [
+                "The courtyard floor's central support girder combines two concentric cylindrical beams with stretched radial beams, functioning as a keystone working in both tension and compression -- structurally described as 'the soul of the building.'",
+                "The interior iron gate originally served both pedestrians and cars, providing access to the basement garage (now an auditorium)."
+            ],
+            "artistic_facts": [
+                "The two entrance halls are fully polychrome, with oil paintings on the plaster surfaces referencing mythology and flowers."
+            ],
+            "general_knowledge_facts": [],
+            "similarities": [
+                "Wrought-iron gate design attributed to Jujol, like the trencadís serpentine bench (banc_serpentejant) at Park Güell."
+            ],
+            "sources": [
+                "wikipedia_casa_mila"
+            ]
+        },
+        {
+            "id": "sagrada_familia",
+            "type": "monument",
+            "name": "Sagrada Família",
+            "aliases": [
+                "Basílica i Temple Expiatori de la Sagrada Família",
+                "Temple Expiatori de la Sagrada Família"
+            ],
+            "creator": "Antoni Gaudí (arquitecto desde 1883); iniciada por Francisco de Paula del Villar; impulsada por el librero José María Bocabella",
+            "timeline": "Iniciada el 19 de marzo de 1882 bajo Villar (proyecto neogótico); Gaudí asume la dirección en 1883 y transforma radicalmente el diseño; obra interrumpida y planos parcialmente destruidos en la Guerra Civil (1936); reanudada con planos reconstruidos desde 1940; consagrada como basílica por el papa Benedicto XVI el 7 de noviembre de 2010; fachada de la Natividad y cripta declaradas Patrimonio Mundial UNESCO en 2005; Torre de Jesucristo terminada estructuralmente el 20 de febrero de 2026 e inaugurada por el papa León XIV el 10 de junio de 2026.",
+            "technical_figures": {
+                "altura_torre_jesucristo": "172.5 m",
+                "altura_boveda_nave_central": "45 m",
+                "altura_boveda_crucero": "60 m",
+                "altura_boveda_abside": "75 m",
+                "cuadricula_columnas": "7.5 m",
+                "chapiteles_totales_previstos": 18,
+                "chapiteles_completados_2026": 14,
+                "tubos_organo_instalados_2010": 1492
+            },
+            "inspiration": "Concebida como 'templo expiatorio' financiado solo con donaciones privadas, inspirado en la basílica de Loreto tras un viaje de Bocabella al Vaticano en 1872; combina formas góticas con el Art Nouveau curvilíneo propio de Gaudí.",
+            "materials": [
+                "piedra de Montjuïc (fases iniciales)",
+                "piedra de la cantera de Withnell, Inglaterra (desde 2018)",
+                "piedra postensada (fases finales de construcción)",
+                "mosaico de vidrio veneciano (pináculos)"
+            ],
+            "construction_process": "Cripta iniciada por Villar en estilo neogótico estándar; Gaudí rediseña el conjunto desde 1883; construcción lenta financiada solo con donaciones; incendio de 1936 destruye parte de talleres y planos originales, reconstruidos después a partir de fotografías y documentación; desde los años 80 se incorpora diseño asistido por ordenador (CAD/CNC) que acelera el ritmo de obra.",
+            "technical_facts": [
+                "Las columnas interiores son un diseño único de Gaudí: su sección pasa de cuadrada a octogonal, luego a dieciséis lados y finalmente a circular, por intersección de columnas helicoidales.",
+                "La fachada de la Pasión contiene un cuadrado mágico basado en el de la Melencolia I (1514) de Durero, donde filas y columnas suman 33.",
+                "La torre de Jesucristo se diseñó deliberadamente 1 metro más baja que la montaña de Montjuïc, porque Gaudí creía que su obra no debía superar la de Dios."
+            ],
+            "artistic_facts": [
+                "El templo tiene tres grandes fachadas: Natividad (la más ornamentada, terminada antes de 1936), Pasión (austera, de líneas duras, obra escultórica de Josep Maria Subirachs) y Gloria (la más grande, aún incompleta).",
+                "Los chapiteles representan, de menor a mayor altura, a los Doce Apóstoles, los cuatro Evangelistas, la Virgen María y, el más alto, Jesucristo."
+            ],
+            "general_knowledge_facts": [
+                "Comparada estilísticamente con el gótico tardío español, el modernismo catalán y el Art Nouveau; críticos como Louis Sullivan y Walter Gropius la elogiaron, mientras que George Orwell la calificó de uno de los edificios más feos del mundo -- opiniones de apreciación estética, no hechos verificables."
+            ],
+            "similarities": [
+                "Mismo arquitecto (Antoni Gaudí) que park_guell, la_pedrera y casa_batllo; forma parte, solo parcialmente (cripta y fachada de la Natividad), de la inscripción UNESCO 'Obras de Antoni Gaudí' de 2005 -- a diferencia de park_guell y la_pedrera, que fueron incluidos enteros en 1984."
+            ],
+            "sources": [
+                "wikipedia_sagrada_familia"
+            ]
+        },
+        {
+            "id": "cupula_sagrada_familia",
+            "type": "element",
+            "name": "Bóvedas hiperboloides del crucero y torre de Jesucristo",
+            "aliases": [
+                "cupula",
+                "hyperboloid vault",
+                "crossing dome"
+            ],
+            "parent": "sagrada_familia",
+            "creator": "Antoni Gaudí",
+            "timeline": "Bóveda de la nave central completada en 2000; estructura del crucero y su gran hiperboloide en obras desde principios de los 2000; torre de Jesucristo completada estructuralmente el 20 de febrero de 2026.",
+            "technical_figures": {
+                "altura_boveda_crucero": "60 m",
+                "altura_boveda_abside": "75 m",
+                "altura_torre_jesucristo": "172.5 m"
+            },
+            "inspiration": "Gaudí quiso que, desde la entrada principal, el visitante pudiera ver en perspectiva ascendente las bóvedas de la nave, el crucero y el ábside.",
+            "materials": [
+                "piedra postensada"
+            ],
+            "construction_process": "El crucero se apoya en cuatro columnas centrales de pórfido que sostienen un gran hiperboloide rodeado por dos anillos de doce hiperboloides menores.",
+            "technical_facts": [
+                "El uso de formas hiperboloides se acentúa en el diseño posterior de Gaudí, sobre todo a partir de 1914."
+            ],
+            "artistic_facts": [
+                "La torre de Jesucristo, con sus 172.5 m, convirtió a la Sagrada Família en la iglesia más alta del mundo, superando en 11 m al anterior récord, la catedral de Ulm."
+            ],
+            "general_knowledge_facts": [],
+            "similarities": [],
+            "sources": [
+                "wikipedia_sagrada_familia"
+            ]
+        },
+        {
+            "id": "facana_naixement",
+            "type": "element",
+            "name": "Fachada de la Natividad",
+            "aliases": [
+                "facana_naixement",
+                "Nativity façade"
+            ],
+            "parent": "sagrada_familia",
+            "creator": "Antoni Gaudí",
+            "timeline": "Construida entre 1893 y 1936, antes de la interrupción de las obras por la Guerra Civil; es la fachada más antigua y con mayor influencia directa de Gaudí. Declarada Patrimonio Mundial UNESCO en 2005 junto con la cripta.",
+            "technical_figures": {},
+            "inspiration": "Dedicada al nacimiento de Jesús; orientada al noreste, hacia el sol naciente, como símbolo del nacimiento de Cristo. Gaudí la eligió como la primera en construirse por ser, en su opinión, la más atractiva y accesible al público.",
+            "materials": [
+                "piedra tallada a mano"
+            ],
+            "construction_process": "Dividida en tres pórticos dedicados a las virtudes teologales (Esperanza, Fe y Caridad); coronada por cuatro chapiteles dedicados a los apóstoles Matías, Bernabé, Judas Tadeo y Simón el Zelote.",
+            "technical_facts": [],
+            "artistic_facts": [
+                "En la base de cada uno de los grandes pilares que separan los pórticos hay una tortuga (una terrestre, otra marina), símbolo del tiempo inmutable; dos camaleones a los lados simbolizan el cambio.",
+                "El Árbol de la Vida se alza sobre la puerta de Jesús, en el pórtico de la Caridad.",
+                "Gaudí quería que toda la fachada estuviera policromada, con cada arquivolta y figura pintada, para que los personajes parecieran tan vivos como las plantas y animales representados."
+            ],
+            "general_knowledge_facts": [],
+            "similarities": [
+                "Contrasta deliberadamente con facana_passio: Gaudí explicó que empezar por una fachada tan dura y ósea como la de la Pasión habría ahuyentado al público."
+            ],
+            "sources": [
+                "wikipedia_sagrada_familia"
+            ]
+        },
+        {
+            "id": "facana_passio",
+            "type": "element",
+            "name": "Fachada de la Pasión",
+            "aliases": [
+                "facana_passio",
+                "Passion façade"
+            ],
+            "parent": "sagrada_familia",
+            "creator": "Diseño de Antoni Gaudí (planos e instrucciones dejados para futuros arquitectos); esculturas de Josep Maria Subirachs",
+            "timeline": "Construida según el diseño que Gaudí dejó en 1917; obras iniciadas en 1954; chapiteles terminados en 1976; trabajo escultórico de Subirachs iniciado en 1987.",
+            "technical_figures": {},
+            "inspiration": "Dedicada a la Pasión y muerte de Cristo, orientada al oeste (sol poniente, símbolo de la muerte de Cristo); Gaudí quería que provocara miedo en quien la contemplara, con arcos 'rotos' y columnas 'cortadas' y fuertes claroscuros.",
+            "materials": [
+                "piedra desnuda, tallada con líneas rectas y angulosas"
+            ],
+            "construction_process": "Sostenida por seis grandes columnas inclinadas que simulan músculos en tensión; corona un pináculo piramidal de dieciocho columnas en forma de hueso rematado por una gran cruz con corona de espinas.",
+            "technical_facts": [
+                "Contiene un cuadrado mágico basado en el de la Melencolia I de Durero (1514), modificado para que filas y columnas sumen 33 en vez de 34."
+            ],
+            "artistic_facts": [
+                "Las escenas se organizan en tres niveles ascendentes en forma de S que reproducen el Vía Crucis: la Última Cena y el beso de Judas abajo, el Calvario en el nivel medio, y la Muerte, Sepultura y Resurrección arriba.",
+                "Cada uno de los cuatro chapiteles está dedicado a un apóstol (Santiago, Tomás, Felipe y Bartolomé)."
+            ],
+            "general_knowledge_facts": [
+                "Las esculturas angulosas y esqueléticas de Subirachs fueron controvertidas por su ruptura estilística con el resto del edificio, aunque siguen las instrucciones dejadas por Gaudí."
+            ],
+            "similarities": [
+                "Contraste deliberado con facana_naixement, mismo edificio."
+            ],
+            "sources": [
+                "wikipedia_sagrada_familia"
+            ]
+        },
+        {
+            "id": "laterals_sagrada_familia",
+            "type": "element",
+            "name": "Naves laterales y vistas laterales del templo",
+            "aliases": [
+                "laterals",
+                "side aisles",
+                "lateral naves"
+            ],
+            "parent": "sagrada_familia",
+            "creator": "Antoni Gaudí",
+            "timeline": "Estructura de doble nave lateral parte del plan original del templo.",
+            "technical_figures": {
+                "altura_boveda_nave_lateral": "30 m",
+                "cuadricula_columnas": "7.5 m"
+            },
+            "inspiration": "El plano de planta, con dobles naves laterales, deambulatorio y girola de siete capillas absidales, remite a catedrales españolas históricas como Burgos, León o Sevilla, aunque sin ángulos rectos ni apenas líneas rectas.",
+            "materials": [
+                "piedra postensada"
+            ],
+            "construction_process": "Un claustro cubierto poco habitual encierra el templo en rectángulo, atravesando el nártex de cada uno de los tres pórticos principales.",
+            "technical_facts": [
+                "Las columnas del ábside, apoyadas sobre los cimientos de Villar, no siguen la cuadrícula general, obligando a una transición en el deambulatorio que genera una disposición en herradura."
+            ],
+            "artistic_facts": [],
+            "general_knowledge_facts": [],
+            "similarities": [],
+            "sources": [
+                "wikipedia_sagrada_familia"
+            ]
+        },
+        {
+            "id": "posterior_sagrada_familia",
+            "type": "element",
+            "name": "Ábside (fachada posterior)",
+            "aliases": [
+                "posterior",
+                "apse"
+            ],
+            "parent": "sagrada_familia",
+            "creator": "Antoni Gaudí (diseño influido por la cripta original de Villar)",
+            "timeline": "Basado en la cripta original de Villar (1882-1883), rediseñado por Gaudí a partir de 1883.",
+            "technical_figures": {
+                "altura_boveda_abside": "75 m"
+            },
+            "inspiration": "El ábside, cubierto por una bóveda hiperboloide, culmina la secuencia ascendente de bóvedas (nave, crucero, ábside) que Gaudí quería visible desde la entrada principal.",
+            "materials": [
+                "piedra"
+            ],
+            "construction_process": "Rodeado por una girola de siete capillas absidales.",
+            "technical_facts": [
+                "Hay aberturas en el suelo del ábside que permiten ver la cripta inferior, donde está enterrado Gaudí."
+            ],
+            "artistic_facts": [
+                "El chapitel del ábside lleva grabado en latín el texto del Ave María."
+            ],
+            "general_knowledge_facts": [],
+            "similarities": [],
+            "sources": [
+                "wikipedia_sagrada_familia"
+            ]
+        },
+        {
+            "id": "torres_sagrada_familia",
+            "type": "element",
+            "name": "Chapiteles y torres",
+            "aliases": [
+                "torres",
+                "spires",
+                "towers"
+            ],
+            "parent": "sagrada_familia",
+            "creator": "Antoni Gaudí",
+            "timeline": "Chapiteles de la fachada de la Natividad terminados hacia 1930; los de la fachada de la Pasión, en 1976; torre de Jesucristo completada estructuralmente el 20 de febrero de 2026.",
+            "technical_figures": {
+                "chapiteles_totales_previstos": 18,
+                "chapiteles_completados_2026": 14,
+                "altura_torre_jesucristo": "172.5 m"
+            },
+            "inspiration": "Dieciocho chapiteles previstos, en orden ascendente de altura: los Doce Apóstoles, los cuatro Evangelistas, la Virgen María y, el más alto, Jesucristo.",
+            "materials": [
+                "piedra",
+                "mosaico de vidrio veneciano (remates)"
+            ],
+            "construction_process": "Los chapiteles de los Evangelistas están coronados por esculturas de sus símbolos tradicionales: un toro alado (san Lucas), un hombre alado (san Mateo), un águila (san Juan) y un león alado (san Marcos). Se prevén campanas tubulares en su interior, movidas por el viento.",
+            "technical_facts": [
+                "Los remates de los chapiteles más bajos representan hostias con espigas de trigo y cálices con racimos de uva, símbolos eucarísticos.",
+                "El 29 de noviembre de 2021 se instaló una estrella de cristal iluminada de doce puntas y 7 m en la torre dedicada a la Virgen María."
+            ],
+            "artistic_facts": [
+                "Los remates geométricos de los chapiteles de la fachada de la Natividad recuerdan al cubismo, aunque el estilo de Gaudí se inspiraba en la naturaleza, no en otros movimientos artísticos."
+            ],
+            "general_knowledge_facts": [],
+            "similarities": [],
+            "sources": [
+                "wikipedia_sagrada_familia"
+            ]
+        },
+        {
+            "id": "casa_batllo",
+            "type": "monument",
+            "name": "Casa Batlló",
+            "aliases": [
+                "Casa dels Ossos",
+                "House of Bones"
+            ],
+            "creator": "Antoni Gaudí (reforma de 1904-1906, con Domènec Sugrañes i Gras, Josep Canaleta y Joan Rubió); edificio original de Emili Sala Cortés (1877); comitente Josep Batlló i Casanovas",
+            "timeline": "Edificio original construido en 1877 por encargo de Lluís Sala Sánchez; comprado por la familia Batlló en 1903; Gaudí contratado en 1904, obra terminada en 1906; vendida a la aseguradora Seguros Iberia en 1954; balcones exteriores restaurados en 1983, fachada iluminada en 1984; comprada por la familia Bernat (Chupa Chups) en 1993; planta noble abierta al público en 2002; declarada Patrimonio Mundial UNESCO en 2005.",
+            "technical_figures": {
+                "superficie_planta_noble": "más de 700 m²",
+                "arcos_catenarios_desvan": 60
+            },
+            "inspiration": "Encargada en plena rivalidad de las familias burguesas de Passeig de Gràcia (la 'Illa de la Discòrdia'): el industrial textil Josep Batlló quiso una casa que 'pusiera en su lugar' a los edificios vecinos de Puig i Cadafalch y Domènech i Montaner.",
+            "materials": [
+                "piedra arenisca de Montjuïc",
+                "trencadís (mosaico de cerámica)",
+                "discos de vidrio de colores",
+                "cerámica policromada (330 piezas)",
+                "hierro forjado"
+            ],
+            "construction_process": "No fue una construcción nueva sino una reforma: Gaudí convenció a Batlló de no derribar el edificio de 1877 y transformarlo en su lugar; se amplió el patio de luces central y se añadieron plantas nuevas.",
+            "technical_facts": [
+                "El desván tiene sesenta arcos catenarios que crean un espacio que evoca la caja torácica de un animal.",
+                "El patio de luces central está revestido de azulejos en tonalidades de azul graduadas (más intensas arriba, más claras abajo) para repartir la luz de forma uniforme entre pisos."
+            ],
+            "artistic_facts": [
+                "El nombre popular 'Casa dels Ossos' (Casa de los Huesos) responde a su estética biomórfica y esquelética.",
+                "La cubierta, de perfil arqueado, evoca el lomo de un dragón o dinosaurio; una interpretación habitual sitúa la torre con cruz como la lanza de Sant Jordi clavada en el lomo de la bestia."
+            ],
+            "general_knowledge_facts": [
+                "Existe una leyenda popular, no confirmada por fuentes documentales, de que antiguamente se podía ver la Sagrada Família (entonces en construcción) a través de la pequeña ventana triangular del tejado; en 2022 se confirmó que hoy es posible ver parcialmente las torres desde ese punto."
+            ],
+            "similarities": [
+                "Mismo arquitecto (Antoni Gaudí) que park_guell, la_pedrera y sagrada_familia; forma parte de la Illa de la Discòrdia junto a otros edificios modernistas destacados (no obra de Gaudí).",
+                "Uso de trencadís compartido con drac_park_guell, banc_serpentejant y caps_pedrera.",
+                "Uso de arcos catenarios en el desván (misma técnica constructiva que catenaria_pedrera, La Pedrera)."
+            ],
+            "sources": [
+                "wikipedia_casa_batllo"
+            ]
+        },
+        {
+            "id": "pla_frontal_casa_batllo",
+            "type": "element",
+            "name": "Fachada principal (planta frontal)",
+            "aliases": [
+                "pla_frontal",
+                "front façade",
+                "exterior façade"
+            ],
+            "parent": "casa_batllo",
+            "creator": "Antoni Gaudí",
+            "timeline": "Reformada entre 1904 y 1906.",
+            "technical_figures": {
+                "piezas_ceramica_policromada": 330
+            },
+            "inspiration": "La sección central evoca la superficie de un lago con nenúfares, con reminiscencias de los Nenúfares de Monet, mediante el efecto ondulante del mosaico de vidrio y cerámica.",
+            "materials": [
+                "piedra arenisca de Montjuïc (planta baja y galerías del primer piso)",
+                "discos de vidrio de colores",
+                "330 piezas de cerámica policromada",
+                "hierro forjado (balcones)"
+            ],
+            "construction_process": "La fachada se divide en tres secciones integradas: la planta baja y galerías en piedra arenisca ondulada, la parte central multicolor con balcones, y el remate superior a modo de gran gablete que oculta el antiguo depósito de agua.",
+            "technical_facts": [
+                "El remate superior muestra un friso de piezas cerámicas de interpretación diversa; Gaudí reutilizó fragmentos de trencadís procedentes de descartes de otras obras."
+            ],
+            "artistic_facts": [
+                "Las tejas del tejado, con acabado metálico, simulan las escamas de un monstruo, degradándose del verde (donde empieza la cabeza) al azul y violeta en el centro, y al rojo y rosa en el extremo izquierdo.",
+                "La torre rematada en cruz de cuatro brazos orientados a los puntos cardinales lleva monogramas de Jesús (JHS), María (M con corona ducal) y José (JHP) en piezas de cerámica dorada.",
+                "Un pequeño ventanal triangular en el tejado simula el ojo del dragón."
+            ],
+            "general_knowledge_facts": [],
+            "similarities": [
+                "Comparte la técnica de trencadís con otros elementos de Gaudí en park_guell y la_pedrera."
+            ],
+            "sources": [
+                "wikipedia_casa_batllo"
+            ]
+        },
+        {
+            "id": "pla_inferior_casa_batllo",
+            "type": "element",
+            "name": "Planta baja y planta noble (planta inferior)",
+            "aliases": [
+                "pla_inferior",
+                "ground floor",
+                "main floor",
+                "noble floor"
+            ],
+            "parent": "casa_batllo",
+            "creator": "Antoni Gaudí",
+            "timeline": "Reformada entre 1904 y 1906; abierta al público como museo en 2002 (planta noble) y ampliada a desván y patio de luces en 2004.",
+            "technical_figures": {
+                "superficie_planta_noble": "más de 700 m²"
+            },
+            "inspiration": "La planta baja es la parte más llamativa del edificio, con tracería inusual, ventanas ovaladas irregulares y piedra tallada con formas sinuosas, casi sin líneas rectas.",
+            "materials": [
+                "piedra arenisca tallada",
+                "vidrieras de colores"
+            ],
+            "construction_process": "Se accede a la planta noble por un vestíbulo privado con claraboyas en forma de caparazón de tortuga y paredes abovedadas de formas curvas; incluye el despacho de Batlló, un comedor y un rincón reservado para parejas, con una chimenea en forma de seta.",
+            "technical_facts": [
+                "Las formas redondeadas de los huecos y los bordes labrados a modo de labios dan a la planta baja el sobrenombre de 'casa dels badalls' (casa de los bostezos)."
+            ],
+            "artistic_facts": [
+                "Seis finas columnas frente a los grandes ventanales simulan los huesos de una extremidad con una articulación central, aunque en realidad son decoración floral."
+            ],
+            "general_knowledge_facts": [],
+            "similarities": [],
+            "sources": [
+                "wikipedia_casa_batllo"
+            ]
+        }
+    ],
+    "sources": {
+        "wikipedia_park_guell": {
+            "title": "Park Güell",
+            "url": "https://en.wikipedia.org/wiki/Park_G%C3%BCell",
+            "retrieved": "2026-08-14",
+            "local_file": "data/park_güell.md"
+        },
+        "official_park_guell": {
+            "title": "Park Güell (Official Website, multiple pages)",
+            "url": "https://parkguell.barcelona/en",
+            "retrieved": "2026-08-16",
+            "local_file": "data/articles/park_güell_official.md"
+        },
+        "wikipedia_casa_mila": {
+            "title": "Casa Milà",
+            "url": "https://en.wikipedia.org/wiki/Casa_Mil%C3%A0",
+            "retrieved": "2026-08-14",
+            "local_file": "data/articles/casa_milà.md"
+        },
+        "wikipedia_sagrada_familia": {
+            "title": "Sagrada Família",
+            "url": "https://en.wikipedia.org/wiki/Sagrada_Fam%C3%ADlia",
+            "retrieved": "2026-08-14",
+            "local_file": "data/articles/sagrada_família.md"
+        },
+        "wikipedia_casa_batllo": {
+            "title": "Casa Batlló",
+            "url": "https://en.wikipedia.org/wiki/Casa_Batll%C3%B3",
+            "retrieved": "2026-08-14",
+            "local_file": "data/articles/casa_batlló.md"
+        }
+    }
+}
