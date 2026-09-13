@@ -12,7 +12,7 @@ short_description: The Arduino UNO Q Gaudí audio guide, running in a browser
 
 # Cultura Viva — the UNO Q pipeline in a browser
 
-This Space runs the AI pipeline of [cultura-viva-uno-q](https://github.com/Hackestiu/cultura-viva-uno-q),
+This Space runs the AI pipeline of [cultura-viva](https://github.com/Hackestiu/cultura-viva),
 an offline audio guide for Park Güell and the Sagrada Família built on an
 Arduino UNO Q. It exists so the landing page can show the thing working, rather
 than only describing it.

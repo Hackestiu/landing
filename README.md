@@ -1,6 +1,6 @@
 # Cultura Viva — landing
 
-Astro site for [Cultura Viva](https://github.com/Hackestiu/cultura-viva-uno-q), the
+Astro site for [Cultura Viva](https://github.com/Hackestiu/cultura-viva), the
 offline Gaudí audio guide built on an Arduino UNO Q.
 
 ```bash

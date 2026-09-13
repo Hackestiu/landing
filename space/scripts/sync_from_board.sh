@@ -5,10 +5,10 @@
 #   ./scripts/sync_from_board.sh            # copy, overwriting local copies
 #   ./scripts/sync_from_board.sh --check    # diff only; non-zero exit on drift
 #
-# Point BOARD_REPO at a checkout of Hackestiu/cultura-viva-uno-q.
+# Point BOARD_REPO at a checkout of Hackestiu/cultura-viva.
 set -euo pipefail
 
-BOARD_REPO="${BOARD_REPO:-../../cultura-viva-uno-q}"
+BOARD_REPO="${BOARD_REPO:-../../cultura-viva}"
 SRC="$BOARD_REPO/python"
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
@@ -37,7 +37,7 @@ src_of() { echo "${1%%:*}"; }
 dst_of() { local e="$1"; [[ "$e" == *:* ]] && echo "${e#*:}" || echo "$e"; }
 
 if [[ ! -d "$SRC" ]]; then
-  echo "Board repo not found at $BOARD_REPO — set BOARD_REPO=/path/to/cultura-viva-uno-q" >&2
+  echo "Board repo not found at $BOARD_REPO — set BOARD_REPO=/path/to/cultura-viva" >&2
   exit 2
 fi
 
