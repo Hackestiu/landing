@@ -68,9 +68,34 @@ LABEL_TO_CODE: dict[str, dict[str, tuple[str, ...]]] = {
     "sagrada_familia": {},  # filled from the JSON on first load
 }
 
+# What the status bar shows before anything has been found: the site itself, in
+# the sketch's unaccented capitals, since its 5x7 font has no accented glyphs.
 FALLBACK_LABEL = {
     "park_guell": "PARK GUELL",
     "sagrada_familia": "SAGRADA FAMILIA",
+}
+
+# The same two, spelled properly, for the screen-reader description.
+SITE_NAMES = {
+    "park_guell": "Park Güell",
+    "sagrada_familia": "Sagrada Família",
+}
+
+# Status-bar names, from the board's landmarks_*.h rather than the JSON's
+# `screen` field. The two agree for Sagrada Família and disagree for Park Güell,
+# where the sketch is in English and the JSON in Catalan; the sketch is what a
+# visitor actually sees on the device, and this page is in English.
+SCREEN_LABELS = {
+    "park_guell": {
+        "PL": "PORTERS LODGE",
+        "DR": "DRAGON STAIRS",
+        "HH": "HYPOSTYLE HALL",
+        "NS": "NATURE SQUARE",
+        "CG": "CASA GAUDI",
+        "TV": "3 VIADUCTS",
+        "AG": "AUSTRIA GARDEN",
+        "CH": "CALVARY HILL",
+    },
 }
 
 # Screen geometry, from the `screen` block of either JSON.
@@ -383,10 +408,15 @@ def _status_bar(data: dict, site: str, ink: str, visited: set[str], last: str | 
     text_colour = GOLD if completed else markers["ring"]
 
     if completed:
-        label = "MAPA COMPLETAT!"
+        # The sketch prints this in Catalan; the rest of this page is English,
+        # and one Catalan string in an otherwise English status bar reads as an
+        # oversight rather than as fidelity.
+        label = "MAP COMPLETE!"
     elif last:
         by_code = {lm["code"]: lm for lm in landmarks}
-        label = by_code.get(last, {}).get("screen", FALLBACK_LABEL[site])
+        label = SCREEN_LABELS.get(site, {}).get(last) or by_code.get(
+            last, {}
+        ).get("screen", FALLBACK_LABEL[site])
     else:
         label = FALLBACK_LABEL[site]
 
@@ -469,7 +499,8 @@ def render(
         f'<svg class="cv-minimap" viewBox="0 0 {MAP_W} {SCREEN_H}" '
         f'width="{MAP_W * scale}" height="{SCREEN_H * scale}" '
         f'xmlns="http://www.w3.org/2000/svg" role="img" '
-        f'aria-label="Minimapa de {site}" '
+        f'aria-label="Minimap of {SITE_NAMES.get(site, site)}: '
+        f'{len(visited)} of {len(landmarks)} landmarks found" '
         f'shape-rendering="crispEdges">'
         f"{defs}{grid}{overlay.to_svg_rects()}{''.join(texts)}"
         f"</svg>"

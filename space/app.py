@@ -47,9 +47,9 @@ SITES = {
 }
 
 PERSONALITY_BLURB = {
-    "artistic": "Bellesa, simbolisme i forma orgànica — evocador, ple de metàfores.",
-    "technical": "Construcció, materials i estructura — precís, amb xifres.",
-    "child": "Analogies senzilles i curiositats, per a nens de 6 a 12 anys.",
+    "artistic": "Beauty, symbolism and organic form — evocative, full of metaphor.",
+    "technical": "Construction, materials and structure — precise, with figures.",
+    "child": "Simple analogies and curiosities, for children aged 6 to 12.",
 }
 
 
@@ -123,9 +123,9 @@ def check_photo(photo_path, site_label, visited):
     visited |= set(fresh)
     note = f"**{_element_message(element)}**"
     if fresh:
-        note += "  \nEl minimapa s'ha encès en aquest punt."
+        note += "  \nThe minimap has lit up at this spot."
     elif element == "unknown":
-        note += "  \nPots tornar-hi amb una altra foto, o continuar igualment."
+        note += "  \nTry another photo, or carry on anyway."
 
     return (
         note,
@@ -581,12 +581,7 @@ footer {{ display: none !important; }}
 # the personality, the microphone the question — but it asks them one at a time,
 # as you walk. Putting all four on one screen was the thing that made this read
 # as a control panel.
-STEPS = (
-    ("Lloc", "On ets?"),
-    ("Fotografia", "Què estàs mirant?"),
-    ("Personalitat", "Qui t'ho explica?"),
-    ("Pregunta", "Què vols saber?"),
-)
+STEPS = ("Place", "Photo", "Guide", "Question")
 
 
 def _steps_html(current: int) -> str:
@@ -595,7 +590,7 @@ def _steps_html(current: int) -> str:
         f'<span class="cv-step-pip{" is-on" if i <= current else ""}">'
         f'<i style="background:{TRENCADIS_TILES[i * 2]}"></i>'
         f"<b>{name}</b></span>"
-        for i, (name, _) in enumerate(STEPS)
+        for i, name in enumerate(STEPS)
     )
     return f'<div class="cv-steps" role="list">{tiles}</div>'
 
@@ -645,13 +640,13 @@ with gr.Blocks(
               <span class="cv-wordmark">Cultura <em>Viva</em></span>
             </div>
             <div class="cv-head">
-              <p class="cv-eyebrow">Demo en directe</p>
-              <h1>El mateix pipeline, al teu navegador</h1>
-              <p>Fes una foto d'un element de Gaudí, pregunta-li el que vulguis i
-              escolta la resposta. Els models de visió, veu, llenguatge i síntesi
-              són els mateixos fitxers que l'Arduino UNO Q executa sense connexió
-              al monument; només la càmera, el micròfon, el GPS i els auriculars
-              els fa el navegador.</p>
+              <p class="cv-eyebrow">Live demo</p>
+              <h1>The same pipeline, in your browser</h1>
+              <p>Photograph something Gaudí built, ask it whatever you like, and
+              listen to the answer. The vision, speech, language and synthesis
+              models are the same files the Arduino UNO Q runs offline at the
+              monument; only the camera, the microphone, the GPS and the
+              headphones are the browser's.</p>
             </div>
             {_trencadis_html()}
             """
@@ -665,53 +660,54 @@ with gr.Blocks(
                     site = gr.Radio(
                         choices=list(SITES),
                         value="Sagrada Família",
-                        label="Lloc",
-                        info="Al dispositiu, això ve del mòdul GPS.",
+                        label="Place",
+                        info="On the device this comes from the GPS module.",
                     )
 
                 with gr.Group(visible=False) as step_photo:
                     photo = gr.Image(
-                        label="Fotografia",
+                        label="Photo",
                         type="filepath",
                         sources=["upload", "webcam"],
                         height=280,
                     )
-                    check = gr.Button("Analitza la foto", variant="primary")
+                    check = gr.Button("Analyse the photo", variant="primary")
                     photo_note = gr.Markdown("", elem_classes="cv-photo-note")
 
                 with gr.Group(visible=False) as step_personality:
                     personality_choice = gr.Radio(
                         choices=list(BUTTON_IDS),
                         value="A",
-                        label="Personalitat del guia",
-                        info="Els tres botons Modulino del dispositiu.",
+                        label="Guide's personality",
+                        info="The device's three Modulino buttons.",
                     )
                     personality_note = gr.Markdown(describe_personality("A"))
 
                 with gr.Group(visible=False) as step_question:
                     voice_question = gr.Audio(
-                        label="La teva pregunta",
+                        label="Your question",
                         sources=["microphone", "upload"],
                         type="filepath",
                     )
                     typed = gr.Textbox(
-                        label="…o escriu-la",
+                        label="…or type it",
                         placeholder="Why is this facade so different from the other one?",
-                        info="Només s'utilitza si no hi ha cap gravació.",
+                        info="Only used when there is no recording.",
                     )
                     gr.HTML(
-                        '<p class="cv-note">Pregunta <b>en anglès</b>: el model de '
-                        "transcripció del dispositiu és <code>faster-whisper "
-                        "base.en</code>, que només entén anglès. És una limitació "
-                        "real del maquinari, no de la demo.</p>"
+                        '<p class="cv-note">Ask <b>in English</b>: the device\'s '
+                        "transcription model is <code>faster-whisper base.en</code>, "
+                        "which understands nothing else, so a question in Catalan or "
+                        "Spanish will not transcribe. That is a real limit of the "
+                        "hardware, not of this demo.</p>"
                     )
-                    run = gr.Button("Pregunta al guia", variant="primary")
+                    run = gr.Button("Ask the guide", variant="primary")
 
                 with gr.Row(elem_classes="cv-nav"):
-                    back = gr.Button("Endarrere", visible=False)
-                    # Primary until the last step, where "Pregunta al guia" is
-                    # the action and this is hidden.
-                    forward = gr.Button("Següent", variant="primary")
+                    back = gr.Button("Back", visible=False)
+                    # Primary until the last step, where "Ask the guide" is the
+                    # action and this is hidden.
+                    forward = gr.Button("Next", variant="primary")
 
             # The map is not part of any step: it is the one thing on screen the
             # whole way through, previewing the site while you pick it and
@@ -727,11 +723,11 @@ with gr.Blocks(
         # and the demo is embedded in a fixed-height frame on the landing.
         with gr.Group(visible=False) as results:
             answer_audio = gr.Audio(
-                label="Resposta en veu", autoplay=True, type="filepath"
+                label="Spoken answer", autoplay=True, type="filepath"
             )
-            element_box = gr.Textbox(label="Element detectat", interactive=False)
-            question_box = gr.Textbox(label="Pregunta transcrita", interactive=False)
-            answer_box = gr.Textbox(label="Resposta", interactive=False, lines=4)
+            element_box = gr.Textbox(label="Detected element", interactive=False)
+            question_box = gr.Textbox(label="Transcribed question", interactive=False)
+            answer_box = gr.Textbox(label="Answer", interactive=False, lines=4)
 
 
     nav_outputs = [
