@@ -538,13 +538,18 @@ body, gradio-app {{
   width: 10px;
   height: 10px;
   border-radius: 2px;
-  opacity: .25;
   transform: rotate(-4deg);
-  transition: opacity 200ms ease;
+  /* The lock is carried by colour, not by fading: a tile you cannot see is not
+     a tile, and the row has to stay readable as a map of what is coming. */
+  box-shadow: inset 0 0 0 1px rgba(28, 43, 48, 0.10);
+  transition: background 220ms ease, box-shadow 220ms ease;
 }}
 
 .cv-step-pip.is-on {{ color: {BLUE_DEEP}; }}
-.cv-step-pip.is-on i {{ opacity: 1; }}
+.cv-step-pip.is-on i {{ box-shadow: 0 1px 3px -1px rgba(28, 43, 48, 0.45); }}
+
+/* Where you are now, as opposed to where you have been. */
+.cv-step-pip[aria-current="step"] {{ color: {INK}; }}
 
 /* The reading under the photo: quiet, and clearly about the photo above it. */
 .cv-photo-note {{
@@ -673,15 +678,45 @@ footer {{ display: none !important; }}
 STEPS = ("Place", "Photo", "Guide", "Question")
 
 
-def _steps_html(current: int) -> str:
-    """The progress row: one trencadís tile per step, the current one lit."""
-    tiles = "".join(
-        f'<span class="cv-step-pip{" is-on" if i <= current else ""}">'
-        f'<i style="background:{TRENCADIS_TILES[i * 2]}"></i>'
-        f"<b>{name}</b></span>"
-        for i, name in enumerate(STEPS)
+def _locked(colour: str) -> str:
+    """A tile nobody has reached yet: the map's grey, then lifted toward paper.
+
+    The luma alone is not enough here. These four tiles start at very different
+    lightnesses, so their greys land between #424242 and #a3a3a3 — and a locked
+    step rendered at #424242 sits heavier on the page than an unlocked one,
+    which is backwards. Lifting them toward the paper ground keeps the map's
+    rule and puts every locked tile in the same quiet band.
+    """
+    r, g, b = (int(x, 16) for x in
+               (minimap_render.greyscale(colour)[i:i + 2] for i in (1, 3, 5)))
+    pr, pg, pb = (int(PAPER[i:i + 2], 16) for i in (1, 3, 5))
+    mix = 0.62
+    return "#%02x%02x%02x" % (
+        round(r + (pr - r) * mix),
+        round(g + (pg - g) * mix),
+        round(b + (pb - b) * mix),
     )
-    return f'<div class="cv-steps" role="list">{tiles}</div>'
+
+
+def _steps_html(current: int) -> str:
+    """The progress row: one trencadís tile per step, locked until you reach it.
+
+    A step you have not got to yet greys out through the same luma the minimap
+    uses on ground nobody has photographed, and takes its colour when you arrive.
+    Two places on the page show what is still closed to you; they should say it
+    the same way.
+    """
+    pips = []
+    for i, name in enumerate(STEPS):
+        unlocked = i <= current
+        colour = TRENCADIS_TILES[i * 2]
+        pips.append(
+            f'<span class="cv-step-pip{" is-on" if unlocked else ""}" '
+            f'role="listitem"{" aria-current=\"step\"" if i == current else ""}>'
+            f'<i style="background:{colour if unlocked else _locked(colour)}"></i>'
+            f"<b>{name}</b></span>"
+        )
+    return f'<div class="cv-steps" role="list">{"".join(pips)}</div>'
 
 
 def go_to(step: int):

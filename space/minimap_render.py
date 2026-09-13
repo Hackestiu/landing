@@ -162,8 +162,11 @@ def _hex(rgb: tuple[int, int, int]) -> str:
     return "#%02x%02x%02x" % rgb
 
 
-def _grey(colour: str) -> str:
+def greyscale(colour: str) -> str:
     """The sketch's locked colour: an integer luma, drawn as a neutral grey.
+
+    Public because the step indicator locks its tiles the same way the map locks
+    its terrain — one rule for "not yours yet", in both places.
 
     Reproduces grayOf() from minimap.cpp byte for byte -- the >> 8 is a
     deliberate part of it, not a rounded division, and the result is a little
@@ -314,7 +317,7 @@ class _Canvas:
 def _tile_colour(palette: dict, key: str, state: str) -> str:
     base = palette.get(key, palette["void"])
     if state == "locked":
-        return _grey(base)
+        return greyscale(base)
     if state == "fresh":
         return _lighten(base)
     return base
