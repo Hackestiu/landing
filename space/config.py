@@ -115,6 +115,12 @@ VISION_REPOS = {
     "sagrada_familia": os.environ.get(
         "CULTURA_VISION_REPO_SAGRADA_FAMILIA", "culturaviva/sagrada_familia-vit"
     ),
+    "casa_batllo": os.environ.get(
+        "CULTURA_VISION_REPO_CASA_BATLLO", "culturaviva/casa_batllo"
+    ),
+    "pedrera": os.environ.get(
+        "CULTURA_VISION_REPO_PEDRERA", "culturaviva/pedrera"
+    ),
 }
 
 SLM_REPO_ID = os.environ.get(
