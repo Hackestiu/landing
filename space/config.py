@@ -63,6 +63,9 @@ SLM_MODEL_FILENAME = os.environ.get(
 SLM_MODEL_PATH = MODELS_DIR / "slm" / SLM_MODEL_FILENAME
 KG_PATH = MODELS_DIR / "knowledge" / "element_sheets.json"
 KG_BASE_PATH = MODELS_DIR / "knowledge" / "knowledge_base.json"
+# The board keeps this at python/minimapa/; here it sits with the other vendored
+# data. Same name, same meaning: the per-site tile maps and landmark registries.
+MINIMAP_DIR = MODELS_DIR / "minimap"
 TTS_MODEL_DIR = MODELS_DIR / "tts"
 VISION_MODEL_DIR = MODELS_DIR / "vision"
 

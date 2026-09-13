@@ -12,6 +12,10 @@ BOARD_REPO="${BOARD_REPO:-../../cultura-viva-uno-q}"
 SRC="$BOARD_REPO/python"
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
+# Each entry is a path relative to the board's python/ directory, and the same
+# path here. Where the two layouts differ, write `board/path:space/path` — the
+# minimap data lives under minimapa/ on the board and under models/ here, so
+# that it sits with the other vendored data files.
 FILES=(
   core/__init__.py
   core/vision_module.py
@@ -24,7 +28,13 @@ FILES=(
   models/knowledge/knowledge_base.json
   models/vision/park_guell/labels.json
   models/vision/sagrada_familia/labels.json
+  minimapa/landmarks_guell.json:models/minimap/landmarks_guell.json
+  minimapa/landmarks_sagrada.json:models/minimap/landmarks_sagrada.json
 )
+
+# Splits an entry into its board-relative and Space-relative halves.
+src_of() { echo "${1%%:*}"; }
+dst_of() { local e="$1"; [[ "$e" == *:* ]] && echo "${e#*:}" || echo "$e"; }
 
 if [[ ! -d "$SRC" ]]; then
   echo "Board repo not found at $BOARD_REPO — set BOARD_REPO=/path/to/cultura-viva-uno-q" >&2
@@ -34,9 +44,11 @@ fi
 if [[ "${1:-}" == "--check" ]]; then
   drift=0
   for f in "${FILES[@]}"; do
-    if ! diff -q "$SRC/$f" "$HERE/$f" >/dev/null 2>&1; then
-      echo "DRIFT  $f"
-      diff -u "$SRC/$f" "$HERE/$f" || true
+    src="$(src_of "$f")"
+    dst="$(dst_of "$f")"
+    if ! diff -q "$SRC/$src" "$HERE/$dst" >/dev/null 2>&1; then
+      echo "DRIFT  $dst"
+      diff -u "$SRC/$src" "$HERE/$dst" || true
       drift=1
     fi
   done
@@ -45,9 +57,11 @@ if [[ "${1:-}" == "--check" ]]; then
 fi
 
 for f in "${FILES[@]}"; do
-  mkdir -p "$HERE/$(dirname "$f")"
-  cp "$SRC/$f" "$HERE/$f"
-  echo "synced  $f"
+  src="$(src_of "$f")"
+  dst="$(dst_of "$f")"
+  mkdir -p "$HERE/$(dirname "$dst")"
+  cp "$SRC/$src" "$HERE/$dst"
+  echo "synced  $dst"
 done
 echo
 echo "config.py, bootstrap.py and app.py are Space-specific and are NOT synced."

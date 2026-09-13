@@ -29,6 +29,7 @@ from pathlib import Path
 import gradio as gr
 
 import bootstrap
+import minimap_render
 from config import APP_DIR, DEFAULT_LOCATION, logger
 from core.model_module import ModelRegistry
 from core.vision_module import VisionClassifier
@@ -93,17 +94,24 @@ def _elapsed(start: float) -> str:
     return f"{time.perf_counter() - start:.2f}s"
 
 
-def run_guide(photo_path, audio_path, typed_question, site_label, button_id):
+def run_guide(photo_path, audio_path, typed_question, site_label, button_id, visited):
     """Runs photo -> question -> answer -> speech and streams each stage's result
     into the UI as it completes, so a visitor watches the pipeline advance rather
-    than waiting on one opaque call."""
+    than waiting on one opaque call.
+
+    `visited` is this visitor's set of discovered landmark codes, carried in a
+    gr.State. It has to live per session: one Space process serves everybody, so
+    a module-level set would light one visitor's map with another's photos.
+    """
     site = SITES.get(site_label, DEFAULT_LOCATION)
     personality = models.name_for(button_id)
+    visited = set(visited or ())
 
     element_out = ""
     question_out = ""
     answer_out = ""
     context_out = ""
+    map_svg = minimap_render.render(site, visited)
     timings: list[str] = []
 
     def snapshot(audio=None):
@@ -114,6 +122,8 @@ def run_guide(photo_path, audio_path, typed_question, site_label, button_id):
             context_out,
             "\n".join(timings),
             audio,
+            map_svg,
+            visited,
         )
 
     if not photo_path and not audio_path and not (typed_question or "").strip():
@@ -135,6 +145,13 @@ def run_guide(photo_path, audio_path, typed_question, site_label, button_id):
             element_out = "unknown — not a recognised element of this monument"
         else:
             element_out = element
+
+        # Where main.py calls minimap.mark_detected(site, element) on the board.
+        # `unknown` and unmapped labels resolve to no codes and light nothing.
+        fresh = minimap_render.codes_for(site, element or "")
+        if fresh:
+            visited |= set(fresh)
+            map_svg = minimap_render.render(site, visited, current=fresh)
         yield snapshot()
     else:
         element = None
@@ -417,6 +434,74 @@ body, gradio-app {{
 .cv-note {{ font-size: .8rem; color: rgba(28, 43, 48, 0.55); line-height: 1.6; }}
 .cv-note b {{ color: {OCHRE}; font-weight: 600; }}
 
+/* --- The step flow ------------------------------------------------------ */
+
+/* One tile per step, in the trencadís vocabulary of the row above it. Steps
+   already passed stay lit, so the row reads as progress and not as tabs. */
+.cv-steps {{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.1rem;
+  margin: 1.6rem 0 1.2rem;
+}}
+
+.cv-step-pip {{
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  text-transform: uppercase;
+  font-size: .64rem;
+  letter-spacing: .18em;
+  color: rgba(28, 43, 48, 0.35);
+  transition: color 200ms ease;
+}}
+
+.cv-step-pip i {{
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  opacity: .25;
+  transform: rotate(-4deg);
+  transition: opacity 200ms ease;
+}}
+
+.cv-step-pip.is-on {{ color: {BLUE_DEEP}; }}
+.cv-step-pip.is-on i {{ opacity: 1; }}
+
+.cv-nav {{ margin-top: 1rem; gap: .6rem; }}
+.cv-nav button {{
+  font-family: "JetBrains Mono", ui-monospace, monospace !important;
+  text-transform: uppercase;
+  letter-spacing: .16em;
+  font-size: .7rem !important;
+}}
+
+/* --- The minimap -------------------------------------------------------- */
+
+/* The board's screen, scaled up rather than redrawn: nearest-neighbour all the
+   way, so the 4px tiles stay square and the pins keep their hand-cut edges. */
+.cv-map svg {{
+  width: 100%;
+  height: auto;
+  max-width: 480px;
+  display: block;
+  border-radius: 6px;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  box-shadow: 0 12px 30px -14px rgba(28, 43, 48, 0.45);
+}}
+
+.cv-map-col {{ min-width: 220px; }}
+
+/* Below the two-column breakpoint the map goes first: on a phone it is the
+   thing that orients you, and burying it under a webcam frame hides it. */
+@media (max-width: 720px) {{
+  .cv-stage {{ flex-direction: column-reverse !important; }}
+  .cv-map svg {{ max-width: 320px; margin: 0 auto; }}
+}}
+
 footer {{ display: none !important; }}
 
 @media (prefers-reduced-motion: reduce) {{
@@ -427,9 +512,65 @@ footer {{ display: none !important; }}
 }}
 """
 
+# The flow, in the order a visitor works through it. The board asks the same
+# four things — GPS fixes the site, the camera the element, a Modulino button
+# the personality, the microphone the question — but it asks them one at a time,
+# as you walk. Putting all four on one screen was the thing that made this read
+# as a control panel.
+STEPS = (
+    ("Lloc", "On ets?"),
+    ("Fotografia", "Què estàs mirant?"),
+    ("Personalitat", "Qui t'ho explica?"),
+    ("Pregunta", "Què vols saber?"),
+)
+
+
+def _steps_html(current: int) -> str:
+    """The progress row: one trencadís tile per step, the current one lit."""
+    tiles = "".join(
+        f'<span class="cv-step-pip{" is-on" if i <= current else ""}">'
+        f'<i style="background:{TRENCADIS_TILES[i * 2]}"></i>'
+        f"<b>{name}</b></span>"
+        for i, (name, _) in enumerate(STEPS)
+    )
+    return f'<div class="cv-steps" role="list">{tiles}</div>'
+
+
+def go_to(step: int):
+    """Shows one step and hides the rest.
+
+    Every navigation goes through here, so the panels, the progress row and the
+    two nav buttons can never disagree about which step is current.
+    """
+    step = max(0, min(step, len(STEPS) - 1))
+    return (
+        step,
+        _steps_html(step),
+        *[gr.update(visible=i == step) for i in range(len(STEPS))],
+        gr.update(visible=step > 0),
+        gr.update(visible=step < len(STEPS) - 1),
+    )
+
+
+def show_map(site_label: str, visited):
+    """Redraws the map for whichever site is selected, keeping what's discovered.
+
+    This is the board's set_location(): it swaps which map is on screen without
+    touching visited state, so switching site and switching back does not wipe
+    the landmarks already found.
+    """
+    return minimap_render.render(SITES.get(site_label, DEFAULT_LOCATION), visited or ())
+
+
 with gr.Blocks(
     title="Cultura Viva — live pipeline", theme=THEME, css=CSS, head=FONT_LINKS
 ) as demo:
+    # Per-session, never module-level: one process serves every visitor.
+    # One set covers both maps — the two sites share no landmark code — so
+    # switching site and back leaves everything already discovered still lit.
+    step_state = gr.State(0)
+    visited_state = gr.State(set())
+
     with gr.Column():
         gr.HTML(
             f"""
@@ -450,53 +591,79 @@ with gr.Blocks(
             """
         )
 
-        with gr.Row():
-            with gr.Column():
-                site = gr.Dropdown(
-                    choices=list(SITES),
-                    value="Sagrada Família",
-                    label="Lloc",
-                    info="Al dispositiu, això ve del mòdul GPS.",
-                )
-                photo = gr.Image(
-                    label="Fotografia",
-                    type="filepath",
-                    sources=["upload", "webcam"],
-                    height=300,
-                )
-                button = gr.Radio(
-                    choices=list(BUTTON_IDS),
-                    value="A",
-                    label="Personalitat del guia",
-                    info="Els tres botons Modulino del dispositiu.",
-                )
-                personality_note = gr.Markdown(describe_personality("A"))
+        steps_bar = gr.HTML(_steps_html(0))
 
-            with gr.Column():
-                voice_question = gr.Audio(
-                    label="La teva pregunta",
-                    sources=["microphone", "upload"],
-                    type="filepath",
-                )
-                typed = gr.Textbox(
-                    label="…o escriu-la",
-                    placeholder="Why is this facade so different from the other one?",
-                    info="Només s'utilitza si no hi ha cap gravació.",
-                )
-                gr.HTML(
-                    '<p class="cv-note">Pregunta <b>en anglès</b>: el model de '
-                    "transcripció del dispositiu és <code>faster-whisper "
-                    "base.en</code>, que només entén anglès. És una limitació "
-                    "real del maquinari, no de la demo.</p>"
-                )
-                run = gr.Button("Pregunta al guia", variant="primary")
-                answer_audio = gr.Audio(
-                    label="Resposta en veu", autoplay=True, type="filepath"
+        with gr.Row(elem_classes="cv-stage"):
+            with gr.Column(scale=3):
+                with gr.Group(visible=True) as step_site:
+                    site = gr.Radio(
+                        choices=list(SITES),
+                        value="Sagrada Família",
+                        label="Lloc",
+                        info="Al dispositiu, això ve del mòdul GPS.",
+                    )
+
+                with gr.Group(visible=False) as step_photo:
+                    photo = gr.Image(
+                        label="Fotografia",
+                        type="filepath",
+                        sources=["upload", "webcam"],
+                        height=280,
+                    )
+
+                with gr.Group(visible=False) as step_personality:
+                    personality_choice = gr.Radio(
+                        choices=list(BUTTON_IDS),
+                        value="A",
+                        label="Personalitat del guia",
+                        info="Els tres botons Modulino del dispositiu.",
+                    )
+                    personality_note = gr.Markdown(describe_personality("A"))
+
+                with gr.Group(visible=False) as step_question:
+                    voice_question = gr.Audio(
+                        label="La teva pregunta",
+                        sources=["microphone", "upload"],
+                        type="filepath",
+                    )
+                    typed = gr.Textbox(
+                        label="…o escriu-la",
+                        placeholder="Why is this facade so different from the other one?",
+                        info="Només s'utilitza si no hi ha cap gravació.",
+                    )
+                    gr.HTML(
+                        '<p class="cv-note">Pregunta <b>en anglès</b>: el model de '
+                        "transcripció del dispositiu és <code>faster-whisper "
+                        "base.en</code>, que només entén anglès. És una limitació "
+                        "real del maquinari, no de la demo.</p>"
+                    )
+                    run = gr.Button("Pregunta al guia", variant="primary")
+
+                with gr.Row(elem_classes="cv-nav"):
+                    back = gr.Button("Endarrere", visible=False)
+                    # Primary until the last step, where "Pregunta al guia" is
+                    # the action and this is hidden.
+                    forward = gr.Button("Següent", variant="primary")
+
+            # The map is not part of any step: it is the one thing on screen the
+            # whole way through, previewing the site while you pick it and
+            # keeping what you have found after that.
+            with gr.Column(scale=2, elem_classes="cv-map-col"):
+                minimap = gr.HTML(
+                    minimap_render.render("sagrada_familia", ()),
+                    elem_classes="cv-map",
                 )
 
-        element_box = gr.Textbox(label="Element detectat", interactive=False)
-        question_box = gr.Textbox(label="Pregunta transcrita", interactive=False)
-        answer_box = gr.Textbox(label="Resposta", interactive=False, lines=4)
+        # Hidden until there is something in them: four empty boxes under step 1
+        # is most of what made the old single screen feel like a control panel,
+        # and the demo is embedded in a fixed-height frame on the landing.
+        with gr.Group(visible=False) as results:
+            answer_audio = gr.Audio(
+                label="Resposta en veu", autoplay=True, type="filepath"
+            )
+            element_box = gr.Textbox(label="Element detectat", interactive=False)
+            question_box = gr.Textbox(label="Pregunta transcrita", interactive=False)
+            answer_box = gr.Textbox(label="Resposta", interactive=False, lines=4)
 
         with gr.Accordion("Què ha rebut el model", open=False):
             context_box = gr.Textbox(
@@ -519,10 +686,26 @@ with gr.Blocks(
         with gr.Accordion("Estat del pipeline", open=False):
             gr.Markdown(_readiness_markdown())
 
-    button.change(describe_personality, inputs=button, outputs=personality_note)
-    run.click(
+    nav_outputs = [
+        step_state,
+        steps_bar,
+        step_site,
+        step_photo,
+        step_personality,
+        step_question,
+        back,
+        forward,
+    ]
+    back.click(lambda step: go_to(step - 1), inputs=step_state, outputs=nav_outputs)
+    forward.click(lambda step: go_to(step + 1), inputs=step_state, outputs=nav_outputs)
+
+    site.change(show_map, inputs=[site, visited_state], outputs=minimap)
+    personality_choice.change(
+        describe_personality, inputs=personality_choice, outputs=personality_note
+    )
+    run.click(lambda: gr.update(visible=True), outputs=results).then(
         run_guide,
-        inputs=[photo, voice_question, typed, site, button],
+        inputs=[photo, voice_question, typed, site, personality_choice, visited_state],
         outputs=[
             element_box,
             question_box,
@@ -530,6 +713,8 @@ with gr.Blocks(
             context_box,
             timing_box,
             answer_audio,
+            minimap,
+            visited_state,
         ],
     )
 

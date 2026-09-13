@@ -1,0 +1,174 @@
+{
+  "screen": {
+    "width": 160,
+    "height": 128,
+    "mapHeight": 112,
+    "statusBarHeight": 16,
+    "tile": 4,
+    "cols": 40,
+    "rows": 28
+  },
+  "palette": {
+    "void":        "#f5ede0",
+    "wallEdge":    "#a89868",
+    "wallFill":    "#c4b48a",
+    "apse":        "#f0e8d8",
+    "sacristy":    "#88bcc8",
+    "crucero":     "#d4b870",
+    "torres":      "#c07050",
+    "naveCentral": "#dcc88a",
+    "naveLateral": "#c8b07a",
+    "porch":       "#c8c0b0"
+  },
+  "paletteLocked": {
+    "void":        "#e8e8e8",
+    "wallEdge":    "#888888",
+    "wallFill":    "#a8a8a8",
+    "apse":        "#d8d8d8",
+    "sacristy":    "#909090",
+    "crucero":     "#b0b0b0",
+    "torres":      "#787878",
+    "naveCentral": "#c0c0c0",
+    "naveLateral": "#a4a4a4",
+    "porch":       "#b8b8b8"
+  },
+  "zoneColors": {
+    "CU": { "unlocked": "#8b70c0", "locked": "#9a9a9a" },
+    "PO": { "unlocked": "#e08850", "locked": "#b0b0b0" },
+    "TO": { "unlocked": "#5aaa6a", "locked": "#8a8a8a" },
+    "NL": { "unlocked": "#c87890", "locked": "#9a9a9a" },
+    "NR": { "unlocked": "#c87890", "locked": "#9a9a9a" },
+    "FN": { "unlocked": "#6888c0", "locked": "#929292" },
+    "FP": { "unlocked": "#50b8d0", "locked": "#8e8e8e" }
+  },
+  "markerColors": {
+    "ring":         "#f5e8d2",
+    "unvisitedDot": "#32281f",
+    "visitedDot":   "#ffd232",
+    "location":     "#dc4138"
+  },
+  "tileLegend": [
+    { "char": " ", "name": "UI / void (exterior)" },
+    { "char": "#", "name": "Outer wall edge (buttress/pinnacle)" },
+    { "char": "w", "name": "Wall fill / connecting masonry" },
+    { "char": "a", "name": "Absis (apse) floor" },
+    { "char": "y", "name": "Sagristia floor" },
+    { "char": "x", "name": "Creuer / transsepte floor" },
+    { "char": "t", "name": "Base de les torres" },
+    { "char": "n", "name": "Nau central floor" },
+    { "char": "l", "name": "Nau lateral floor" },
+    { "char": "c", "name": "Porxo / Façana de la Glòria" }
+  ],
+  "map": [
+    "                                        ",
+    "       yy                      yy       ",
+    "      yyy         ####         yyy      ",
+    "     yyyyy      aaaaaaaa      yyyyy     ",
+    "     yyyyyywwaaaaaaaaaaaaaawwyyyyyy     ",
+    "     yyyyyywaaaaaaaaaaaaaaaawyyyyyy     ",
+    "     yyyyyaaaaaaaaaaaaaaaaaaaayyyyy     ",
+    "      yyywwwwwwwwwwwwwwwwwwwwwwyyy      ",
+    "     wwyywwwwwwwwwwwwwwwwwwwwwwyyww     ",
+    "    #xxxxxxxxxxxxxxttxxxxxxxxxxxxxx#    ",
+    "    #xxxxxxxxxxxxxttttxxxxxxxxxxxxx#    ",
+    "    #xxxxxxxxxxxxttttttxxxxxxxxxxxx#    ",
+    "    #xxxxxxxxxxxxttttttxxxxxxxxxxxx#    ",
+    "    #xxxxxxxxxxxxxttttxxxxxxxxxxxxx#    ",
+    "    #x#xxxxxxxxxxxxttxxxxxxxxxxxx#x#    ",
+    "         #lllllnnnnnnnnnnlllll#         ",
+    "         #lllllnnnnnnnnnnlllll#         ",
+    "         #lllllnnnnnnnnnnlllll#         ",
+    "         #lllllnnnnnnnnnnlllll#         ",
+    "         #lllllnnnnnnnnnnlllll#         ",
+    "         #lllllnnnnnnnnnnlllll#         ",
+    "         #lllllnnnnnnnnnnlllll#         ",
+    "         #lllllnnnnnnnnnnlllll#         ",
+    "         #lllllnnnnnnnnnnlllll#         ",
+    "          #cccccccccccccccccc#          ",
+    "         #cccccccccccccccccccc#         ",
+    "         cccwwwcccwwwcccwwwcccw         ",
+    "                                        "
+  ],
+  "landmarks": [
+    {
+      "id": 0,
+      "code": "CU",
+      "name": "Cúpula / Absis",
+      "screen": "CUPULA",
+      "x": 30,
+      "y": 14
+    },
+    {
+      "id": 1,
+      "code": "PO",
+      "name": "Absis / Part Posterior (exterior NE)",
+      "screen": "POSTERIOR",
+      "x": 138,
+      "y": 8
+    },
+    {
+      "id": 2,
+      "code": "TO",
+      "name": "Torres / Creuer",
+      "screen": "TORRES",
+      "x": 80,
+      "y": 58
+    },
+    {
+      "id": 3,
+      "code": "NL",
+      "name": "Nau Lateral (esquerra)",
+      "screen": "NAU LATERAL",
+      "x": 50,
+      "y": 84
+    },
+    {
+      "id": 4,
+      "code": "NR",
+      "name": "Nau Lateral (dreta)",
+      "screen": "NAU LATERAL",
+      "x": 110,
+      "y": 84
+    },
+    {
+      "id": 5,
+      "code": "FN",
+      "name": "Façana del Naixement",
+      "screen": "F. NAIXEMENT",
+      "x": 118,
+      "y": 54
+    },
+    {
+      "id": 6,
+      "code": "FP",
+      "name": "Façana de la Passió",
+      "screen": "F. PASSIO",
+      "x": 38,
+      "y": 54
+    }
+  ],
+  "visionLabelMapping": {
+    "cupula":           "CU",
+    "posterior":        "PO",
+    "torres":           "TO",
+    "lateral_esquerra": "NL",
+    "lateral_dreta":    "NR",
+    "laterals":         ["NL", "NR"],
+    "facana_naixement":  "FN",
+    "facana_passio":    "FP"
+  },
+  "unlockRules": {
+    "linked": [
+      ["NL", "NR"]
+    ]
+  },
+  "zones": {
+    "CU": [1,  8,  4, 19],
+    "PO": [0,  7, 20, 39],
+    "TO": [9, 22, 13, 26],
+    "NL": [15, 26,  4, 17],
+    "NR": [15, 26, 22, 35],
+    "FN": [9, 22, 25, 39],
+    "FP": [9, 22,  0, 14]
+  }
+}

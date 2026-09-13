@@ -1,0 +1,73 @@
+{
+  "screen": { "width": 160, "height": 128, "mapHeight": 112, "statusBarHeight": 16, "tile": 4, "cols": 40, "rows": 28 },
+
+  "palette": {
+    "void":     "#23242c", "block":  "#3a3c48", "blockD":  "#2c2e38",
+    "forestDD": "#24512f", "forest": "#3f7a45", "forestL": "#58924f",
+    "scrub":    "#6f9b4a", "scrubL": "#80b055",
+    "path":     "#d9b477", "pathD":  "#c79f63",
+    "sand":     "#e2c48f", "sandD":  "#d3b174",
+    "stone":    "#9aa0a6", "stoneD": "#6f757b",
+    "roof":     "#c4572f", "roofL":  "#e07a45",
+    "tile":     "#4a9fc4", "tileL":  "#f0e6d2",
+    "rock":     "#b9b3a6", "rockD":  "#8d887c",
+    "ink":      "#12131a"
+  },
+  "markerColors": { "ring": "#f2e4c8", "unvisitedDot": "#12131a", "visitedDot": "#ffcf3f", "location": "#ff5544" },
+
+  "tileLegend": [
+    { "char": " ", "name": "UI / void" },
+    { "char": "#", "name": "Path marker (viaduct arch)" },
+    { "char": "F", "name": "Dense pine" },
+    { "char": "f", "name": "Woodland" },
+    { "char": "g", "name": "Scrub / gardens" },
+    { "char": "p", "name": "Footpath" },
+    { "char": "S", "name": "Nature Square" },
+    { "char": "w", "name": "Viaduct stone" },
+    { "char": "b", "name": "Pavilion roof" },
+    { "char": "c", "name": "Trencadís" },
+    { "char": "r", "name": "Rock outcrop" }
+  ],
+
+  "map": [
+    "                                        ",
+    "     FFFFFFF        FFFFF      FFFF     ",
+    "   FFFFFFFFFFF   FFFFFFFFFFFFFFFFFFF    ",
+    "  FFFFFFFFFFFFFFFFFFFFbbFFFFFFFFFFFFF   ",
+    "  FFFFFFFFFFFFFFFFFFFpbbpFFFFFFFFFFFF   ",
+    " FFFFFFFFFFFFFFFFFFFFpppFFFFFFFFFFFFFF  ",
+    " FFFFFFFFFFFFFFFFFFFFpFFFFFFwwwwwwFFFF  ",
+    " FFFFFFFFFFFFFFFFFFFpFFFFFFFwFFFFwFFFF  ",
+    "FFFFFFFFFFFFFFFFFFFpFFFFFFwwwwwwwwwFFFF ",
+    "FFFFFFFFFFFFFFFFFpFFFFFFFFwFFFFFFwFFFFF ",
+    "FFFFFFFFFFFFFFFFpFFFFFFFwwwwwwwwwwFFFFF ",
+    "FFFFFFFFFfffffppppppppppppppppppgggggggf",
+    "FFFFFFFFffffpSSSSSSSSSSSSSSpggggggggggff",
+    "FFFFFFFfffpSSSSSSSSSSSSSSSSpgggggggggggf",
+    "FFFFFrFffpSSSSSSSSSSSSSSSSSpggggpgggggff",
+    "FFFFrrrFfpSSSSSSSSSSSSSSSSSpggggpgggggff",
+    "FFFFFrFFfpSSSSSSSSSSSSSSSSSpggggpgggggff",
+    "FFFFFFFFfpFFcccccccccccccFpggggpggggggff",
+    "FFFFFFFffpFFcccccccccccccFpgggggggggggff",
+    "FFFFFFffpppFFbbbbbbbbbbbFFppppgggggggggf",
+    "FFFFFffpFFFFFbccccccccbFFFFpppgggggggggf",
+    "FFFFFffpFFFFFbccccccccbFFFFFppgggggggggf",
+    "FFFFffpFFFFFFbbbbbbbbbbbFFFFFpgggggggggf",
+    "FFFFffpFFFFbbbFFFFFbbbFFFFFFFpggggggggff",
+    "FFFFffpppppppppppppppppppppppppgggggggff",
+    "FFFffffppppppppppppppppppppppppgggggggff",
+    "  ffff        ####     ####      gggg   ",
+    "   ff         ####     ####       gg    "
+  ],
+
+  "landmarks": [
+    { "id": 0, "code": "PL", "name": "Pavelló de Consergeria", "screen": "CONSERGERIA",     "x": 50,  "y": 94 },
+    { "id": 1, "code": "DR", "name": "Escalinata del Drac",    "screen": "ESCALES DRAC",     "x": 70,  "y": 82 },
+    { "id": 2, "code": "HH", "name": "Sala Hipòstila",         "screen": "SALA HIPOSTILA",   "x": 74,  "y": 70 },
+    { "id": 3, "code": "NS", "name": "Plaça de la Natura",     "screen": "PLACA NATURA",     "x": 82,  "y": 58 },
+    { "id": 4, "code": "CG", "name": "Casa Museu Gaudí",       "screen": "CASA GAUDI",       "x": 90,  "y": 18 },
+    { "id": 5, "code": "TV", "name": "Els Tres Viaductes",     "screen": "3 VIADUCTES",      "x": 124, "y": 34 },
+    { "id": 6, "code": "AG", "name": "Jardins d'Àustria",      "screen": "JARDINS AUSTRIA",  "x": 136, "y": 62 },
+    { "id": 7, "code": "CH", "name": "Turó del Calvari",       "screen": "TURO CALVARI",     "x": 22,  "y": 62 }
+  ]
+}

@@ -40,10 +40,20 @@ device's own code.
 |---|---|
 | Logitech Brio 105 webcam | Upload or webcam capture |
 | Brio microphone (ALSA) | Browser recording, or a typed question |
-| GPS NEO-6M proximity detection | Site dropdown |
-| Modulino Buttons A / B / C | Personality radio group |
+| GPS NEO-6M proximity detection | Site picker (step 1) |
+| Modulino Buttons A / B / C | Personality radio group (step 3) |
 | 3.5 mm headphone jack (`aplay`) | Audio player |
-| ST7735S display + Bridge RPC to the STM32 | Not reproduced — it is the device's UI |
+| ST7735S display + Bridge RPC to the STM32 | `minimap_render.py` — the same tile map, drawn as SVG |
+
+The device asks for those four things one at a time, as you walk; the page does
+the same, as four steps — place, photo, personality, question — rather than one
+screen of controls.
+
+The minimap is the board's own screen rather than a redrawing of it: the same
+40x28 tile grid, the same palettes and dither stamps, the same Voronoi reveal as
+landmarks are found. `core/minimap_module.py` is not vendored, because on the
+board it only relays codes to the sketch over Bridge RPC, and there is no sketch
+here; the JSON it reads is vendored instead, and the page does the drawing.
 
 `hw/microphone_module.py` and `hw/audio_playback_module.py` still carry their
 ALSA capture and `aplay` playback code; it is simply never called here, and
