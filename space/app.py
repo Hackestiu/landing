@@ -29,7 +29,7 @@ from pathlib import Path
 import gradio as gr
 
 import bootstrap
-from config import DEFAULT_LOCATION, logger
+from config import APP_DIR, DEFAULT_LOCATION, logger
 from core.model_module import ModelRegistry
 from core.vision_module import VisionClassifier
 from hw.audio_playback_module import AudioPlayer
@@ -221,6 +221,29 @@ GRAIN = (
     "height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E\")"
 )
 
+# Trencadís mark, ported from src/components/TrencadisRow.astro. The tile list
+# and the three geometry formulas are copied as formulas, not as the pixel
+# values they produce, so the Astro and Gradio renders stay identical if either
+# is tweaked. Purely decorative, hence aria-hidden.
+TRENCADIS_TILES = (
+    "#2A6F97", "#3F8362", "#E2954A", "#D4A72C", "#1D4E6E", "#2C5F47",
+    "#B96F2C", "#2A6F97", "#3F8362", "#E2954A", "#D4A72C", "#2A6F97",
+)
+
+
+def _trencadis_html() -> str:
+    tiles = "".join(
+        f'<span style="background:{colour};'
+        f"width:{6 + ((i * 7) % 9)}px;"
+        f"height:{6 + ((i * 5) % 11)}px;"
+        f'transform:rotate({(-1 if i % 2 == 0 else 1) * ((i * 3) % 8)}deg)"></span>'
+        for i, colour in enumerate(TRENCADIS_TILES)
+    )
+    return f'<div class="cv-trencadis" role="presentation" aria-hidden="true">{tiles}</div>'
+
+
+FAVICON = APP_DIR / "assets" / "favicon.png"
+
 FONT_LINKS = """
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -344,6 +367,26 @@ body, gradio-app {{
   outline-offset: 3px;
 }}
 
+.cv-brand {{
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+  margin-bottom: 1.6rem;
+}}
+
+.cv-trencadis {{ display: flex; align-items: flex-end; gap: 3px; }}
+.cv-trencadis span {{ display: inline-block; border-radius: 2px; }}
+
+.cv-wordmark {{
+  font-family: Fraunces, ui-serif, Georgia, serif;
+  font-weight: 600;
+  font-size: 1.15rem;
+  letter-spacing: -.01em;
+  color: {INK};
+}}
+/* The landing sets "Viva" in blue; <em> carries that without italics. */
+.cv-wordmark em {{ color: {BLUE}; font-style: normal; }}
+
 .cv-rule {{
   height: 1px;
   background: linear-gradient(90deg, rgba(28,43,48,.16), rgba(28,43,48,0));
@@ -368,7 +411,11 @@ with gr.Blocks(
 ) as demo:
     with gr.Column():
         gr.HTML(
-            """
+            f"""
+            <div class="cv-brand">
+              {_trencadis_html()}
+              <span class="cv-wordmark">Cultura <em>Viva</em></span>
+            </div>
             <div class="cv-head">
               <p class="cv-eyebrow">Demo en directe</p>
               <h1>El mateix pipeline, al teu navegador</h1>
@@ -509,6 +556,7 @@ if __name__ == "__main__":
     demo.queue(max_size=12).launch(
         server_name="0.0.0.0",
         server_port=7860,
+        favicon_path=str(FAVICON) if FAVICON.exists() else None,
         auth=_credentials(),
         auth_message=(
             "Cultura Viva — the Arduino UNO Q pipeline, running live. "
