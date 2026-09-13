@@ -69,6 +69,7 @@ COPY . .
 # the volume from there on first start.
 RUN mv /app/models /opt/seed-models \
     && mkdir -p /app/models /app/data \
+    && sed -i 's/\r$//' /app/entrypoint.sh \
     && chown -R app:app /app /opt/seed-models \
     && chmod +x /app/entrypoint.sh
 
