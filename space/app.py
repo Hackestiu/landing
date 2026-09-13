@@ -26,6 +26,7 @@ see `python/benchmark.py` run on the board.
 import os
 import time
 from pathlib import Path
+from urllib.parse import quote
 
 import gradio as gr
 
@@ -51,6 +52,54 @@ PERSONALITY_BLURB = {
     "technical": "Construction, materials and structure — precise, with figures.",
     "child": "Simple analogies and curiosities, for children aged 6 to 12.",
 }
+
+# One glyph per button, drawn rather than fetched so the picker needs no icon
+# font and no extra request. They are used as CSS masks, so the paths carry a
+# flat black and the colour comes from the stylesheet — that is what lets a
+# selected voice tint its icon without a second copy of the file.
+PERSONALITY_ICONS = {
+    # Palette: the artistic guide.
+    "A": (
+        "<path d='M12 3a9 9 0 1 0 0 18 2.1 2.1 0 0 0 1.6-3.5 2.1 2.1 0 0 1 "
+        "1.6-3.5H18a3 3 0 0 0 3-3A9 9 0 0 0 12 3Z'/>"
+        "<circle cx='7.4' cy='11.4' r='1.15' fill='#000' stroke='none'/>"
+        "<circle cx='10.2' cy='7.2' r='1.15' fill='#000' stroke='none'/>"
+        "<circle cx='15.4' cy='8.2' r='1.15' fill='#000' stroke='none'/>"
+    ),
+    # Dividers: the technical guide.
+    "B": (
+        "<circle cx='12' cy='4.4' r='1.9'/>"
+        "<path d='M10.9 6.2 5.2 20'/><path d='M13.1 6.2 18.8 20'/>"
+        "<path d='M8.7 14.4a7.4 7.4 0 0 0 6.6 0'/>"
+    ),
+    # Balloon: the guide for children.
+    "C": (
+        "<path d='M12 3a5.6 5.6 0 0 1 5.6 5.6c0 3.7-3.5 6.6-5.6 6.6s-5.6-2.9"
+        "-5.6-6.6A5.6 5.6 0 0 1 12 3Z'/>"
+        "<path d='M12 15.2v1.6'/><path d='M12 16.8c-1.3.9-1.3 2.3 0 3.2'/>"
+    ),
+}
+
+
+def _icon_data_uri(paths: str) -> str:
+    """Wraps one icon's paths in an SVG and returns it as a data: URI."""
+    svg = (
+        "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' "
+        "fill='none' stroke='#000' stroke-width='1.5' stroke-linecap='round' "
+        f"stroke-linejoin='round'>{paths}</svg>"
+    )
+    return "data:image/svg+xml," + quote(svg, safe="")
+
+
+def _voice_icon_css() -> str:
+    """One rule per voice, positionally matched to the order of BUTTON_IDS."""
+    return "\n".join(
+        f'.cv-voices label:has(input[type="radio"]):nth-of-type({i + 1})::after '
+        f"{{ mask-image: url(\"{_icon_data_uri(PERSONALITY_ICONS[button])}\"); "
+        f"-webkit-mask-image: url(\"{_icon_data_uri(PERSONALITY_ICONS[button])}\"); }}"
+        for i, button in enumerate(BUTTON_IDS)
+        if button in PERSONALITY_ICONS
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -257,7 +306,7 @@ def run_guide(photo_path, audio_path, typed_question, site_label, button_id, vis
 
 def describe_personality(button_id: str) -> str:
     name = models.name_for(button_id)
-    return f"**{name}** — {PERSONALITY_BLURB.get(name, '')}"
+    return f"**{name.capitalize()}** — {PERSONALITY_BLURB.get(name, '')}"
 
 
 # ---------------------------------------------------------------------------
@@ -571,6 +620,136 @@ body, gradio-app {{
   font-size: .7rem !important;
 }}
 
+/* --- The voice picker --------------------------------------------------- */
+
+/* Three voices read as three choices, not as a form: a row of circles, each
+   with its own glyph, the chosen one ringed. The underlying component is still
+   a radio group — the native inputs are only made invisible, so arrow keys,
+   focus and screen readers behave exactly as they did before. */
+.cv-voices, .cv-voices .wrap {{
+  border: 0 !important;
+  background: none !important;
+  box-shadow: none !important;
+}}
+
+.cv-voices .wrap {{
+  display: flex !important;
+  flex-wrap: wrap;
+  gap: 1.4rem;
+  padding: .6rem .1rem .2rem !important;
+}}
+
+.gradio-container .cv-voices label:has(input[type="radio"]) {{
+  position: relative;
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+  gap: .6rem;
+  width: 84px;
+  padding: 0 !important;
+  border: 0 !important;
+  background: none !important;
+  box-shadow: none !important;
+  cursor: pointer;
+}}
+
+/* The circle. */
+.gradio-container .cv-voices label:has(input[type="radio"])::before {{
+  content: "";
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: rgba(28, 43, 48, 0.035);
+  border: 1px solid rgba(28, 43, 48, 0.12);
+  box-shadow: 0 10px 22px -14px rgba(28, 43, 48, 0.55);
+  transition: transform 180ms ease, border-color 180ms ease,
+              background-color 180ms ease, box-shadow 180ms ease;
+}}
+
+/* The glyph, laid over the circle rather than inside it: a mask takes its
+   colour from background-color, which is what the states below change. */
+.gradio-container .cv-voices label:has(input[type="radio"])::after {{
+  content: "";
+  position: absolute;
+  top: 21px;
+  left: 50%;
+  width: 26px;
+  height: 26px;
+  margin-left: -13px;
+  background-color: rgba(28, 43, 48, 0.45);
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  transition: background-color 180ms ease;
+}}
+
+{_voice_icon_css()}
+
+/* The name under the circle, in the same mono caps as every other label. */
+.gradio-container .cv-voices label:has(input[type="radio"]) span {{
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  text-transform: uppercase;
+  font-size: .62rem;
+  letter-spacing: .14em;
+  color: rgba(28, 43, 48, 0.5);
+  text-align: center;
+  transition: color 180ms ease;
+}}
+
+/* Invisible, but still the thing that is clicked and focused. */
+.cv-voices label:has(input[type="radio"]) input[type="radio"] {{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+}}
+
+.gradio-container .cv-voices label:has(input[type="radio"]):hover::before {{
+  transform: translateY(-2px);
+  border-color: rgba(42, 111, 151, 0.45);
+}}
+.gradio-container .cv-voices label:has(input[type="radio"]):hover::after {{ background-color: {BLUE}; }}
+.gradio-container .cv-voices label:has(input[type="radio"]):hover span {{ color: {BLUE_DEEP}; }}
+
+/* The ring is drawn in paper first, so it reads as a gap and not as a border
+   thickening. */
+.gradio-container .cv-voices label:has(input[type="radio"]:checked)::before {{
+  background: {BLUE_SOFT};
+  border-color: transparent;
+  box-shadow: 0 0 0 3px {PAPER}, 0 0 0 5px {BLUE},
+              0 12px 24px -14px rgba(29, 78, 110, 0.7);
+}}
+.gradio-container .cv-voices label:has(input[type="radio"]:checked)::after {{
+  background-color: {BLUE_DEEP};
+}}
+.gradio-container .cv-voices label:has(input[type="radio"]:checked) span {{
+  color: {BLUE_DEEP};
+  font-weight: 600;
+}}
+
+/* The input itself is invisible, so its focus ring has to move to the circle. */
+.gradio-container .cv-voices label:has(input[type="radio"]:focus-visible)::before {{
+  outline: 3px solid {BLUE};
+  outline-offset: 3px;
+}}
+.cv-voices label:has(input[type="radio"]) input:focus-visible {{ outline: none !important; }}
+
+/* The blurb for whichever voice is selected, quiet under the row. */
+.cv-voice-note {{
+  padding: .2rem .2rem 0;
+  font-size: .9rem;
+  color: rgba(28, 43, 48, 0.72);
+}}
+.cv-voice-note strong {{ color: {BLUE_DEEP}; font-weight: 600; }}
+
 /* --- The minimap -------------------------------------------------------- */
 
 /* The board's screen, scaled up rather than redrawn: nearest-neighbour all the
@@ -799,13 +978,22 @@ with gr.Blocks(
                     photo_note = gr.Markdown("", elem_classes="cv-photo-note")
 
                 with gr.Group(visible=False) as step_personality:
+                    # Still a radio group underneath: the CSS turns the three
+                    # options into a row of circles, and the button id stays the
+                    # value, so nothing downstream has to know about any of it.
                     personality_choice = gr.Radio(
-                        choices=list(BUTTON_IDS),
+                        choices=[
+                            (models.name_for(button).capitalize(), button)
+                            for button in BUTTON_IDS
+                        ],
                         value="A",
-                        label="Guide's personality",
+                        label="Guide's voice",
                         info="The device's three Modulino buttons.",
+                        elem_classes="cv-voices",
                     )
-                    personality_note = gr.Markdown(describe_personality("A"))
+                    personality_note = gr.Markdown(
+                        describe_personality("A"), elem_classes="cv-voice-note"
+                    )
 
                 with gr.Group(visible=False) as step_question:
                     voice_question = gr.Audio(
