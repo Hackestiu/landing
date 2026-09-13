@@ -311,6 +311,30 @@ def _trencadis_html() -> str:
     return f'<div class="cv-trencadis" role="presentation" aria-hidden="true">{tiles}</div>'
 
 
+def _trencadis_loader_html() -> str:
+    """The mosaic, standing in for Gradio's spinner over the minimap.
+
+    Same tiles and the same three geometry formulas as _trencadis_html(); the
+    only addition is --i, which staggers each tile's turn in the wave. The row
+    is aria-hidden and the live region beside it is what a screen reader hears,
+    since a shimmering mosaic says nothing on its own.
+    """
+    tiles = "".join(
+        f'<span style="--i:{i};background:{colour};'
+        f"width:{6 + ((i * 7) % 9)}px;"
+        f"height:{6 + ((i * 5) % 11)}px;"
+        f'transform:rotate({(-1 if i % 2 == 0 else 1) * ((i * 3) % 8)}deg)"></span>'
+        for i, colour in enumerate(TRENCADIS_TILES)
+    )
+    return (
+        '<div class="cv-map-loading">'
+        '<div class="cv-trencadis" role="presentation" aria-hidden="true">'
+        f"{tiles}</div>"
+        '<p role="status">Redrawing the map…</p>'
+        "</div>"
+    )
+
+
 # The trencadís "C" — the same mark the landing serves as its favicon, used
 # here both in the browser tab and in the header lockup.
 MARK = APP_DIR / "assets" / "favicon.png"
@@ -557,7 +581,70 @@ body, gradio-app {{
   box-shadow: 0 12px 30px -14px rgba(28, 43, 48, 0.45);
 }}
 
-.cv-map-col {{ min-width: 220px; }}
+.cv-map-col {{ min-width: 220px; position: relative; }}
+
+/* --- Redrawing the map -------------------------------------------------- */
+
+/* Gradio's own overlay — a spinner and a "processing | 1.1s" counter — is a
+   stopwatch on a page whose whole point is that the map responds to you. The
+   mosaic goes in its place. */
+.cv-map .wrap.translucent {{ display: none !important; }}
+
+.cv-map-loader {{ position: static !important; background: none !important; }}
+.cv-map-loader .block, .cv-map-loader .html-container {{
+  padding: 0 !important;
+  background: none !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}}
+
+.cv-map-loading {{
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: .9rem;
+  border-radius: 6px;
+  background: rgba(251, 248, 242, 0.82);
+  opacity: 0;
+  /* Not opacity alone: that would leave "Redrawing the map…" permanently in the
+     accessibility tree, so a screen reader would meet it on a map sitting
+     still. visibility takes the whole overlay out until it is wanted. */
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 140ms ease, visibility 140ms;
+  z-index: 5;
+}}
+
+/* :has() is what ties the overlay to the map's state without a line of JS. */
+.cv-map-col:has(.cv-map .html-container.pending) .cv-map-loading,
+.cv-map-col:has(.cv-map .wrap.translucent) .cv-map-loading {{
+  opacity: 1;
+  visibility: visible;
+}}
+
+.cv-map-loading .cv-trencadis span {{
+  animation: cv-tile-wave 1.15s ease-in-out infinite;
+  animation-delay: calc(var(--i) * 70ms);
+}}
+
+.cv-map-loading p {{
+  margin: 0;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  text-transform: uppercase;
+  font-size: .62rem;
+  letter-spacing: .22em;
+  color: rgba(29, 78, 110, 0.75);
+}}
+
+/* Opacity only: each tile's rotation is set inline, and animating transform
+   here would throw it away. */
+@keyframes cv-tile-wave {{
+  0%, 100% {{ opacity: .2; }}
+  50% {{ opacity: 1; }}
+}}
 
 /* Below the two-column breakpoint the map goes first: on a phone it is the
    thing that orients you, and burying it under a webcam frame hides it. */
@@ -573,6 +660,8 @@ footer {{ display: none !important; }}
     animation-duration: .01ms !important;
     transition-duration: .01ms !important;
   }}
+  /* With the wave stopped, the tiles would freeze at 20% and read as broken. */
+  .cv-map-loading .cv-trencadis span {{ opacity: 1; }}
 }}
 """
 
@@ -717,6 +806,10 @@ with gr.Blocks(
                     minimap_render.render("sagrada_familia", ()),
                     elem_classes="cv-map",
                 )
+                # Always in the DOM, shown only while the map block is pending —
+                # Gradio builds its own overlay inside that block, so there is
+                # nowhere to inject markup at the moment it appears.
+                gr.HTML(_trencadis_loader_html(), elem_classes="cv-map-loader")
 
         # Hidden until there is something in them: four empty boxes under step 1
         # is most of what made the old single screen feel like a control panel,
