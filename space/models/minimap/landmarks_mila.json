@@ -1,0 +1,179 @@
+{
+    "screen": {
+        "width": 160,
+        "height": 128,
+        "mapHeight": 112,
+        "statusBarHeight": 16,
+        "tile": 4,
+        "cols": 40,
+        "rows": 28
+    },
+    "palette": {
+        "void": "#78b2d6",
+        "parapet": "#e0d6bc",
+        "oculus": "#5a5448",
+        "chimney": "#9e846c",
+        "stone": "#d6c7a8",
+        "window": "#2e3640",
+        "balcony": "#2a2824",
+        "recede": "#b0ac9e",
+        "divider": "#968264",
+        "ground": "#9e927a",
+        "portal": "#3a322a",
+        "neighbor": "#8c6050",
+        "tree": "#46804c",
+        "sidewalk": "#a8a296",
+        "lamp": "#3c3a36",
+        "ink": "#1c1814"
+    },
+    "markerColors": {
+        "ring": "#f0e6d2",
+        "unvisitedDot": "#12131a",
+        "visitedDot": "#ffcf3f",
+        "location": "#ff5544"
+    },
+    "tileLegend": [
+        {
+            "char": " ",
+            "name": "Cel"
+        },
+        {
+            "char": "c",
+            "name": "Xemeneia (espantabruixes al capdamunt)"
+        },
+        {
+            "char": "w",
+            "name": "Cornisa ondulada de coronament"
+        },
+        {
+            "char": "o",
+            "name": "Ull de bou / finestra d'àtic"
+        },
+        {
+            "char": "s",
+            "name": "Pedra ondulada de la façana"
+        },
+        {
+            "char": "i",
+            "name": "Finestra"
+        },
+        {
+            "char": "b",
+            "name": "Balcó de ferro forjat"
+        },
+        {
+            "char": "r",
+            "name": "Pedra en perspectiva (ales, punt de fuga)"
+        },
+        {
+            "char": "d",
+            "name": "Cornisa divisòria de planta"
+        },
+        {
+            "char": "a",
+            "name": "Pedra de la planta baixa"
+        },
+        {
+            "char": "p",
+            "name": "Ombra dels portals de pedra"
+        },
+        {
+            "char": "j",
+            "name": "Edifici veí / cantonada del carrer"
+        },
+        {
+            "char": "t",
+            "name": "Arbre de vorera (plataner)"
+        },
+        {
+            "char": "l",
+            "name": "Fanal de vorera"
+        },
+        {
+            "char": "g",
+            "name": "Vorera"
+        }
+    ],
+    "map": [
+        "                                        ",
+        "                 cc    cc               ",
+        "            wwwwwwwwwwwwwwww            ",
+        "           wwowwwowwwowwwowww           ",
+        "          wwwwwwwwwwwwwwwwwwww          ",
+        "    wwwwww                    wwwwww    ",
+        "    wwwwwwsssssssssssssssssssswwwwww    ",
+        "    ssssssssssssssssssssssssssssssss    ",
+        "rrrrrrrrrrssssssssssssssssssssrrrrrrrrrr",
+        "rrrrrrrrrrssiissiissiissiisiisrrrrrrrrrr",
+        "rrrrrriirrssbbssbbssbbssbbsbbsrriirrrrrr",
+        "rrrrrrrrrrssssssssssssssssssssrrrrrrrrrr",
+        "rrrrrrrrrrssssssssssssssssssssrrrrrrrrrr",
+        "rrrrrrrrrrsiissiissiissiisiissrrrrrrrrrr",
+        "rrrrrrrrrrsbbssbbssbbssbbsbbssrrrrrrrrrr",
+        "rrrrriirrrssssssssssssssssssssrrriirrrrr",
+        "rrrrrrrrrrssssssssssssssssssssrrrrrrrrrr",
+        "rrrrrrrrrrssiissiissiissiisiisrrrrrrrrrr",
+        "rrrrrrrrrrssbbssbbssbbssbbsbbsrrrrrrrrrr",
+        "rrrrrrrrrrssssssssssssssssssssrrrrrrrrrr",
+        "dddddddddddddddddddddddddddddddddddddddd",
+        "aaaaaaaaaaaaapppaaapppaapppaaaaaaaaaaaaa",
+        "aaaaappaaaaaapppaaapppaapppaaaaaappaaaaa",
+        "aaaaappaaaaaapppaaapppaapppaaaaaappaaaaa",
+        "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "ggglgggggggggggggggggggggggggggggggglggg",
+        "ggggggggttggggggggggggggggggggttgggggggg",
+        "jjjggggggggggggggggggggggggggggggggggjjj"
+    ],
+    "zones": [
+        {
+            "id": "ala_esquerra",
+            "cols": [
+                0,
+                9
+            ],
+            "description": "Ala esquerra en perspectiva, punt de fuga cap a Carrer de Provença"
+        },
+        {
+            "id": "cantonada",
+            "cols": [
+                10,
+                29
+            ],
+            "description": "Vista frontal de la cantonada, des de l'acera de l'altra banda"
+        },
+        {
+            "id": "ala_dreta",
+            "cols": [
+                30,
+                39
+            ],
+            "description": "Ala dreta en perspectiva, punt de fuga cap a Passeig de Gràcia"
+        }
+    ],
+    "landmarks": [
+        {
+            "id": 0,
+            "code": "CN",
+            "name": "Cantonada",
+            "screen": "CANTONADA",
+            "x": 80,
+            "y": 60
+        },
+        {
+            "id": 1,
+            "code": "AE",
+            "name": "Ala Esquerra",
+            "screen": "ALA ESQUERRA",
+            "x": 20,
+            "y": 60
+        },
+        {
+            "id": 2,
+            "code": "AD",
+            "name": "Ala Dreta",
+            "screen": "ALA DRETA",
+            "x": 140,
+            "y": 60
+        }
+    ]
+}

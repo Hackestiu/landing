@@ -60,6 +60,8 @@ CONFIDENCE_THRESHOLD = 0.5
 LOCATION_MODEL_DIRS: dict[str, Path] = {
     "sagrada_familia": VISION_MODEL_DIR / "sagrada_familia",
     "park_guell": VISION_MODEL_DIR / "park_guell",
+    "casa_batllo": VISION_MODEL_DIR / "casa_batllo",
+    "pedrera": VISION_MODEL_DIR / "pedrera",
 }
 
 

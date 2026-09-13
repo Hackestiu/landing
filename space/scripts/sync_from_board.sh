@@ -9,7 +9,8 @@
 set -euo pipefail
 
 BOARD_REPO="${BOARD_REPO:-../../cultura-viva}"
-SRC="$BOARD_REPO/python"
+SRC="$BOARD_REPO/arduino/python"
+[[ ! -d "$SRC" && -d "$BOARD_REPO/python" ]] && SRC="$BOARD_REPO/python"
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
 # Each entry is a path relative to the board's python/ directory, and the same
@@ -28,8 +29,12 @@ FILES=(
   models/knowledge/knowledge_base.json
   models/vision/park_guell/labels.json
   models/vision/sagrada_familia/labels.json
+  models/vision/casa_batllo/labels.json
+  models/vision/pedrera/labels.json
   minimapa/landmarks_guell.json:models/minimap/landmarks_guell.json
   minimapa/landmarks_sagrada.json:models/minimap/landmarks_sagrada.json
+  minimapa/landmarks_batllo.json:models/minimap/landmarks_batllo.json
+  minimapa/landmarks_mila.json:models/minimap/landmarks_mila.json
 )
 
 # Splits an entry into its board-relative and Space-relative halves.
@@ -37,7 +42,7 @@ src_of() { echo "${1%%:*}"; }
 dst_of() { local e="$1"; [[ "$e" == *:* ]] && echo "${e#*:}" || echo "$e"; }
 
 if [[ ! -d "$SRC" ]]; then
-  echo "Board repo not found at $BOARD_REPO — set BOARD_REPO=/path/to/cultura-viva" >&2
+  echo "Board repo not found at $BOARD_REPO (checked $SRC) — set BOARD_REPO=/path/to/cultura-viva" >&2
   exit 2
 fi
 

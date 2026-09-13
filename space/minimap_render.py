@@ -46,45 +46,63 @@ from config import MINIMAP_DIR, logger
 
 # Site id -> vendored landmark file, mirroring LANDMARKS_FILES in the board's
 # core/minimap_module.py.
+# Site id -> vendored landmark file, mirroring LANDMARKS_FILES in the board's
+# core/minimap_module.py. Exactly 4 sites, same keys as the board.
 LANDMARKS_FILES = {
-    "park_guell": MINIMAP_DIR / "landmarks_guell.json",
+    "park_guell":      MINIMAP_DIR / "landmarks_guell.json",
     "sagrada_familia": MINIMAP_DIR / "landmarks_sagrada.json",
+    "casa_batllo":     MINIMAP_DIR / "landmarks_batllo.json",
+    "pedrera":       MINIMAP_DIR / "landmarks_mila.json",
 }
 
 # Vision label -> landmark code. Sagrada Família carries this in its JSON as
-# `visionLabelMapping`; Park Güell has no such block, so its half is copied
-# from VISION_LABEL_TO_LANDMARK in the board's core/minimap_module.py. Values
-# are tuples because one label can light more than one landmark.
+# `visionLabelMapping`; the other three have their mappings copied from
+# VISION_LABEL_TO_LANDMARK in the board's core/minimap_module.py.
+# Values are tuples because one label can light more than one landmark.
 LABEL_TO_CODE: dict[str, dict[str, tuple[str, ...]]] = {
     "park_guell": {
-        "escalinata_drac": ("DR",),
-        "sala_hipostila": ("HH",),
-        "placa_natura": ("NS",),
-        "casa_museu": ("CG",),
-        "3_viaductes": ("TV",),
-        "turo_3_creus": ("CH",),
+        "escalinata_drac":      ("DR",),
+        "sala_hipostila":       ("HH",),
+        "placa_natura":         ("NS",),
+        "casa_museu":           ("CG",),
+        "3_viaductes":          ("TV",),
+        "turo_3_creus":         ("CH",),
         "pavellons_consergeria": ("PL",),
     },
-    "sagrada_familia": {},  # filled from the JSON on first load
+    "sagrada_familia": {},  # filled from visionLabelMapping in the JSON on first load
+    "casa_batllo": {
+        # labels from models/vision/casa_batllo/labels.json id2label
+        "pla_frontal":             ("PS",),  # full-facade shot -> upper zone
+        "pla_inferior":            ("PI",),  # lower half shot -> lower zone
+    },
+    "pedrera": {
+        # labels from models/vision/pedrera/labels.json id2label
+        "facana_1":            ("CN",),  # straight-on corner shot
+        "facana_2":            ("AE",),  # left wing
+        "facana_3":            ("AD",),  # right wing
+    },
 }
 
-# What the status bar shows before anything has been found: the site itself, in
-# the sketch's unaccented capitals, since its 5x7 font has no accented glyphs.
+# What the status bar shows before anything has been found, matching the board's
+# default label text for each site (unaccented capitals, 5x7 bitmap font).
 FALLBACK_LABEL = {
-    "park_guell": "PARK GUELL",
+    "park_guell":      "PARK GUELL",
     "sagrada_familia": "SAGRADA FAMILIA",
+    "casa_batllo":     "CASA BATLLO",
+    "pedrera":         "LA PEDRERA",
 }
 
-# The same two, spelled properly, for the screen-reader description.
+# Site names, spelled properly, for the SVG aria-label / screen reader.
 SITE_NAMES = {
-    "park_guell": "Park Güell",
+    "park_guell":      "Park Güell",
     "sagrada_familia": "Sagrada Família",
+    "casa_batllo":     "Casa Batlló",
+    "pedrera":       "La Pedrera",
 }
 
-# Status-bar names, from the board's landmarks_*.h rather than the JSON's
-# `screen` field. The two agree for Sagrada Família and disagree for Park Güell,
-# where the sketch is in English and the JSON in Catalan; the sketch is what a
-# visitor actually sees on the device, and this page is in English.
+# Status-bar label overrides, from the board's landmarks_*.h `screen` fields.
+# Only needed where the JSON's `screen` value differs from what the firmware
+# actually prints; Park Güell is the only case (JSON is Catalan, sketch English).
 SCREEN_LABELS = {
     "park_guell": {
         "PL": "PORTERS LODGE",
@@ -96,6 +114,8 @@ SCREEN_LABELS = {
         "AG": "AUSTRIA GARDEN",
         "CH": "CALVARY HILL",
     },
+    # casa_batllo and casa_mila use the JSON's `screen` field directly
+    # (CANTONADA, ALA ESQUERRA, ALA DRETA, PLA SUPERIOR, PLA INFERIOR)
 }
 
 # Screen geometry, from the `screen` block of either JSON.
@@ -122,6 +142,63 @@ SAGRADA_TILES = {
     "n": "naveCentral",
     "l": "naveLateral",
     "c": "porch",
+}
+
+# Casa Batlló elevation paints flat 4x4 fills per character.
+BATLLO_TILES = {
+    " ": "void",
+    "x": "cross",
+    "n": "onion",
+    "y": "cone",
+    "v": "roofPink",
+    "V": "roofPinkDark",
+    "u": "roofTeal",
+    "U": "roofTealDark",
+    "t": "roofGreen",
+    "T": "roofGreenDark",
+    "z": "tower",
+    "Z": "towerDark",
+    "e": "cornice",
+    "m": "mosaic",
+    "M": "mosaicTeal",
+    "c": "mosaicCream",
+    "f": "frame",
+    "h": "glass",
+    "k": "bone",
+    "b": "boneShadow",
+    "o": "oculus",
+    "a": "stone",
+    "A": "stoneDark",
+    "q": "shadow",
+    "g": "tree",
+    "i": "amaGable",
+    "I": "amaGableDark",
+    "p": "amaWall",
+    "P": "amaWallDark",
+    "l": "amaGlass",
+    "r": "amaPlinth",
+    "B": "eixWall",
+    "C": "eixWallDark",
+    "D": "eixRoof",
+}
+
+# Casa Milà (La Pedrera) facade elevation paints flat 4x4 fills per character.
+MILA_TILES = {
+    " ": "void",
+    "c": "chimney",
+    "w": "parapet",
+    "o": "oculus",
+    "s": "stone",
+    "i": "window",
+    "b": "balcony",
+    "r": "recede",
+    "d": "divider",
+    "a": "ground",
+    "p": "portal",
+    "j": "neighbor",
+    "t": "tree",
+    "l": "lamp",
+    "g": "sidewalk",
 }
 
 # Park Güell dithers instead: a base fill plus a fixed stamp of accent pixels.
@@ -332,6 +409,14 @@ def _tile_svg(palette: dict, site: str, ch: str, state: str) -> str:
     """
     if site == "sagrada_familia":
         colour = _tile_colour(palette, SAGRADA_TILES.get(ch, "void"), state)
+        return f'<rect width="4" height="4" fill="{colour}"/>'
+
+    if site == "casa_batllo":
+        colour = _tile_colour(palette, BATLLO_TILES.get(ch, "void"), state)
+        return f'<rect width="4" height="4" fill="{colour}"/>'
+
+    if site in ("casa_mila", "la_pedrera", "pedrera"):
+        colour = _tile_colour(palette, MILA_TILES.get(ch, "void"), state)
         return f'<rect width="4" height="4" fill="{colour}"/>'
 
     base_key, accent_key, stamp = GUELL_TILES.get(ch, GUELL_DEFAULT)

@@ -45,6 +45,8 @@ BUTTON_IDS = ("A", "B", "C")
 SITES = {
     "Sagrada Família": "sagrada_familia",
     "Park Güell": "park_guell",
+    "Casa Batlló": "casa_batllo",
+    "La Pedrera": "pedrera",
 }
 
 PERSONALITY_BLURB = {

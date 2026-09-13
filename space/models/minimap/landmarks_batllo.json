@@ -1,0 +1,260 @@
+{
+    "screen": {
+        "width": 160,
+        "height": 128,
+        "mapHeight": 112,
+        "statusBarHeight": 16,
+        "tile": 4,
+        "cols": 40,
+        "rows": 28
+    },
+    "palette": {
+        "void": "#3a8fd9",
+        "roofPink": "#ca929e",
+        "roofPinkDark": "#ba7e8c",
+        "roofTeal": "#5897a7",
+        "roofTealDark": "#467f8f",
+        "roofGreen": "#64a76e",
+        "roofGreenDark": "#52915e",
+        "tower": "#9e9482",
+        "towerDark": "#8e8472",
+        "cone": "#b3572e",
+        "onion": "#d8b260",
+        "cross": "#e8e2d0",
+        "cornice": "#c98f4a",
+        "mosaic": "#b6a276",
+        "mosaicTeal": "#82988c",
+        "mosaicCream": "#d3c69f",
+        "frame": "#e6e0ca",
+        "glass": "#5684a8",
+        "bone": "#d7d1c0",
+        "boneShadow": "#796d58",
+        "oculus": "#e0d9c4",
+        "divider": "#8c785a",
+        "stone": "#afa289",
+        "stoneDark": "#a1957d",
+        "shadow": "#3c342a",
+        "neighbor": "#963c2d",
+        "tree": "#3f7a45",
+        "ink": "#1a1612",
+        "amaGable": "#cb8b73",
+        "amaGableDark": "#b4735b",
+        "amaWall": "#e4d1c0",
+        "amaWallDark": "#d2baa5",
+        "amaGlass": "#cf9a4e",
+        "amaPlinth": "#8c795f",
+        "eixWall": "#dbceae",
+        "eixWallDark": "#c9bb9a",
+        "eixRoof": "#6d6f74"
+    },
+    "markerColors": {
+        "ring": "#f0e6d2",
+        "unvisitedDot": "#12131a",
+        "visitedDot": "#ffcf3f",
+        "location": "#ff5544"
+    },
+    "tileLegend": [
+        {
+            "char": " ",
+            "name": "Cel"
+        },
+        {
+            "char": "x",
+            "name": "Creu del cim de la torre"
+        },
+        {
+            "char": "n",
+            "name": "Bulb daurat sota la creu"
+        },
+        {
+            "char": "y",
+            "name": "Teulada cònica (faldó) de la torre"
+        },
+        {
+            "char": "v",
+            "name": "Escates teulada rosa, clar (ala esquerra)"
+        },
+        {
+            "char": "V",
+            "name": "Escates teulada rosa, fosc (ala esquerra)"
+        },
+        {
+            "char": "u",
+            "name": "Escates teulada blau/verd, clar (gran cúpula)"
+        },
+        {
+            "char": "U",
+            "name": "Escates teulada blau/verd, fosc (gran cúpula)"
+        },
+        {
+            "char": "t",
+            "name": "Escates teulada verda, clar (ala dreta)"
+        },
+        {
+            "char": "T",
+            "name": "Escates teulada verda, fosc (ala dreta)"
+        },
+        {
+            "char": "z",
+            "name": "Cos de pedra de la torre, clar"
+        },
+        {
+            "char": "Z",
+            "name": "Cos de pedra de la torre, fosc"
+        },
+        {
+            "char": "e",
+            "name": "Cornisa amb merlets ocres"
+        },
+        {
+            "char": "m",
+            "name": "Trencadís, to daurat base"
+        },
+        {
+            "char": "M",
+            "name": "Trencadís, pigall blau/verd"
+        },
+        {
+            "char": "c",
+            "name": "Trencadís, pigall crema"
+        },
+        {
+            "char": "f",
+            "name": "Marc d'os de la finestra"
+        },
+        {
+            "char": "h",
+            "name": "Vidre de la finestra (blau)"
+        },
+        {
+            "char": "k",
+            "name": "Balcó d'os, càpsula clara"
+        },
+        {
+            "char": "b",
+            "name": "Balcó d'os, extrem fosc"
+        },
+        {
+            "char": "o",
+            "name": "Oculus / mascaró central"
+        },
+        {
+            "char": "a",
+            "name": "Pedra de la planta baixa, clar"
+        },
+        {
+            "char": "A",
+            "name": "Pedra de la planta baixa, fosc"
+        },
+        {
+            "char": "q",
+            "name": "Ombra dels arcs parabolics / escletxa mitgera entre edificis"
+        },
+        {
+            "char": "g",
+            "name": "Arbrat de vorera"
+        },
+        {
+            "char": "i",
+            "name": "Amatller: fronto esglaonat, teula clara"
+        },
+        {
+            "char": "I",
+            "name": "Amatller: fronto esglaonat, teula fosca"
+        },
+        {
+            "char": "p",
+            "name": "Amatller: esgrafiat del mur, clar"
+        },
+        {
+            "char": "P",
+            "name": "Amatller: esgrafiat del mur, fosc"
+        },
+        {
+            "char": "l",
+            "name": "Amatller: vidre daurat de la finestra"
+        },
+        {
+            "char": "r",
+            "name": "Amatller: socol de pedra / portal"
+        },
+        {
+            "char": "B",
+            "name": "Eixample (veí dret): parament clar"
+        },
+        {
+            "char": "C",
+            "name": "Eixample (veí dret): parament fosc"
+        },
+        {
+            "char": "D",
+            "name": "Eixample (veí dret): rafec de pissarra"
+        }
+    ],
+    "map": [
+        "             x     uUu                  ",
+        "            nnn    UuUu                 ",
+        "            yZy   UuUuUU                ",
+        "            zZZ   uUuUuu                ",
+        "           VzZZ  uUuUuUUuUt             ",
+        "           vzZZtUUuUuUuuUuTtT           ",
+        "   i      vVzZZTuuUuUuUUuUtTt           ",
+        "  iIi    VVvzZZtUUuUuUuuUuTtTt          ",
+        " iIIIi   vvVzZZTuuUuUuUUuUtTtTT         ",
+        "iIIIIIi vVVvzZZtUUuUuUuuUuTtTtt  DDDDDDD",
+        "MeecMeecMeecMeecMeecMeecMeecMeecMeecMeec",
+        "pPpPpPpqcMMmfhhhfmoooomfhhhfcMMmqBCBCBCB",
+        "ppflfppqmMcmfhhhfmMcmMcfhhhfmMcmqBBfhfBB",
+        "pPpPpPpqcMmcfhhhfcMmcMmfhhhfcMmcqBCBCBCB",
+        "PpPpPpPqmMcmbkkkbmMcmMcbkkkbmMcmqCBCBCBC",
+        "pPpPpPpqmMmMmMmMmMmMmMmMmMmMmMmMqBCBCBCB",
+        "PpPpPpPqcmMmcmMmcmMmcmMmcmMmcmMmqCBCBCBC",
+        "ppflfppqmMcmfhhhfmMcmMcfhhhfmMcmqBBfhfBB",
+        "pPpPpPpqcMmcfhhhfcMmcMmfhhhfcMmcqBCBCBCB",
+        "PpPpPpPqmMcmbkkkbmMcmMcbkkkbmMcmqCBCBCBC",
+        "mMcMmMcMmMcMmMcMmMcMmMcMmMcMmMcMmMcMmMcM",
+        "aAaAaAaqkkkkkkkkkkkkkkkkkkkkkkkkqAaAaAaA",
+        "rrqqqrrqaaAaaAqqaaAaaAqqaaAaaAqqqAAqqqAA",
+        "rrqqqrrqaAaaAaqqaAaaAaqqaAaaAaqqqAAqqqAA",
+        "rrqqqrrqAaaAaaqqAaaAaaqqAaaAaaqqqAAqqqAA",
+        "rrqqqrrqaaAaaAaqaaAaaAaqaaAaaAaqqAAqqqAA",
+        "rrqqqrrqaAaaAaaqaAaaAaaqaAaaAaaqqAAqqqAA",
+        "grqqqrrqqqqqqqqqqqqqqqqqqqqqqqqqqAAqqqAg"
+    ],
+    "zones": [
+        {
+            "id": "pla_superior",
+            "rows": [
+                0,
+                19
+            ],
+            "description": "Teulada del drac, torre amb creu i planta noble"
+        },
+        {
+            "id": "pla_inferior",
+            "rows": [
+                21,
+                27
+            ],
+            "description": "Planta baixa: arcs parabòlics i façana d'accés"
+        }
+    ],
+    "landmarks": [
+        {
+            "id": 0,
+            "code": "PS",
+            "name": "Pla Superior",
+            "screen": "PLA SUPERIOR",
+            "x": 80,
+            "y": 44
+        },
+        {
+            "id": 1,
+            "code": "PI",
+            "name": "Pla Inferior",
+            "screen": "PLA INFERIOR",
+            "x": 80,
+            "y": 96
+        }
+    ]
+}
