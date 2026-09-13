@@ -22,6 +22,7 @@ that the pipeline works; it does not show how long it takes on the board. For
 that, see the per-stage figures from `python/benchmark.py` run on the device.
 """
 
+import os
 import time
 from pathlib import Path
 
@@ -284,5 +285,52 @@ with gr.Blocks(title="Cultura Viva — live pipeline") as demo:
     )
 
 
+def _credentials():
+    """Reads the allowed logins from DEMO_USERS, formatted `user:pass,user:pass`.
+
+    Usernames are free-form, so an email per person gives a whitelist where
+    access can be revoked individually by editing one secret.
+
+    Fails closed: with no credentials configured the app refuses to start, so a
+    dropped secret takes the demo offline rather than silently publishing it.
+    Set DEMO_PUBLIC=1 to run without a login on purpose — local development, or
+    a deliberately open deployment.
+    """
+    raw = os.environ.get("DEMO_USERS", "").strip()
+    if raw:
+        pairs = [
+            (u.strip(), pw)
+            for entry in raw.split(",")
+            if ":" in entry
+            for u, pw in [entry.split(":", 1)]
+            if u.strip() and pw
+        ]
+        if pairs:
+            logger.info("Login required. {} account(s) configured.", len(pairs))
+            return pairs
+        raise SystemExit(
+            "DEMO_USERS is set but no valid user:pass entries were parsed. "
+            "Expected `alice@example.org:secret,bob@example.org:other`."
+        )
+
+    if os.environ.get("DEMO_PUBLIC") == "1":
+        logger.warning("DEMO_PUBLIC=1 — serving with NO login.")
+        return None
+
+    raise SystemExit(
+        "Refusing to start without a login. Set DEMO_USERS "
+        "(`fly secrets set DEMO_USERS='you@example.org:password'`), or "
+        "DEMO_PUBLIC=1 to serve the demo openly on purpose."
+    )
+
+
 if __name__ == "__main__":
-    demo.queue(max_size=12).launch(server_name="0.0.0.0", server_port=7860)
+    demo.queue(max_size=12).launch(
+        server_name="0.0.0.0",
+        server_port=7860,
+        auth=_credentials(),
+        auth_message=(
+            "Cultura Viva — the Arduino UNO Q pipeline, running live. "
+            "Ask whoever shared this link for access."
+        ),
+    )

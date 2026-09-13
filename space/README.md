@@ -74,6 +74,8 @@ and [`culturaviva/sagrada_familia-vit`](https://huggingface.co/culturaviva/sagra
 | `CULTURA_VISION_REPO_SAGRADA_FAMILIA` | Override the Sagrada Família classifier repo |
 | `CULTURA_SLM_REPO` / `CULTURA_SLM_FILENAME` | Override the GGUF (default: `Qwen/Qwen2.5-0.5B-Instruct-GGUF`, `qwen2.5-0.5b-instruct-q4_k_m.gguf` — matching the board's `config.py`) |
 | `CULTURA_LOG_LEVEL` | Console log level (default `INFO`) |
+| `DEMO_USERS` | **Required.** Logins as `user:pass,user:pass`. Usernames are free-form, so use one email per person and revoke by editing the secret. |
+| `DEMO_PUBLIC` | Set to `1` to serve with no login. Without either this or `DEMO_USERS`, the app refuses to start — a dropped secret takes the demo offline rather than silently publishing it. |
 
 `bootstrap.py` discovers the ONNX filename inside each repo rather than assuming
 one, so an export that produced `onnx/model.onnx` or a quantisation suffix works

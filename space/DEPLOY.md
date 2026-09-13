@@ -65,7 +65,21 @@ fly volume create cv_models --size 5 --region cdg
 # Read token for culturaviva/park_guell-vit and culturaviva/sagrada_familia-vit.
 # Stored encrypted; never goes in fly.toml or git.
 fly secrets set HF_TOKEN=hf_xxxxxxxxxxxxxxxxxxxxx
+
+# Who may open the demo. One email per person, so access is revoked by editing
+# this one secret. The app refuses to start without it (or DEMO_PUBLIC=1), so a
+# dropped secret takes the demo offline rather than silently publishing it.
+fly secrets set DEMO_USERS='laia@example.org:password,someone@example.org:other'
 ```
+
+Setting a secret restarts the machine by itself, so adding or removing someone
+is that one command — no redeploy.
+
+The login cookie works inside the landing page's iframe only because
+`demo.culturaviva.tech` and `culturaviva.tech` share a registrable domain, which
+makes them same-site. Served from `cultura-viva-demo.fly.dev` the cookie would
+be cross-site and browsers would drop it, so the login would fail in the embed
+while working in a standalone tab.
 
 ## 3. Deploy
 
