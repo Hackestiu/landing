@@ -82,7 +82,73 @@ def _elapsed(start: float) -> str:
     return f"{time.perf_counter() - start:.2f}s"
 
 
-def run_guide(photo_path, audio_path, typed_question, site_label, button_id, visited):
+def _element_message(element) -> str:
+    """How a classification reads to a visitor, in all three of its outcomes."""
+    if element is None:
+        return (
+            "No classifier available for this site — answering from the "
+            "monument-level knowledge base instead."
+        )
+    if element == "unknown":
+        return "unknown — not a recognised element of this monument"
+    return element
+
+
+def check_photo(photo_path, site_label, visited):
+    """Runs the vision stage on its own, at the step where the photo is taken.
+
+    The board classifies the moment the shutter fires and lights the minimap
+    there and then — you see the place you photographed appear on the map while
+    you are still standing in front of it. Deferring that to the end of the flow
+    made the map a receipt for a finished run rather than a thing that responds
+    to you, so vision runs here and its result is carried forward.
+    """
+    site = SITES.get(site_label, DEFAULT_LOCATION)
+    visited = set(visited or ())
+
+    if not photo_path:
+        return (
+            "",
+            minimap_render.render(site, visited),
+            visited,
+            None,
+            gr.update(interactive=True),
+        )
+
+    start = time.perf_counter()
+    element = vision.classify(site, photo_path)
+    logger.info("Stage latency: vision {}", _elapsed(start))
+
+    fresh = minimap_render.codes_for(site, element or "")
+    visited |= set(fresh)
+    note = f"**{_element_message(element)}**"
+    if fresh:
+        note += "  \nEl minimapa s'ha encès en aquest punt."
+    elif element == "unknown":
+        note += "  \nPots tornar-hi amb una altra foto, o continuar igualment."
+
+    return (
+        note,
+        minimap_render.render(site, visited, current=fresh),
+        visited,
+        # Carried so the pipeline does not classify the same photo twice.
+        (photo_path, element),
+        gr.update(interactive=True),
+    )
+
+
+def reset_check(photo_path):
+    """Clears the last classification when the photo changes.
+
+    A stale "Façana del Naixement" under a photo the visitor has just swapped
+    would be worse than no caption at all, and Next stays shut until the new
+    photo has actually been through the classifier.
+    """
+    return "", None, gr.update(interactive=not photo_path)
+
+
+def run_guide(photo_path, audio_path, typed_question, site_label, button_id, visited,
+              checked):
     """Runs photo -> question -> answer -> speech and streams each stage's result
     into the UI as it completes, so a visitor watches the pipeline advance rather
     than waiting on one opaque call.
@@ -119,21 +185,19 @@ def run_guide(photo_path, audio_path, typed_question, site_label, button_id, vis
         yield snapshot()
         return
 
-    # 1. Vision — identify the element in the photo.
+    # 1. Vision — normally already done at step 2, where the photo was taken.
     if photo_path:
-        start = time.perf_counter()
-        element = vision.classify(site, photo_path)
-        timings.append(f"vision    {_elapsed(start)}")
-        if element is None:
-            element_out = (
-                "No classifier available for this site — answering from the "
-                "monument-level knowledge base instead."
-            )
-        elif element == "unknown":
-            element_out = "unknown — not a recognised element of this monument"
+        if checked and checked[0] == photo_path:
+            element = checked[1]
         else:
-            element_out = element
+            # Reached only if the photo skipped the check — a cleared field that
+            # was refilled, say. Classifying here keeps the run working rather
+            # than answering about the wrong thing.
+            start = time.perf_counter()
+            element = vision.classify(site, photo_path)
+            timings.append(f"vision    {_elapsed(start)}")
 
+        element_out = _element_message(element)
         # Where main.py calls minimap.mark_detected(site, element) on the board.
         # `unknown` and unmapped labels resolve to no codes and light nothing.
         fresh = minimap_render.codes_for(site, element or "")
@@ -458,6 +522,18 @@ body, gradio-app {{
 .cv-step-pip.is-on {{ color: {BLUE_DEEP}; }}
 .cv-step-pip.is-on i {{ opacity: 1; }}
 
+/* The reading under the photo: quiet, and clearly about the photo above it. */
+.cv-photo-note {{
+  padding: .1rem .2rem .3rem;
+  font-size: .9rem;
+  color: rgba(28, 43, 48, 0.72);
+}}
+.cv-photo-note strong {{ color: {BLUE_DEEP}; font-weight: 600; }}
+
+/* Next is shut while a photo is waiting to be analysed, so the state has to be
+   visible rather than looking like a dead button. */
+.cv-nav button:disabled {{ opacity: .4; cursor: not-allowed; }}
+
 .cv-nav {{ margin-top: 1rem; gap: .6rem; }}
 .cv-nav button {{
   font-family: "JetBrains Mono", ui-monospace, monospace !important;
@@ -558,6 +634,8 @@ with gr.Blocks(
     # switching site and back leaves everything already discovered still lit.
     step_state = gr.State(0)
     visited_state = gr.State(set())
+    # (photo path, element) from step 2, so the pipeline does not re-classify.
+    checked_state = gr.State(None)
 
     with gr.Column():
         gr.HTML(
@@ -598,6 +676,8 @@ with gr.Blocks(
                         sources=["upload", "webcam"],
                         height=280,
                     )
+                    check = gr.Button("Analitza la foto", variant="primary")
+                    photo_note = gr.Markdown("", elem_classes="cv-photo-note")
 
                 with gr.Group(visible=False) as step_personality:
                     personality_choice = gr.Radio(
@@ -667,13 +747,25 @@ with gr.Blocks(
     back.click(lambda step: go_to(step - 1), inputs=step_state, outputs=nav_outputs)
     forward.click(lambda step: go_to(step + 1), inputs=step_state, outputs=nav_outputs)
 
+    # A new photo invalidates the last reading, and shuts Next until the new one
+    # has been through the classifier.
+    photo.change(reset_check, inputs=photo, outputs=[photo_note, checked_state, forward])
+    check.click(
+        check_photo,
+        inputs=[photo, site, visited_state],
+        outputs=[photo_note, minimap, visited_state, checked_state, forward],
+    )
+
+    # Landmark codes are per site, so a site change invalidates the reading too.
     site.change(show_map, inputs=[site, visited_state], outputs=minimap)
+    site.change(reset_check, inputs=photo, outputs=[photo_note, checked_state, forward])
     personality_choice.change(
         describe_personality, inputs=personality_choice, outputs=personality_note
     )
     run.click(lambda: gr.update(visible=True), outputs=results).then(
         run_guide,
-        inputs=[photo, voice_question, typed, site, personality_choice, visited_state],
+        inputs=[photo, voice_question, typed, site, personality_choice, visited_state,
+                checked_state],
         outputs=[
             element_box,
             question_box,

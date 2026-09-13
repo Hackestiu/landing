@@ -38,7 +38,7 @@ device's own code.
 
 | On the UNO Q | Here |
 |---|---|
-| Logitech Brio 105 webcam | Upload or webcam capture |
+| Logitech Brio 105 webcam | Upload or webcam capture, analysed on the spot (step 2) |
 | Brio microphone (ALSA) | Browser recording, or a typed question |
 | GPS NEO-6M proximity detection | Site picker (step 1) |
 | Modulino Buttons A / B / C | Personality radio group (step 3) |
@@ -48,6 +48,11 @@ device's own code.
 The device asks for those four things one at a time, as you walk; the page does
 the same, as four steps — place, photo, personality, question — rather than one
 screen of controls.
+
+Vision runs at step 2, not at the end: the board classifies the moment the
+shutter fires and lights the minimap there and then, while you are still
+standing in front of the thing you photographed. The answer to a question you
+have not asked yet is the only part that waits.
 
 The minimap is the board's own screen rather than a redrawing of it: the same
 40x28 tile grid, the same palettes and dither stamps, the same Voronoi reveal as
