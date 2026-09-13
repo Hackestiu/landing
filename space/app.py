@@ -318,7 +318,7 @@ def describe_personality(button_id: str) -> str:
 # demo does not read as a third-party widget dropped into the page.
 #
 # Tokens are taken from tailwind.config.mjs and src/styles/global.css at the
-# repo root: paper/ink, the blue-green-ochre accents, Fraunces for headings,
+# repo root: paper/ink and the blue accents, Fraunces for headings,
 # Inter for body, JetBrains Mono for the uppercase eyebrow labels, and the
 # grain overlay. Change them there and mirror the change here.
 # ---------------------------------------------------------------------------
@@ -328,7 +328,6 @@ INK = "#1C2B30"
 BLUE = "#2A6F97"
 BLUE_DEEP = "#1D4E6E"
 BLUE_SOFT = "#D9E9F2"
-OCHRE = "#E2954A"
 
 # Same fractalNoise overlay as the landing's `bg-grain` utility.
 GRAIN = (
@@ -555,9 +554,6 @@ body, gradio-app {{
 }}
 /* The landing sets "Viva" in blue; <em> carries that without italics. */
 .cv-wordmark em {{ color: {BLUE}; font-style: normal; }}
-
-.cv-note {{ font-size: .8rem; color: rgba(28, 43, 48, 0.55); line-height: 1.6; }}
-.cv-note b {{ color: {OCHRE}; font-weight: 600; }}
 
 /* --- The step flow ------------------------------------------------------ */
 
@@ -1005,13 +1001,6 @@ with gr.Blocks(
                         label="…or type it",
                         placeholder="Why is this facade so different from the other one?",
                         info="Only used when there is no recording.",
-                    )
-                    gr.HTML(
-                        '<p class="cv-note">Ask <b>in English</b>: the device\'s '
-                        "transcription model is <code>faster-whisper base.en</code>, "
-                        "which understands nothing else, so a question in Catalan or "
-                        "Spanish will not transcribe. That is a real limit of the "
-                        "hardware, not of this demo.</p>"
                     )
                     run = gr.Button("Ask the guide", variant="primary")
 
