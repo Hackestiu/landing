@@ -18,5 +18,5 @@ byte-for-byte — `space/scripts/sync_from_board.sh --check` fails if they drift
 
 See [`space/README.md`](space/README.md) for what is identical to the board and
 what the browser stands in for, and [`space/DEPLOY.md`](space/DEPLOY.md) for
-running it on a Hetzner CX22 behind Caddy. The page embeds it from `DEMO_URL`
+deploying it — Fly.io for speed, a plain VPS for cost. The page embeds it from `DEMO_URL`
 in `src/pages/index.astro`, which is already set to `demo.culturaviva.tech`.

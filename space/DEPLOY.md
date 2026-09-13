@@ -1,4 +1,147 @@
-# Deploying the demo on a Hetzner CX22
+# Deploying the demo
+
+Two documented paths. **Fly.io** is the fast one and what the landing page
+currently points at; **Hetzner** is cheaper per month and worth moving to later.
+
+| | Fly.io | Hetzner CX22 |
+|---|---|---|
+| Time to a live URL | minutes | hours to days (account verification) |
+| Cost | ~$12/mo at 2 GB | ~$4.59/mo, 2 vCPU / 4 GB |
+| HTTPS + hostname | `*.fly.dev`, immediate | your DNS + Caddy |
+| You manage | nothing | a server |
+
+---
+
+# Path A — Fly.io (immediate)
+
+No DNS and no certificate work: Fly serves the app on `<app>.fly.dev` with a
+valid certificate from the first deploy, so the demo has a working URL before
+you own a domain record. `fly.toml` in this directory is the whole config;
+`compose.yaml` and the `Caddyfile` are not used on this path.
+
+## 1. Install and sign in
+
+```bash
+brew install flyctl
+fly auth signup      # or: fly auth login
+```
+
+Signup asks for a card and then returns you to the shell ready to deploy. That
+is the whole gate — there is no approval queue to sit in.
+
+## 2. Create the app and its storage
+
+From this directory (`space/`):
+
+```bash
+fly launch --no-deploy --copy-config --name cultura-viva-demo --region mad
+```
+
+`--no-deploy` matters: the volume and the token have to exist *before* the first
+boot, or the app starts, finds no weights and no credentials, and downloads
+~700 MB into a filesystem it will throw away.
+
+If the name is taken, pick another and update `app` in `fly.toml` — the
+hostname becomes `<app>.fly.dev`, which the landing page has to match.
+
+```bash
+# 5 GB holds the weights (~700 MB) and the Hub cache with room to spare.
+# Fly includes the first 10 GB of volume storage.
+fly volume create cv_models --size 5 --region mad
+
+# Read token for culturaviva/park_guell-vit and culturaviva/sagrada_familia-vit.
+# Stored encrypted; never goes in fly.toml or git.
+fly secrets set HF_TOKEN=hf_xxxxxxxxxxxxxxxxxxxxx
+```
+
+## 3. Deploy
+
+```bash
+fly deploy
+```
+
+The first deploy compiles llama.cpp on Fly's builder (~10–15 minutes; there is
+no usable prebuilt wheel — the project's CPU wheel index is musl-linked and its
+`libllama.so` cannot load on a Debian image). Later deploys reuse the cached
+layer unless `requirements.txt` changes.
+
+Then the first boot downloads the weights onto the volume and preloads every
+stage, which is why the health check has a 20-minute grace period. Watch it:
+
+```bash
+fly logs
+```
+
+You want:
+
+```
+Stage readiness after preload: {'slm': True, 'stt': True, 'tts': True, 'vision': True}
+```
+
+`vision: True` is the one that proves `HF_TOKEN` reached the two private
+classifier repos. If it says `False`, the lines above it name the reason.
+
+Then open `https://cultura-viva-demo.fly.dev`.
+
+## 4. If it gets OOM-killed
+
+Measured footprint is ~1.06 GB with the SLM, Whisper and Piper warm, plus
+~350 MB once a classifier loads — so 2 GB fits with roughly 600 MB to spare. If
+`fly logs` shows the machine being killed during preload:
+
+```bash
+fly scale memory 4096
+```
+
+No rebuild, no redeploy — it restarts on a 4 GB machine. That raises the bill to
+roughly $25/month, at which point Hetzner at $4.59 is worth the verification
+wait.
+
+## 5. Custom domain (optional, later)
+
+`demo.culturaviva.tech` is nicer than `cultura-viva-demo.fly.dev`, but nothing
+depends on it:
+
+```bash
+fly certs add demo.culturaviva.tech
+```
+
+Fly prints the DNS record to create. Add it in Netlify (**Domains →
+culturaviva.tech → DNS records**), wait for `fly certs show
+demo.culturaviva.tech` to report the certificate as issued, then update
+`DEMO_URL` in `src/pages/index.astro`.
+
+## Operating it
+
+```bash
+fly logs                      # follow
+fly status                    # machine state, region, memory
+fly deploy                    # ship a new version
+fly ssh console               # shell inside the running machine
+fly scale memory 4096         # more RAM, no rebuild
+fly apps destroy cultura-viva-demo   # tear it all down
+```
+
+Worth knowing:
+
+- **It is effectively single-user.** A full answer is ViT plus Whisper plus a
+  ~600-token prefill and 60 tokens of decode plus Piper. `fly.toml` sets a soft
+  concurrency limit of 1 so Fly queues at the edge rather than piling requests
+  onto a saturated machine.
+- **Do not destroy the `cv_models` volume.** It is the weights cache; without it
+  the next boot re-downloads ~700 MB.
+- **`auto_stop_machines` is off on purpose.** Letting the machine sleep would
+  make the next visitor wait through a full model reload. Turning it on is the
+  main lever if you want the bill lower than the wall-clock.
+
+---
+
+# Path B — Hetzner CX22 (cheaper, once verified)
+
+Uses `compose.yaml` and the `Caddyfile` instead of `fly.toml`. About $4.59/month
+for 2 vCPU and 4 GB — cheaper and faster than Fly's 2 GB machine, at the cost of
+running a server yourself. Hetzner verifies new accounts before you can create
+one, which can take hours or a day.
 
 The demo is a normal Docker service: the Gradio app plus Caddy, which terminates
 HTTPS. HTTPS is not optional — browsers only grant microphone access on a secure
@@ -12,7 +155,7 @@ Why this size: the pipeline is CPU-bound and its weakest point is latency, so th
 second core matters more than anything else you could spend on. See the memory
 figures below for why 4 GB rather than 2.
 
-## 1. Server
+### Server
 
 Hetzner Cloud Console → **Add Server**:
 
@@ -51,7 +194,7 @@ come from an emulated x86 container on a contended laptop; treat them as the
 right order of magnitude, not as your machine's numbers. `docker stats` after the
 first successful boot is the measurement that counts.
 
-## 2. DNS
+### DNS
 
 `culturaviva.tech` is on Netlify DNS (NS1 nameservers), so the record goes in
 the Netlify dashboard under **Domains → culturaviva.tech → DNS records**:
@@ -63,7 +206,7 @@ demo    A    <server-ip>
 Add it **before** the first `docker compose up`. Caddy requests the certificate
 on boot, and issuance fails if the name does not yet resolve to the server.
 
-## 3. Prepare the server
+### Prepare the server
 
 ```bash
 ssh root@<server-ip>
@@ -83,7 +226,7 @@ Hetzner also offers a Cloud Firewall in the console, applied before traffic
 reaches the machine. Using both is reasonable; using only the console one is
 fine too, as long as 22, 80 and 443 are open.
 
-## 4. Configure and start
+### Configure and start
 
 ```bash
 git clone https://github.com/Hackestiu/landing.git
@@ -118,7 +261,7 @@ You want to reach `Stage readiness after preload: {'slm': True, 'stt': True,
 'tts': True, 'vision': True}`. Any `False` there names a stage that failed —
 the lines above it say why.
 
-## 5. Point the landing page at it
+### Point the landing page at it
 
 `src/pages/index.astro` already points at `https://demo.culturaviva.tech`, so
 there is nothing to change — but note that the landing page is on Netlify and
@@ -129,7 +272,7 @@ not load.
 The embed is click-to-load, so a visitor who never presses the button sees no
 error either way. Still, merge after the server is serving, not before.
 
-## Operating it
+### Operating it
 
 ```bash
 docker compose logs -f app          # follow

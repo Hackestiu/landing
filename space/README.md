@@ -107,10 +107,9 @@ HF_TOKEN=<read-token> python app.py                # http://localhost:7860
 
 ## Deploying
 
-The demo is deployed as a Docker service on a plain VPS — see
-**[DEPLOY.md](DEPLOY.md)** for the Hetzner walkthrough (server, DNS,
-`.env`, `docker compose up`). `compose.yaml` runs the app behind Caddy, which
-terminates HTTPS; the app itself is never exposed to the internet directly.
+The demo is deployed as a Docker service on a plain VPS — see **[DEPLOY.md](DEPLOY.md)**, which documents two paths: Fly.io via
+`fly.toml` (fastest to a live HTTPS URL, no DNS needed) and a plain VPS via
+`compose.yaml` plus Caddy (cheaper per month, you run the server).
 
 Two constraints worth knowing before changing the build:
 

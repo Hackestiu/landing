@@ -1,0 +1,55 @@
+# Fly.io deployment. Chosen for time-to-live-URL: Fly serves the app on
+# <app>.fly.dev with a valid certificate straight away, so the demo is reachable
+# without waiting on DNS or on Caddy's Let's Encrypt issuance.
+#
+# Caddy and compose.yaml are NOT used here — Fly terminates TLS itself. They
+# remain in this directory for the plain-VPS path (see DEPLOY.md).
+
+app = 'cultura-viva-demo'
+primary_region = 'mad'          # Madrid — closest Fly region to Barcelona
+
+[build]
+  dockerfile = 'Dockerfile'
+
+[http_service]
+  internal_port = 7860
+  force_https = true
+
+  # The demo is a single-user CPU service that preloads ~1 GB of weights at
+  # boot. Stopping idle machines would make the next visitor wait through that
+  # reload, so it stays warm. Set auto_stop_machines = 'suspend' and
+  # min_machines_running = 0 to trade that first-visit delay for a lower bill.
+  auto_stop_machines = 'off'
+  auto_start_machines = true
+  min_machines_running = 1
+
+  [http_service.concurrency]
+    # One question occupies the CPU completely; queueing at the edge is kinder
+    # than letting requests pile onto a saturated machine.
+    type = 'requests'
+    soft_limit = 1
+    hard_limit = 4
+
+[[vm]]
+  size = 'shared-cpu-1x'
+  # Measured: ~1.06 GB with SLM + Whisper + Piper warm, plus ~350 MB once the
+  # vision classifier loads. 2 GB fits with little to spare — if the logs show
+  # an OOM kill, `fly scale memory 4096` fixes it without a rebuild.
+  memory = '2gb'
+
+[mounts]
+  # Weights and the Hub cache. Without this every deploy re-downloads ~700 MB
+  # and the first visitor after each deploy waits for it.
+  source = 'cv_models'
+  destination = '/app/models'
+
+[checks]
+  [checks.up]
+    type = 'http'
+    port = 7860
+    path = '/'
+    interval = '30s'
+    timeout = '10s'
+    # First boot downloads the weights and preloads every stage before Gradio
+    # serves anything. A short grace period would kill the machine mid-download.
+    grace_period = '20m'
