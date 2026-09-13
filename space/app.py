@@ -16,10 +16,11 @@ microphone (browser recording), the GPS (a site selector), the three Modulino
 buttons (a radio group) and the headphone jack (an audio player). Nothing in the
 reasoning path is stubbed.
 
-One honest caveat, surfaced in the UI: a Space runs on x86 server cores, while
-the UNO Q runs four Cortex-A53s with no dot-product extensions. This page shows
-that the pipeline works; it does not show how long it takes on the board. For
-that, see the per-stage figures from `python/benchmark.py` run on the device.
+One honest caveat: a Space runs on x86 server cores, while the UNO Q runs four
+Cortex-A53s with no dot-product extensions. This page shows that the pipeline
+works; it does not show how long it takes on the board, which is why per-stage
+latency goes to the log and not to the visitor. For the device's real figures,
+see `python/benchmark.py` run on the board.
 """
 
 import os
@@ -72,19 +73,6 @@ STATUS["tts"] = player.preload() > 0
 logger.success("Stage readiness after preload: {}", STATUS)
 
 
-def _readiness_markdown() -> str:
-    rows = [
-        ("Vision", "ONNX classifier", STATUS["vision"]),
-        ("Speech-to-text", "faster-whisper base.en (int8)", STATUS["stt"]),
-        ("Language model", "Qwen2.5 GGUF (llama.cpp)", STATUS["slm"]),
-        ("Text-to-speech", "Piper", STATUS["tts"]),
-    ]
-    lines = ["| Stage | Model | Status |", "|---|---|---|"]
-    for stage, model, ok in rows:
-        lines.append(f"| {stage} | {model} | {'ready' if ok else 'unavailable'} |")
-    return "\n".join(lines)
-
-
 # ---------------------------------------------------------------------------
 # The pipeline, in main.py's order.
 # ---------------------------------------------------------------------------
@@ -110,8 +98,10 @@ def run_guide(photo_path, audio_path, typed_question, site_label, button_id, vis
     element_out = ""
     question_out = ""
     answer_out = ""
-    context_out = ""
     map_svg = minimap_render.render(site, visited)
+    # Kept, but logged rather than shown: per-stage latency is worth having when
+    # something is slow on the Space, and it was never a visitor-facing number —
+    # this server is much faster than the board's four Cortex-A53 cores.
     timings: list[str] = []
 
     def snapshot(audio=None):
@@ -119,8 +109,6 @@ def run_guide(photo_path, audio_path, typed_question, site_label, button_id, vis
             element_out,
             question_out,
             answer_out,
-            context_out,
-            "\n".join(timings),
             audio,
             map_svg,
             visited,
@@ -178,7 +166,6 @@ def run_guide(photo_path, audio_path, typed_question, site_label, button_id, vis
     start = time.perf_counter()
     kg_context = models.get_kg_context(element or "", personality=personality)
     timings.append(f"knowledge {_elapsed(start)}")
-    context_out = kg_context or "(no sheet matched — the model answers unassisted)"
     yield snapshot()
 
     # 4. SLM — generate the spoken answer.
@@ -200,6 +187,7 @@ def run_guide(photo_path, audio_path, typed_question, site_label, button_id, vis
     start = time.perf_counter()
     wav_path = player.synthesize(answer, personality=personality)
     timings.append(f"tts       {_elapsed(start)}")
+    logger.info("Stage latency: {}", " ".join(timings).replace("  ", " "))
     yield snapshot(audio=str(wav_path) if wav_path else None)
 
 
@@ -665,26 +653,6 @@ with gr.Blocks(
             question_box = gr.Textbox(label="Pregunta transcrita", interactive=False)
             answer_box = gr.Textbox(label="Resposta", interactive=False, lines=4)
 
-        with gr.Accordion("Què ha rebut el model", open=False):
-            context_box = gr.Textbox(
-                label="Context del graf de coneixement",
-                interactive=False,
-                lines=12,
-                info="Extret d'element_sheets.json, filtrat per personalitat.",
-            )
-            timing_box = gr.Textbox(
-                label="Latència per etapa en aquest servidor",
-                interactive=False,
-                lines=5,
-                info=(
-                    "Temps del servidor, no del dispositiu. Els quatre nuclis "
-                    "Cortex-A53 de l'UNO Q són força més lents — les xifres "
-                    "reals són al benchmark del repositori del dispositiu."
-                ),
-            )
-
-        with gr.Accordion("Estat del pipeline", open=False):
-            gr.Markdown(_readiness_markdown())
 
     nav_outputs = [
         step_state,
@@ -710,8 +678,6 @@ with gr.Blocks(
             element_box,
             question_box,
             answer_box,
-            context_box,
-            timing_box,
             answer_audio,
             minimap,
             visited_state,

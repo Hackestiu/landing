@@ -63,9 +63,10 @@ ALSA capture and `aplay` playback code; it is simply never called here, and
 
 A Space runs on x86 server cores. The UNO Q runs four Cortex-A53 cores with no
 `asimddp`/`i8mm`, on 2 GB of RAM. Every stage here is faster than on the board,
-so the latency shown in the UI is a server figure, not a device figure. The real
-per-stage numbers come from `python/benchmark.py` run on the board itself; show
-those next to this demo, not instead of it.
+so per-stage latency is logged rather than shown: it is a server figure, not a
+device figure, and putting it in front of a visitor invites the wrong reading.
+The real per-stage numbers come from `python/benchmark.py` run on the board
+itself; show those next to this demo, not instead of it.
 
 ## Configuration
 
