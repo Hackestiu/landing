@@ -217,19 +217,20 @@ const toneMap = {
         <p class="eyebrow mb-4" data-en="Video">Vídeo</p>
         <h2 class="text-3xl md:text-4xl text-ink" data-en="Cultura Viva in action">Cultura Viva en acció</h2>
       </div>
-      <div class="relative aspect-video rounded-2xl bg-ink flex items-center justify-center overflow-hidden">
-        <div aria-hidden="true" class="pointer-events-none absolute inset-0 opacity-[0.06]">
-          <TrencadisRow class="scale-[8] origin-top-left" />
-        </div>
-        <div class="relative flex flex-col items-center gap-4">
-          <div class="w-16 h-16 rounded-full bg-paper/10 border border-paper/20 flex items-center justify-center">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" class="w-6 h-6 text-paper/70 translate-x-0.5">
-              <path d="M8 5v14l11-7-11-7z" fill="currentColor" />
-            </svg>
-          </div>
-          <p class="font-mono text-xs uppercase tracking-widest2 text-paper/60" data-en="Coming soon">Properament</p>
-        </div>
+      <div class="relative aspect-video rounded-2xl bg-ink overflow-hidden border border-ink/10 shadow-lg">
+        <video
+          class="w-full h-full object-cover"
+          controls
+          preload="metadata"
+          poster="/video-poster.png"
+        >
+          <source src="/video.mp4" type="video/mp4" />
+          <p class="p-6 text-paper/70 font-mono text-sm" data-en="Your browser does not support the video tag.">
+            El teu navegador no suporta el reproductor de vídeo.
+          </p>
+        </video>
       </div>
+
     </section>
 
     <CatenaryDivider flip />
