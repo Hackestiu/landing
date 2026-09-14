@@ -62,9 +62,10 @@ hostname becomes `<app>.fly.dev`, which the landing page has to match.
 # which doubles the cost to serve a demo that handles one visitor at a time.
 fly volume create cv_models --size 5 --region cdg
 
-# Read token for culturaviva/park_guell-vit and culturaviva/sagrada_familia-vit.
-# Stored encrypted; never goes in fly.toml or git.
-fly secrets set HF_TOKEN=hf_xxxxxxxxxxxxxxxxxxxxx
+# HF_TOKEN is only needed if culturaviva/park_guell-vit and
+# culturaviva/sagrada_familia-vit are made private again. Both are public today,
+# so the classifiers download without credentials.
+#   fly secrets set HF_TOKEN=hf_xxxxxxxxxxxxxxxxxxxxx
 
 # Who may open the demo. One email per person, so access is revoked by editing
 # this one secret. The app refuses to start without it (or DEMO_PUBLIC=1), so a
@@ -105,8 +106,8 @@ You want:
 Stage readiness after preload: {'slm': True, 'stt': True, 'tts': True, 'vision': True}
 ```
 
-`vision: True` is the one that proves `HF_TOKEN` reached the two private
-classifier repos. If it says `False`, the lines above it name the reason.
+If `vision` says `False`, the lines above it name the reason — most likely the
+classifier repos became unreachable.
 
 Then open `https://cultura-viva-demo.fly.dev`.
 
@@ -282,9 +283,9 @@ nano .env          # set DEMO_DOMAIN and HF_TOKEN
 docker compose up -d --build
 ```
 
-`HF_TOKEN` must be a read token with access to `culturaviva/park_guell-vit` and
-`culturaviva/sagrada_familia-vit`. Both are private; without it the app still
-boots but every photo comes back unclassified.
+The classifier repos are public, so no token is needed. If they are made
+private, set `HF_TOKEN`; without it the app still boots but every photo comes
+back unclassified.
 
 Two things take time on the first run, and neither is a hang:
 

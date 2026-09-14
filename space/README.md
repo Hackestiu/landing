@@ -65,11 +65,11 @@ models (Qwen, faster-whisper, Piper) need no configuration.
 The two Gaudí classifiers are ViT models trained for this project, one repo per
 site: [`culturaviva/park_guell-vit`](https://huggingface.co/culturaviva/park_guell-vit)
 and [`culturaviva/sagrada_familia-vit`](https://huggingface.co/culturaviva/sagrada_familia-vit).
-**Both are private**, so the Space needs a token to read them.
+Both are public, so no credentials are needed.
 
 | Variable | Purpose |
 |---|---|
-| `HF_TOKEN` | **Required.** A read token with access to the two classifier repos. Set it as a Space **secret**, never as a plain variable. |
+| `HF_TOKEN` | Only needed if the classifier repos are made private again. Set it as a **secret**, never as a plain variable. |
 | `CULTURA_VISION_REPO_PARK_GUELL` | Override the Park Güell classifier repo |
 | `CULTURA_VISION_REPO_SAGRADA_FAMILIA` | Override the Sagrada Família classifier repo |
 | `CULTURA_SLM_REPO` / `CULTURA_SLM_FILENAME` | Override the GGUF (default: `Qwen/Qwen2.5-0.5B-Instruct-GGUF`, `qwen2.5-0.5b-instruct-q4_k_m.gguf` — matching the board's `config.py`) |
@@ -84,14 +84,10 @@ next to the `labels.json` vendored from the board repo — that `labels.json` st
 the authority on class order, `image_size` and normalisation, because it is the
 one the device reads.
 
-Without a working token the Space still boots: vision returns `None` and the
-guide answers from `knowledge_base.json` monument-level context, which is the
-same degradation path the board takes when its model files are absent. The
-"Pipeline status" accordion in the UI shows which stages came up.
-
-> If you would rather not hand the Space a token, making the two classifier
-> repos public removes the requirement entirely — the weights are already
-> reachable by anyone who can open the Space, since it runs inference on them.
+If the classifiers ever become unreachable the app still boots: vision returns
+`None` and the guide answers from `knowledge_base.json` monument-level context,
+the same degradation path the board takes when its model files are absent. The
+"Estat del pipeline" accordion in the UI shows which stages came up.
 
 ## Gradio version
 

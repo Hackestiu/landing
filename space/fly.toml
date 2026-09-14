@@ -53,8 +53,15 @@ primary_region = 'cdg'
     path = '/'
 
 [[vm]]
-  size = 'shared-cpu-1x'
-  # Measured: ~1.06 GB with SLM + Whisper + Piper warm, plus ~350 MB once the
-  # vision classifier loads. 2 GB fits with little to spare — if the logs show
-  # an OOM kill, `fly scale memory 4096` fixes it without a rebuild.
-  memory = '2gb'
+  # shared-cpu-1x caps at 2048 MB, so more RAM requires a larger size. The
+  # second vCPU is welcome anyway: the SLM is the slowest stage and scales with
+  # cores.
+  size = 'shared-cpu-2x'
+  # Sized for the 1.5B SLM: ~1.66 GB with SLM + Whisper + Piper warm, plus
+  # ~350 MB once the vision classifier loads, so ~2.0 GB steady state. 2 GB did
+  # not fit that; 3 GB leaves ~900 MB of headroom.
+  #
+  # Keep this in step with `fly scale memory` — a deploy applies whatever is
+  # written here, so scaling the machine without editing this reverts on the
+  # next deploy.
+  memory = '3gb'
